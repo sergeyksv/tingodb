@@ -1,0 +1,21 @@
+{
+  "author": "Sergey Korotkov <sergeyksv@gmail.com>",
+  "name": "tingodb",
+  "version": "0.0.5",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sergeyksv/tingodb.git"
+  },  
+  "contributors": [
+  ],  
+  "main": "./lib/main",
+  "engines": {
+    "node": ">= v0.6.x"
+  },  
+  "dependencies": {
+    "safe": "",
+    "underscore": ""
+  },
+  "devDependencies": {
+  }
+}
