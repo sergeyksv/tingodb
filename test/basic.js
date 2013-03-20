@@ -116,6 +116,31 @@ vows.describe('Basic').addBatch({
 				}
 			},
 			"random read":randomRead(1000,1),
+			"dummy find $eq":{
+				topic:function (coll) {
+					var self = this;
+					coll.find({id:10}, function (err,docs) {
+						if (err) return self.callback(err);
+						docs.toArray(self.callback)
+					})
+				},
+				"ok":function (err, docs) {
+					assert.equal(docs[0].id, 10);
+					assert.equal(docs.length, 1);
+				}
+			},
+			"dummy find $gt":{
+				topic:function (coll) {
+					var self = this;
+					coll.find({"sin":{$gt:0}}, function (err,docs) {
+						if (err) return self.callback(err);
+						docs.toArray(self.callback)
+					})
+				},
+				"ok":function (err, docs) {
+					assert.equal(docs.length, 499);
+				}
+			}
 		}
 	}
 }).export(module);
