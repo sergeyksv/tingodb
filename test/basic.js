@@ -4,15 +4,18 @@ var main = require('../lib/main');
 var temp = require('temp');
 var _ = require('underscore');
 var async = require('async');
+var Db = require('mongodb').Db,
+	Server = require('mongodb').Server;
+var safe = require('safe');
 
 function dummyDataCheck(index) {
     var context = {
         topic: function (coll) {
-			coll.get(index, this.callback);
+			coll.find({}).skip(index).limit(1).nextObject(this.callback);
         }
     };
     context['ok'] = function (err, v) {
-		assert.equal(v.id,index);
+		assert.equal(Math.sin(v.num),v.sin);
 	}
     return context;
 }
@@ -24,8 +27,8 @@ function randomRead(max,size) {
 		}
 	}
 
-	context['at ' + 0] = dummyDataCheck(0);
-	context['at ' + (max-1)] = dummyDataCheck(max-1);
+	context['at ' + 1] = dummyDataCheck(0);
+	context['at ' + (max)] = dummyDataCheck(max-1);
 	
 	for (i=0; i<size;i++) {
 		var index = Math.floor(Math.random() * max);
@@ -34,46 +37,64 @@ function randomRead(max,size) {
 	
 	return context;
 }
+
+var mongo = false;
+var num = 1000;
+var paths = {};
+var gt0sin = 0;
+
+function getDb(tag,drop,cb) {
+	if (mongo) {
+		var dbs = new Db(tag, new Server('localhost', 27017),{w:1});
+		dbs.open(safe.sure(cb, function (db) {
+			if (drop) {
+				db.dropDatabase(safe.sure(cb, function () {
+					var dbs = new Db(tag, new Server('localhost', 27017),{w:1});					
+					dbs.open(cb)
+				}))
+			} else
+				cb(null,db)
+		}))
+	}
+	else {
+		if (drop)
+			delete paths[tag];
+		if (!paths[tag]) {
+			temp.mkdir(tag, function (err, path) {
+				paths[tag] = path;
+				main.open(path, {}, cb)
+			})		
+		} else
+			main.open(paths[tag], {}, cb)
+	}
+}
+		
 	
 var path = "./data";
 vows.describe('Basic').addBatch({
 	'New store':{
 		topic: function () {
-			var self = this;
-			temp.mkdir('test', function (err, path_) {
-				path = path_;
-				main.open(path, {}, self.callback)
-			})
+			getDb('test', true, this.callback);
 		},
 		"can be created by path":function (db) {
 			assert.notEqual(db,null);
 		},
 		"collection":{
 			topic:function (db) {
-				db.ensure("test", {}, this.callback)
+				db.collection("test", {}, this.callback)
 			},
 			"can be created":function (coll) {
 				assert.notEqual(coll,null);
 			},			
-			"populated with test data 1":{
-				topic:function (coll) {
-					var i=0;
-					async.whilst(function () { return i<1000}, 
-						function (cb) {
-							coll.put(i, {id:i,sin:Math.sin(i),cos:Math.cos(i)}, cb);
-							i++;
-						},
-						this.callback
-					)
-				},
-				"ok":function() {},				
-			},
 			"populated with test data":{
 				topic:function (coll) {
 					var i=0;
-					async.whilst(function () { return i<1000}, 
+					async.whilst(function () { return i<num}, 
 						function (cb) {
-							coll.put(i, {id:i,sin:Math.sin(i),cos:Math.cos(i)}, cb);
+							var obj = {num:i,sin:Math.sin(i),cos:Math.cos(i)};
+							coll.insert({num:i,sin:Math.sin(i),cos:Math.cos(i)}, cb);
+							if (obj.sin>0)
+							   gt0sin++;
 							i++;
 						},
 						this.callback
@@ -82,50 +103,50 @@ vows.describe('Basic').addBatch({
 				"ok":function() {},
 				"has proper size":{
 					topic:function (coll) {
-						coll.size(this.callback);
+						coll.count(this.callback);
 					},
 					"ok":function (err, size) {
-						assert.equal(size, 1000);
+						assert.equal(size, num);
 					}
 				},
-				"random read":randomRead(1000,1),
+				"random read":randomRead(num,1)				
 			}
 		}
 	}
 }).addBatch({
 	'Existing store':{
 		topic: function () {
-			main.open(path, {}, this.callback)
+			getDb('test', false, this.callback);
 		},
 		"can be created by path":function (db) {
 			assert.notEqual(db,null);
 		},
 		"test collection":{
 			topic:function (db) {
-				db.ensure("test", {}, this.callback)
+				db.collection("test", {}, this.callback)
 			},
 			"exists":function (coll) {
 				assert.notEqual(coll,null);
 			},			
 			"has proper size":{
 				topic:function (coll) {
-					coll.size(this.callback);
+					coll.count(this.callback);
 				},
 				"ok":function (err, size) {
-					assert.equal(size, 1000);
+					assert.equal(size, num);
 				}
 			},
-//			"random read":randomRead(1000,1),
+			"random read":randomRead(num,1),
 			"dummy find $eq":{
 				topic:function (coll) {
 					var cb = this.callback;
-					coll.find({id:10}, function (err,docs) {
+					coll.find({num:10}, function (err,docs) {
 						if (err) cb(err);
 							else docs.toArray(cb)
 					})
 				},
 				"ok":function (err, docs) {
-					assert.equal(docs[0].id, 10);
+					assert.equal(docs[0].num, 10);
 					assert.equal(docs.length, 1);
 				}
 			},
@@ -138,7 +159,7 @@ vows.describe('Basic').addBatch({
 					})
 				},
 				"ok":function (err, docs) {
-					assert.equal(docs.length, 499);
+					assert.equal(docs.length, gt0sin);
 				}
 			},
 		}
