@@ -41,7 +41,7 @@ vows.describe('Basic').addBatch({
 		topic: function () {
 			var self = this;
 			temp.mkdir('test', function (err, path_) {
-//				path = path_;
+				path = path_;
 				main.open(path, {}, self.callback)
 			})
 		},
@@ -115,13 +115,13 @@ vows.describe('Basic').addBatch({
 					assert.equal(size, 1000);
 				}
 			},
-			"random read":randomRead(1000,1),
+//			"random read":randomRead(1000,1),
 			"dummy find $eq":{
 				topic:function (coll) {
-					var self = this;
+					var cb = this.callback;
 					coll.find({id:10}, function (err,docs) {
-						if (err) return self.callback(err);
-						docs.toArray(self.callback)
+						if (err) cb(err);
+							else docs.toArray(cb)
 					})
 				},
 				"ok":function (err, docs) {
@@ -131,16 +131,16 @@ vows.describe('Basic').addBatch({
 			},
 			"dummy find $gt":{
 				topic:function (coll) {
-					var self = this;
-					coll.find({"sin":{$gt:0}}, function (err,docs) {
-						if (err) return self.callback(err);
-						docs.toArray(self.callback)
+					var cb = this.callback;
+					coll.find({sin:{$gt:0}}, function (err,docs) {
+						if (err) cb(err);
+							else docs.toArray(cb)
 					})
 				},
 				"ok":function (err, docs) {
 					assert.equal(docs.length, 499);
 				}
-			}
+			},
 		}
 	}
 }).export(module);
