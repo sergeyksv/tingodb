@@ -9,6 +9,7 @@ var temp = require('temp');
 var vows = require('vows');
 var zlib = require('zlib');
 var _ = require('underscore');
+var safe = require('safe');
 
 var Db = require('mongodb').Db;
 var Server = require('mongodb').Server;
@@ -68,7 +69,12 @@ function import_context(rowcount) {
 	var sample = 'sample-data/' + rowcount + '.csv.gz';
 	return {
 		topic: function (db) {
-			db.collection('c' + rowcount, {}, this.callback);
+			var cb = this.callback;
+			db.collection('c' + rowcount, {}, safe.sure(cb, function (coll) {
+				coll.ensureIndex({id:1}, safe.sure(cb, function () {
+					cb(null,coll);
+				}))
+			}))
 		},
 		'can be created': function (coll) {
 			assert.notEqual(coll, null);
@@ -91,7 +97,7 @@ function import_context(rowcount) {
 			'test find $eq': {
 				topic: function (coll) {
 					load(sample, function (value, index, callback) {
-						if (Math.random() > 10 / rowcount) return callback(); // ~10 rows
+						if (Math.random() > 10 / rowcount) return process.nextTick(callback); // ~10 rows
 						coll.find({ id: value.id }, function (err, docs) {
 							if (err) return callback(err);
 							docs.toArray(function (err, rows) {
