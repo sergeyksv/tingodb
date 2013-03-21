@@ -7,6 +7,7 @@ var async = require('async');
 var Db = require('mongodb').Db,
 	Server = require('mongodb').Server;
 var safe = require('safe');
+var loremIpsum = require('lorem-ipsum');
 
 function dummyDataCheck(index) {
     var context = {
@@ -81,7 +82,10 @@ vows.describe('Basic').addBatch({
 		},
 		"collection":{
 			topic:function (db) {
-				db.collection("test", {}, this.callback)
+				var cb = this.callback;
+				db.collection("test", {}, safe.sure(cb,function (coll) {
+							cb(null, coll);
+				}))
 			},
 			"can be created":function (coll) {
 				assert.notEqual(coll,null);
@@ -91,16 +95,18 @@ vows.describe('Basic').addBatch({
 					var i=0;
 					async.whilst(function () { return i<num}, 
 						function (cb) {
-							var obj = {num:i,sin:Math.sin(i),cos:Math.cos(i)};
-							coll.insert({num:i,sin:Math.sin(i),cos:Math.cos(i)}, cb);
-							if (obj.sin>0)
+							var obj = {num:i,sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
+							coll.insert(obj, cb);
+							if (obj.sin>0 && obj.sin<0.5)
 							   gt0sin++;
 							i++;
 						},
 						this.callback
 					)
 				},
-				"ok":function() {},
+				"ok":function() {
+					console.log(gt0sin);
+					},
 				"has proper size":{
 					topic:function (coll) {
 						coll.count(this.callback);
@@ -109,7 +115,7 @@ vows.describe('Basic').addBatch({
 						assert.equal(size, num);
 					}
 				},
-				"random read":randomRead(num,1)				
+				"random read":randomRead(num,1)
 			}
 		}
 	}
@@ -123,7 +129,14 @@ vows.describe('Basic').addBatch({
 		},
 		"test collection":{
 			topic:function (db) {
-				db.collection("test", {}, this.callback)
+				var cb = this.callback;
+				db.collection("test", {}, safe.sure(cb,function (coll) {
+					coll.ensureIndex({sin:1}, safe.sure(cb, function () {
+						coll.ensureIndex({num:1}, safe.sure(cb, function () {
+							cb(null, coll);
+						}))
+					}))
+				}))
 			},
 			"exists":function (coll) {
 				assert.notEqual(coll,null);
@@ -153,7 +166,7 @@ vows.describe('Basic').addBatch({
 			"dummy find $gt":{
 				topic:function (coll) {
 					var cb = this.callback;
-					coll.find({sin:{$gt:0}}, function (err,docs) {
+					coll.find({sin:{$gt:0,$lt:0.5},t:15}, function (err,docs) {
 						if (err) cb(err);
 							else docs.toArray(cb)
 					})
@@ -161,7 +174,7 @@ vows.describe('Basic').addBatch({
 				"ok":function (err, docs) {
 					assert.equal(docs.length, gt0sin);
 				}
-			},
+			}
 		}
 	}
 }).export(module);
