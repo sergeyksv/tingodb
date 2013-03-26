@@ -13,9 +13,14 @@
     "node": ">= v0.6.x"
   },  
   "dependencies": {
+    "async": "",
     "safe": "",
     "underscore": ""
   },
   "devDependencies": {
+	"csv": "",
+	"mongodb": "",
+	"temp": "",
+	"vows": ""
   }
 }
