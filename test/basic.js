@@ -1,13 +1,10 @@
 var vows = require('vows');
 var assert = require('assert');
-var main = require('../lib/main');
-var temp = require('temp');
 var _ = require('underscore');
 var async = require('async');
-var Db = require('mongodb').Db,
-	Server = require('mongodb').Server;
 var safe = require('safe');
 var loremIpsum = require('lorem-ipsum');
+var tutils = require("./utils");
 
 function dummyDataCheck(index) {
     var context = {
@@ -39,44 +36,15 @@ function randomRead(max,size) {
 	return context;
 }
 
-var mongo = false;
 var num = 1000;
-var paths = {};
 var gt0sin = 0;
 var _dt = null;
-
-function getDb(tag,drop,cb) {
-	if (mongo) {
-		var dbs = new Db(tag, new Server('localhost', 27017),{w:1});
-		dbs.open(safe.sure(cb, function (db) {
-			if (drop) {
-				db.dropDatabase(safe.sure(cb, function () {
-					var dbs = new Db(tag, new Server('localhost', 27017),{w:1});					
-					dbs.open(cb)
-				}))
-			} else
-				cb(null,db)
-		}))
-	}
-	else {
-		if (drop)
-			delete paths[tag];
-		if (!paths[tag]) {
-			temp.mkdir(tag, function (err, path) {
-				paths[tag] = path;
-				main.open(path, {}, cb)
-			})		
-		} else
-			main.open(paths[tag], {}, cb)
-	}
-}
-		
-	
 var path = "./data";
+
 vows.describe('Basic').addBatch({
 	'New store':{
 		topic: function () {
-			getDb('test', true, this.callback);
+			tutils.getDb('test', true, this.callback);
 		},
 		"can be created by path":function (db) {
 			assert.notEqual(db,null);
@@ -125,7 +93,7 @@ vows.describe('Basic').addBatch({
 }).addBatch({
 	'Existing store':{
 		topic: function () {
-			getDb('test', false, this.callback);
+			tutils.getDb('test', false, this.callback);
 		},
 		"can be created by path":function (db) {
 			assert.notEqual(db,null);
@@ -244,7 +212,7 @@ vows.describe('Basic').addBatch({
 }).addBatch({
 	'Existing store':{
 		topic: function () {
-			getDb('test', false, this.callback);
+			tutils.getDb('test', false, this.callback);
 		},
 		"can be created by path":function (db) {
 			assert.notEqual(db,null);
