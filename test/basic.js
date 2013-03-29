@@ -99,7 +99,7 @@ vows.describe('Basic').addBatch({
 							var d = new Date();
 							if (_dt==null)
 								_dt=d;
-							var obj = {_dt:d, num:i, pum:i, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
+							var obj = {_dt:d, num:i, pum:i, sub:{num:i}, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
 							coll.insert(obj, cb);
 							if (obj.sin>0 && obj.sin<0.5)
 							   gt0sin++;
@@ -239,6 +239,61 @@ vows.describe('Basic').addBatch({
 					assert.equal(docs[0].pum,10);
 				}
 			}			
+		}
+	}
+}).addBatch({
+	'Existing store':{
+		topic: function () {
+			getDb('test', false, this.callback);
+		},
+		"can be created by path":function (db) {
+			assert.notEqual(db,null);
+		},
+		"test collection":{
+			topic:function (db) {
+				var cb = this.callback;
+				db.collection("test", {}, safe.sure(cb,function (coll) {
+					coll.ensureIndex({sin:1}, safe.sure(cb, function () {
+						coll.ensureIndex({num:1}, safe.sure(cb, function () {
+							coll.ensureIndex({_dt:1}, safe.sure(cb, function () {							
+								cb(null, coll);
+							}))
+						}))
+					}))
+				}))
+			},
+			"exists":function (coll) {
+				assert.notEqual(coll,null);
+			},			
+			"dummy update":{
+				topic:function (coll) {
+					var cb = this.callback;
+					coll.update({pum:11},{$set:{num:10,"sub.tub":10,"sub.num":10},$unset:{sin:1}}, safe.sure(cb, function () {
+						coll.findOne({pum:11},cb)
+					}))
+				},
+				"ok":function (err, obj) {
+					assert.equal(err,null);
+					assert.equal(obj.pum, 11);
+					assert.equal(obj.num, 10);
+					assert.equal(obj.sub.num, 10);					
+					assert.equal(obj.sub.tub, 10);	
+					assert.equal(obj.sin,null);									
+				}
+			},
+			"dummy remove":{
+				topic:function (coll) {
+					var cb = this.callback;
+					coll.remove({pum:20}, safe.sure(cb, function () {
+						coll.findOne({pum:20},cb)
+					}))
+				},
+				"ok":function (err, obj) {
+					assert.equal(err,null);
+					assert.equal(obj,null);					
+				}
+			}	
+			
 		}
 	}
 }).export(module);
