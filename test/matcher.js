@@ -11,6 +11,7 @@ var qt = finder.matcher({"data.sin":{$gt:0,$lt:0.5},t:15});
 var f = "sn = function (obj) { return "+ qt.native() + " }";
 eval(f);
 var obj = {num:1, data:{sin:-0.2}, t:15};
+var obj1 = {num:1, data:[{sin:-0.2}], t:15};
 console.log(sn(obj));
 console.log(sn.toString());
 var matcher = function (obj) {

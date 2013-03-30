@@ -39,7 +39,7 @@ vows.describe('Basic').addBatch({
 							var d = new Date();
 							if (_dt==null)
 								_dt=d;
-							var obj = {_dt:d, num:i, pum:i, sub:{num:i}, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
+							var obj = {_dt:d, anum:[i,i+1,i+2],apum:[i,i+1,i+2], num:i, pum:i, sub:{num:i}, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
 							if (i%7==0) {
 								delete obj.num;
 								delete obj.pum;
@@ -330,7 +330,24 @@ vows.describe('Basic').addBatch({
 							assert.isTrue(doc.num<10)
 						})			
 					}
-				}				
+				},"find {'anum':{$all:[1,2,3]}} (index)":{
+					topic:function (coll) {
+						coll.find({'anum':{$all:[1,2,3]}}).toArray(this.callback)
+					},
+					"ok":function (err, docs) {
+						assert.equal(err, null);
+						assert.equal(docs.length, 1);						
+					}
+				},				
+				"find {'apum':{$all:[1,2,3]}} (no index)":{
+					topic:function (coll) {
+						coll.find({'apum':{$all:[1,2,3]}}).toArray(this.callback)
+					},
+					"ok":function (err, docs) {
+						assert.equal(err, null);
+						assert.equal(docs.length, 1);						
+					}
+				}
 			}
 		}
 	}
