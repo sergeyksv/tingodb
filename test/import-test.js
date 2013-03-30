@@ -4,44 +4,12 @@ var assert = require('assert');
 var async = require('async');
 var csv = require('csv');
 var fs = require('fs');
-var main = require('../lib/main');
 var temp = require('temp');
 var vows = require('vows');
 var zlib = require('zlib');
 var _ = require('underscore');
 var safe = require('safe');
-
-var Db = require('mongodb').Db;
-var Server = require('mongodb').Server;
-
-var mongo = false;
-var paths = {};
-
-function getDb(tag, drop, cb) {
-	if (mongo) {
-		var dbs = new Db(tag, new Server('localhost', 27017),{w:1});
-		dbs.open(safe.sure(cb, function (db) {
-			if (drop) {
-				db.dropDatabase(safe.sure(cb, function () {
-					var dbs = new Db(tag, new Server('localhost', 27017),{w:1});					
-					dbs.open(cb);
-				}));
-			} else
-				cb(null,db);
-		}));
-	}
-	else {
-		if (drop)
-			delete paths[tag];
-		if (!paths[tag]) {
-			temp.mkdir(tag, function (err, path) {
-				paths[tag] = path;
-				main.open(path, {}, cb);
-			});
-		} else
-			main.open(paths[tag], {}, cb);
-	}
-}
+var tutils = require("./utils");
 
 function load(file, iterator, callback) {
 	var schema;
@@ -66,7 +34,7 @@ function load(file, iterator, callback) {
 }
 
 function import_context(rowcount) {
-	var sample = 'sample-data/' + rowcount + '.csv.gz';
+	var sample = __dirname+'/sample-data/' + rowcount + '.csv.gz';
 	return {
 		topic: function (db) {
 			var cb = this.callback;
@@ -120,7 +88,7 @@ function import_context(rowcount) {
 vows.describe('Import').addBatch({
 		'New store': {
 			topic: function () {
-				getDb('test', true, this.callback);
+				tutils.getDb('test', true, this.callback);
 			},
 			'can be created by path': function (db) {
 				assert.notEqual(db, null);

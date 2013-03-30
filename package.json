@@ -17,6 +17,9 @@
     "safe": "",
     "underscore": ""
   },
+  "scripts": {
+      "test": "vows test/*-test.js --isolate"
+  },
   "devDependencies": {
 	"csv": "",
 	"mongodb": "",
