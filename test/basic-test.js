@@ -206,7 +206,46 @@ vows.describe('Basic').addBatch({
 					assert.equal(docs.length, 11);
 					assert.equal(docs[0].pum,10);
 				}
-			}			
+			},
+			"find with exclude fields {junk:0}":{
+				topic:function (coll) {
+					coll.find({num:10},{junk:0}).toArray(this.callback)
+				},
+				"got it":function (err, docs) {
+					assert.equal(err,null);
+					assert.equal(docs[0].junk, null);
+				}
+			},			
+			"find with exclude fields {'sub.num':0,junk:0}":{
+				topic:function (coll) {
+					coll.find({num:10},{'sub.num':0,junk:0}).toArray(this.callback)
+				},
+				"got it":function (err, docs) {
+					assert.equal(err,null);
+					assert.equal(docs[0].junk, null);
+					assert.equal(docs[0].sub.num, null);					
+				}
+			},			
+			"find with fields {'num':1}":{
+				topic:function (coll) {
+					coll.find({num:10},{'num':1}).toArray(this.callback)
+				},
+				"got it":function (err, docs) {
+					assert.equal(err,null);
+					assert.equal(_.size(docs[0]),2);					
+					assert.equal(docs[0].num, 10);
+				}
+			},				
+			"find with fields {'sub.num':1}":{
+				topic:function (coll) {
+					coll.find({num:10},{'sub.num':1}).toArray(this.callback)
+				},
+				"got it":function (err, docs) {
+					assert.equal(err,null);
+					assert.equal(_.size(docs[0]),2);					
+					assert.equal(docs[0].sub.num, 10);
+				}
+			},			
 		}
 	}
 }).addBatch({
@@ -237,11 +276,13 @@ vows.describe('Basic').addBatch({
 				topic:function (coll) {
 					var cb = this.callback;
 					coll.update({pum:11},{$set:{num:10,"sub.tub":10,"sub.num":10},$unset:{sin:1}}, safe.sure(cb, function () {
-						coll.findOne({pum:11},cb)
+						coll.find({pum:11}).toArray(cb)
 					}))
 				},
-				"ok":function (err, obj) {
+				"ok":function (err, docs) {
 					assert.equal(err,null);
+					assert.equal(docs.length,1);
+					var obj = docs[0];
 					assert.equal(obj.pum, 11);
 					assert.equal(obj.num, 10);
 					assert.equal(obj.sub.num, 10);					
