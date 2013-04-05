@@ -5,6 +5,7 @@ var async = require('async');
 var safe = require('safe');
 var loremIpsum = require('lorem-ipsum');
 var tutils = require("./utils");
+var ObjectId = null;
 
 function dummyDataCheck(index) {
     var context = {
@@ -13,6 +14,8 @@ function dummyDataCheck(index) {
         }
     };
     context['ok'] = function (err, v) {
+		if (_id==null)
+			_id = v._id;
 		assert.equal(Math.sin(v.num),v.sin);
 	}
     return context;
@@ -36,10 +39,11 @@ function randomRead(max,size) {
 	return context;
 }
 
-var num = 1000;
+var num = 100;
 var gt0sin = 0;
 var _dt = null;
 var path = "./data";
+var _id = null;
 
 vows.describe('Basic').addBatch({
 	'New store':{
@@ -149,6 +153,19 @@ vows.describe('Basic').addBatch({
 				},
 				"got it":function (err, docs) {
 					assert.equal(docs[0]._dt.toString(), _dt.toString());
+				}
+			},			
+			"dummy find _id":{
+				topic:function (coll) {
+					var cb = this.callback;
+					coll.find({"_id":_id}, function (err,docs) {
+						if (err) cb(err);
+							else docs.toArray(cb)
+					})
+				},
+				"got it":function (err, docs) {
+					assert.equal(docs[0]._id.constructor.name == "ObjectID",true)
+					assert.equal(docs[0]._id.toString(), _id.toString());
 				}
 			},			
 			"dummy find $gt":{

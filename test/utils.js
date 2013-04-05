@@ -26,13 +26,20 @@ function getDb(tag,drop,cb) {
 		if (drop)
 			delete paths[tag];
 		if (!paths[tag]) {
-			temp.mkdir(tag, function (err, path) {
-				paths[tag] = path;
-				main.open(path, {}, cb)
-			})		
-		} else
-			main.open(paths[tag], {}, cb)
+			paths[tag] = temp.mkdirSync(tag);
+		} 
+		var db = new main.Db(paths[tag], {});
+		db.open(cb);
 	}
+}
+
+module.exports.getDbSync = function (tag,drop) {
+	if (drop)
+		delete paths[tag];
+	if (!paths[tag]) {
+		paths[tag] = temp.mkdirSync(tag);
+	} 
+	return new main.Db(paths[tag], {})
 }
 
 module.exports.getDb = getDb;
