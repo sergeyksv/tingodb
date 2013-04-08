@@ -1,6 +1,6 @@
 var vows = require('vows');
 var assert = require('assert');
-var _ = require('underscore');
+var _ = require('lodash');
 var async = require('async');
 var safe = require('safe');
 var loremIpsum = require('lorem-ipsum');
@@ -158,6 +158,7 @@ vows.describe('Basic').addBatch({
 			"dummy find _id":{
 				topic:function (coll) {
 					var cb = this.callback;
+					console.log(coll._store);
 					coll.find({"_id":_id}, function (err,docs) {
 						if (err) cb(err);
 							else docs.toArray(cb)

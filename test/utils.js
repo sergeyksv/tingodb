@@ -1,6 +1,6 @@
 var main = require('../lib/main')({_tiar:0});
 var temp = require('temp');
-var _ = require('underscore');
+var _ = require('lodash');
 var async = require('async');
 var Db = require('mongodb').Db,
 	Server = require('mongodb').Server;

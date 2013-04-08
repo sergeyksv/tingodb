@@ -7,7 +7,7 @@ var fs = require('fs');
 var temp = require('temp');
 var vows = require('vows');
 var zlib = require('zlib');
-var _ = require('underscore');
+var _ = require('lodash');
 var safe = require('safe');
 var tutils = require("./utils");
 

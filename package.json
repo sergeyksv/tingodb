@@ -14,9 +14,8 @@
   },  
   "dependencies": {
     "async": "",
-    "safe": "",
-    "lodash": "",
-    "underscore":""
+    "safe": ">=0.0.9",
+    "lodash": ""
   },
   "scripts": {
       "test": "./test.sh"
