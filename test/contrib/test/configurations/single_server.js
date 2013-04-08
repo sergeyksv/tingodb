@@ -62,7 +62,7 @@ var single_server_config = function(options) {
     }
 
     // Used in tests
-    this.db_name = "integration_tests";    
+    this.db_name = "test";    
   }
 }
 

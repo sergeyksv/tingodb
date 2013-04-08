@@ -39,7 +39,7 @@ module.exports.getDbSync = function (tag,drop) {
 	if (!paths[tag]) {
 		paths[tag] = temp.mkdirSync(tag);
 	} 
-	return new main.Db(paths[tag], {})
+	return new main.Db(paths[tag], {name:tag})
 }
 
 module.exports.getDb = getDb;

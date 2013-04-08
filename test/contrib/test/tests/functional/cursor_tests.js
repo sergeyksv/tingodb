@@ -1486,7 +1486,7 @@ exports.shouldCorrectlyPeformSimpleSorts = function(configuration, test) {
           // Do normal descending sort
           collection.find().sort([['a', -1]]).nextObject(function(err, item) {
             test.equal(null, err);
-//            test.equal(3, item.a);
+            test.equal(3, item.a);
 
             db.close();
             test.done();
@@ -1572,6 +1572,565 @@ exports.shouldCorrectlyPeformSkipOnCursor = function(configuration, test) {
   // DOC_END
 }
 
+/**
+ * A simple example showing the use of batchSize on the cursor, batchSize only regulates how many
+ * documents are returned for each batch using the getMoreCommand against the MongoDB server
+ *
+ * @_class cursor
+ * @_function batchSize
+ * @ignore
+ */
+exports.shouldCorrectlyPeformBatchSizeOnCursor = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
+  // DOC_START
+  // Establish connection to db
+  db.open(function(err, db) {
+
+    // Create a collection
+    db.createCollection('simple_batch_size_collection', function(err, collection) {
+      test.equal(null, err);
+
+      // Insert some documents we can sort on
+      collection.insert([{a:1}, {a:2}, {a:3}], {w:1}, function(err, docs) {
+        test.equal(null, err);
+
+        // Do normal ascending sort
+        collection.find().batchSize(1).nextObject(function(err, item) {
+          test.equal(null, err);
+          test.equal(1, item.a);
+
+          db.close();
+          test.done();
+        });
+      });
+    });
+  });
+  // DOC_END
+}
+
+/**
+ * A simple example showing the use of nextObject.
+ *
+ * @_class cursor
+ * @_function nextObject
+ * @ignore
+ */
+exports.shouldCorrectlyPeformNextObjectOnCursor = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
+  // DOC_START
+  // Establish connection to db
+  db.open(function(err, db) {
+
+    // Create a collection
+    db.createCollection('simple_next_object_collection', function(err, collection) {
+      test.equal(null, err);
+
+      // Insert some documents we can sort on
+      collection.insert([{a:1}, {a:2}, {a:3}], {w:1}, function(err, docs) {
+        test.equal(null, err);
+
+        // Do normal ascending sort
+        collection.find().nextObject(function(err, item) {
+          test.equal(null, err);
+          test.equal(1, item.a);
+
+          db.close();
+          test.done();
+        });
+      });
+    });
+  });
+  // DOC_END
+}
+
+/**
+ * A simple example showing the use of the cursor explain function.
+ *
+ * @_class cursor
+ * @_function explain
+ * @ignore
+ */
+/* REASON: Explain is not supported
+exports.shouldCorrectlyPeformSimpleExplainCursor = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
+  // DOC_START
+  // Establish connection to db
+  db.open(function(err, db) {
+
+    // Create a collection
+    db.createCollection('simple_explain_collection', function(err, collection) {
+      test.equal(null, err);
+
+      // Insert some documents we can sort on
+      collection.insert([{a:1}, {a:2}, {a:3}], {w:1}, function(err, docs) {
+        test.equal(null, err);
+
+        // Do normal ascending sort
+        collection.find().explain(function(err, explaination) {
+          test.equal(null, err);
+
+          db.close();
+          test.done();
+        });
+      });
+    });
+  });
+  // DOC_END
+}
+*/
+
+/**
+ * A simple example showing the use of the cursor streamRecords function.
+ *
+ * @_class cursor
+ * @_function streamRecords
+ * @ignore
+ */
+/* REASON: Stream is not supported
+exports.shouldStreamDocumentsUsingTheStreamRecords = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
+  // DOC_START
+  // Establish connection to db
+  db.open(function(err, db) {
+
+    // Create a lot of documents to insert
+    var docs = []
+    for(var i = 0; i < 100; i++) {
+      docs.push({'a':i})
+    }
+
+    // Create a collection
+    db.createCollection('test_streamingRecords_function', function(err, collection) {
+      test.equal(null, err);
+
+      // Insert documents into collection
+      collection.insert(docs, {w:1}, function(err, ids) {
+        // Peform a find to get a cursor
+        var stream = collection.find().streamRecords({fetchSize:1000});
+
+        // Execute find on all the documents
+        stream.on('end', function() {
+          db.close();
+          test.done();
+        });
+
+        stream.on('data', function(data) {
+          test.ok(data != null);
+        });
+      });
+    });
+  });
+  // DOC_END
+}
+
+*/
+/**
+ * A simple example showing the use of the cursor stream function.
+ *
+ * @_class cursor
+ * @_function stream
+ * @ignore
+ */
+/* REASON: Stream is not supported
+exports.shouldStreamDocumentsUsingTheStreamFunction = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
+  // DOC_START
+  // Establish connection to db
+  db.open(function(err, db) {
+
+    // Create a lot of documents to insert
+    var docs = []
+    for(var i = 0; i < 100; i++) {
+      docs.push({'a':i})
+    }
+
+    // Create a collection
+    db.createCollection('test_stream_function', function(err, collection) {
+      test.equal(null, err);
+
+      // Insert documents into collection
+      collection.insert(docs, {w:1}, function(err, ids) {
+        // Peform a find to get a cursor
+        var stream = collection.find().stream();
+
+        // Execute find on all the documents
+        stream.on('close', function() {
+          db.close();
+          test.done();
+        });
+
+        stream.on('data', function(data) {
+          test.ok(data != null);
+        });
+      });
+    });
+  });
+  // DOC_END
+}
+*/
+
+/**
+ * A simple example showing the use of the cursor close function.
+ *
+ * @_class cursor
+ * @_function close
+ * @ignore
+ */
+exports.shouldStreamDocumentsUsingTheCloseFunction = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
+  // DOC_START
+  // Establish connection to db
+  db.open(function(err, db) {
+
+    // Create a lot of documents to insert
+    var docs = []
+    for(var i = 0; i < 100; i++) {
+      docs.push({'a':i})
+    }
+
+    // Create a collection
+    db.createCollection('test_close_function_on_cursor', function(err, collection) {
+      test.equal(null, err);
+
+      // Insert documents into collection
+      collection.insert(docs, {w:1}, function(err, ids) {
+        // Peform a find to get a cursor
+        var cursor = collection.find();
+
+        // Fetch the first object
+        cursor.nextObject(function(err, object) {
+          test.equal(null, err);
+
+          // Close the cursor, this is the same as reseting the query
+          cursor.close(function(err, result) {
+            test.equal(null, err);
+
+            db.close();
+            test.done();
+          });
+        });
+      });
+    });
+  });
+  // DOC_END
+}
+
+/**
+ * @ignore
+ */
+/* REASON: Stream is not supported
+exports.shouldCloseDeadTailableCursors = function(configuration, test) {
+  // http://www.mongodb.org/display/DOCS/Tailable+Cursors
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  db.open(function(err, db) {
+
+    var options = { capped: true, size: 8 };
+    db.createCollection('test_if_dead_tailable_cursors_close', options, function(err, collection) {
+      test.equal(null, err);
+
+      var insertId = 0
+      function insert (cb) {
+        if (insert.ran) insert.ran++;
+        else insert.ran = 1;
+
+        var docs = []
+        for(var end = insertId+1; insertId < end+80; insertId++) {
+          docs.push({id:insertId})
+        }
+        collection.insert(docs, {w:1}, function(err, ids) {
+          test.equal(null, err);
+          cb && cb();
+        })
+      }
+
+      var lastId = 0
+        , closed = false;
+
+      insert(function query () {
+        var conditions = { id: { $gte: lastId }};
+        var stream = collection.find(conditions, { tailable: true }).stream();
+
+        stream.on('data', function (doc) {
+          lastId = doc.id;
+          // kill the cursor on the server by inserting enough more
+          // docs to overwrite the last one returned. this should
+          // force the stream to close.
+          if (insertId == lastId+1) insert();
+        });
+
+        stream.on('error', function (err) {
+          // shouldn't happen
+          test.equal(null, err);
+        });
+
+        stream.on('close', function () {
+          // this is what we need
+          closed = true;
+        });
+      });
+
+      setTimeout(function () {
+        db.close();
+        test.equal(2, insert.ran);
+        test.equal(true, closed);
+        test.done();
+      }, 800);
+    });
+  });
+}
+*/
+
+/**
+ * @ignore
+ */
+/* REASON: MongoDB specific stuff is not supported
+exports.shouldAwaitData = function(configuration, test) {
+  // http://www.mongodb.org/display/DOCS/Tailable+Cursors
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  db.open(function(err, db) {
+    var options = { capped: true, size: 8};
+    db.createCollection('should_await_data', options, function(err, collection) {
+      collection.insert({a:1}, {w:1}, function(err, result) {
+        // Create cursor with awaitdata, and timeout after the period specified
+        collection.find({}, {tailable:true, awaitdata:true, numberOfRetries:1}).each(function(err, result) {
+          if(err != null) {
+            db.close();
+            test.done();
+          }
+        });
+      });
+    });
+  })
+}
+*/
+
+/**
+ * @ignore
+ */
+/* REASON: Explain is not supported
+exports.shouldCorrectExecuteExplainHonoringLimit = function(configuration, test) {
+  var docs = []
+  docs[0] = { "_keywords" : [ "compact", "ii2gd", "led", "24-48v", "presse-etoupe", "bexbgl1d24483", "flash", "48v", "eexd", "feu", "presse", "compris", "rouge", "etoupe", "iic", "ii2gdeexdiict5", "red", "aet" ]};
+  docs[1] = { "_keywords" : [ "reducteur", "06212", "d20/16", "manch", "d20", "manchon", "ard", "sable", "irl", "red" ]};
+  docs[2] = { "_keywords" : [ "reducteur", "06214", "manch", "d25/20", "d25", "manchon", "ard", "sable", "irl", "red" ]};
+  docs[3] = { "_keywords" : [ "bar", "rac", "boite", "6790178", "50-240/4-35", "240", "branch", "coulee", "ddc", "red", "ip2x" ]};
+  docs[4] = { "_keywords" : [ "bar", "ip2x", "boite", "6790158", "ddi", "240", "branch", "injectee", "50-240/4-35?", "red" ]};
+  docs[5] = { "_keywords" : [ "bar", "ip2x", "boite", "6790179", "coulee", "240", "branch", "sdc", "50-240/4-35?", "red", "rac" ]};
+  docs[6] = { "_keywords" : [ "bar", "ip2x", "boite", "6790159", "240", "branch", "injectee", "50-240/4-35?", "sdi", "red" ]};
+  docs[7] = { "_keywords" : [ "6000", "r-6000", "resin", "high", "739680", "red", "performance", "brd", "with", "ribbon", "flanges" ]};
+  docs[8] = { "_keywords" : [ "804320", "for", "paint", "roads", "brd", "red" ]};
+  docs[9] = { "_keywords" : [ "38mm", "padlock", "safety", "813594", "brd", "red" ]};
+  docs[10] = { "_keywords" : [ "114551", "r6900", "for", "red", "bmp71", "brd", "ribbon" ]};
+  docs[11] = { "_keywords" : [ "catena", "diameter", "621482", "rings", "brd", "legend", "red", "2mm" ]};
+  docs[12] = { "_keywords" : [ "catena", "diameter", "621491", "rings", "5mm", "brd", "legend", "red" ]};
+  docs[13] = { "_keywords" : [ "catena", "diameter", "621499", "rings", "3mm", "brd", "legend", "red" ]};
+  docs[14] = { "_keywords" : [ "catena", "diameter", "621508", "rings", "5mm", "brd", "legend", "red" ]};
+  docs[15] = { "_keywords" : [ "insert", "for", "cable", "3mm", "carrier", "621540", "blank", "brd", "ademark", "red" ]};
+  docs[16] = { "_keywords" : [ "insert", "for", "cable", "621544", "3mm", "carrier", "brd", "ademark", "legend", "red" ]};
+  docs[17] = { "_keywords" : [ "catena", "diameter", "6mm", "621518", "rings", "brd", "legend", "red" ]};
+  docs[18] = { "_keywords" : [ "catena", "diameter", "621455", "8mm", "rings", "brd", "legend", "red" ]};
+  docs[19] = { "_keywords" : [ "catena", "diameter", "621464", "rings", "5mm", "brd", "legend", "red" ]};
+
+  var client = configuration.db();
+  // Insert all the docs
+  var collection = client.collection('shouldCorrectExecuteExplainHonoringLimit');
+  collection.insert(docs, {w:1}, function(err, result) {
+    test.equal(null, err);
+
+    collection.ensureIndex({_keywords:1}, {w:1}, function(err, result) {
+      test.equal(null, err);
+
+      // collection.find({_keywords:'red'},{}).limit(10).explain(function(err, result) {
+      collection.find({_keywords:'red'}, {}, {explain:true}).limit(10).toArray(function(err, result) {
+        test.equal(10, result[0].n);
+        test.equal(10, result[0].nscanned);
+
+        collection.find({_keywords:'red'},{}).limit(10).explain(function(err, result) {
+          test.equal(10, result.n);
+          test.equal(10, result.nscanned);
+          test.done();
+        });
+      });
+    });
+  })
+}
+*/
+
+/**
+ * @ignore
+ */
+/* REASON: Streams are not supported
+exports.shouldCorrectlyPerformResumeOnCursorStreamWithNoDuplicates = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // Establish connection to db
+  db.open(function(err, db) {
+
+    // Create a lot of documents to insert
+    var dup_check = {};
+    var docs = [];
+    for(var i = 0; i < 100; i++) {
+      docs.push({'a':i})
+    }
+
+    // Create a collection
+    db.createCollection('shouldCorrectlyPerformResumeOnCursorStreamWithNoDuplicates', function(err, collection) {
+      test.equal(null, err);
+
+      // Insert documents into collection
+      collection.insert(docs, {w:1}, function(err, ids) {
+        // Peform a find to get a cursor
+        var stream = collection.find().stream();
+        stream.pause();
+        stream.resume();
+        stream.on("data", function(item) {
+          // console.log(item)
+          // var key = item._id.toHexString();
+          // test.ok(dup_check[key] == null);
+          // dup_check[key] = true;
+        });
+
+        stream.on("end", function() {
+          db.close();
+          test.done();
+        });
+      });
+    });
+  });
+}
+*/
+
+/**
+ * @ignore
+ */
+/* REASON: Read prefference is not supported
+exports.shouldFailToSetReadPreferenceOnCursor = function(configuration, test) {
+  var db = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
+
+  // Establish connection to db
+  db.open(function(err, db) {
+    try {
+      db.collection('shouldFailToSetReadPreferenceOnCursor').find().setReadPreference("notsecondary");      
+      test.ok(false);
+    } catch (err) {
+    }
+
+    db.collection('shouldFailToSetReadPreferenceOnCursor').find().setReadPreference("secondary");      
+
+    db.close();
+    test.done()
+  });
+}
+*/
 
 
+/**
+ * @ignore
+ * @api private
+ */
+exports.shouldNotFailDueToStackOverflowEach = function(configuration, test) {
+  var client = configuration.db();
+  client.createCollection('shouldNotFailDueToStackOverflowEach', function(err, collection) {
+    var docs = [];
+    var total = 0;
+    for(var i = 0; i < 30000; i++) docs.push({a:i});
 
+    collection.insert(docs, {w:1}, function(err, ids) {
+      var s = new Date().getTime();
+
+      collection.find({}).each(function(err, item) {
+        if(item == null) {
+          var e = new Date().getTime();
+          
+          test.equal(30000, total);
+          test.done();
+        }
+
+        total++;
+      })
+    });
+  });
+}
+
+/**
+ * @ignore
+ * @api private
+ */
+exports.shouldNotFailDueToStackOverflowToArray = function(configuration, test) {
+  var client = configuration.db();
+  client.createCollection('shouldNotFailDueToStackOverflowToArray', function(err, collection) {
+    var docs = [];
+    var total = 0;
+    var s = new Date().getTime();
+    for(var i = 0; i < 30000; i++) docs.push({a:i});
+
+    collection.insert(docs, {w:1}, function(err, ids) {
+      var s = new Date().getTime();
+
+      collection.find({}).toArray(function(err, items) {
+        var e = new Date().getTime();
+        // console.log("================== total time :: " + (e - s));
+
+        test.equal(30000, items.length);
+        test.done();
+      })
+    });
+  });
+}
+
+/**
+ * @ignore
+ * @api private
+ */
+exports.shouldCorrectlySkipAndLimit = function(configuration, test) {
+  var client = configuration.db();
+  var collection = client.collection('shouldCorrectlySkipAndLimit')
+  var docs = [];
+  for(var i = 0; i < 100; i++) docs.push({a:i, OrderNumber:i});
+
+  collection.insert(docs, {w:1}, function(err, ids) {
+
+    collection.find({}, {OrderNumber:1}).skip(10).limit(10).toArray(function(err, items) {
+      test.equal(10, items[0].OrderNumber);
+
+      collection.find({}, {OrderNumber:1}).skip(10).limit(10).count(true, function(err, count) {
+        test.equal(10, count);
+        test.done();
+      });
+    })
+  });
+}
+
+/**
+ * @ignore
+ * @api private
+ */
+/* REASON: Option is not supported
+exports.shouldFailToTailANormalCollection = function(configuration, test) {
+  var client = configuration.db();
+  var collection = client.collection('shouldFailToTailANormalCollection')
+  var docs = [];
+  for(var i = 0; i < 100; i++) docs.push({a:i, OrderNumber:i});
+
+  collection.insert(docs, {w:1}, function(err, ids) {
+    collection.find({}, {tailable:true}).each(function(err, doc) {
+      test.ok(err instanceof Error);
+      test.done();
+    });
+  });
+}
+*/
