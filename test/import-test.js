@@ -93,7 +93,7 @@ vows.describe('Import').addBatch({
 			'can be created by path': function (db) {
 				assert.notEqual(db, null);
 			},
-			'collection 500' : import_context(500),
-			'collection 50000' : import_context(50000)
+			'collection 500' : import_context(500)
+//			'collection 50000' : import_context(50000)
 		}
 }).export(module);

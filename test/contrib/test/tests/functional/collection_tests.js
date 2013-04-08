@@ -109,6 +109,7 @@ exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, tes
           test.equal(null, err);
           // Drop the collection and check that it's gone
           client.dropCollection("test_collection_methods2", function(err, result) {
+			  test.equal(null,err);
             test.equal(true, result);
           });
         });
@@ -226,6 +227,7 @@ exports.shouldCorrectlyDropCollectionWithDropFunction = function(configuration, 
 
       // Drop the collection
       collection.drop(function(err, reply) {
+		  console.log(err);
 
         // Ensure we don't have the collection in the set of names
         db.collectionNames(function(err, replies) {
