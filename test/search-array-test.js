@@ -302,7 +302,7 @@ vows.describe('Basic').addBatch({
 						assert.equal(docs.length, 1);						
 					}
 				},				
-				"find {'arr.num':{$all:[1,2,3,4,5,6,7,8,9,10]}} (no index)":{
+				"find {'arr.pum':{$all:[1,2,3,4,5,6,7,8,9,10]}} (no index)":{
 					topic:function (coll) {
 						coll.find({'arr.pum':{$all:[1,2,3,4,5,6,7,8,9,10]}},{"_tiar.arr.pum":0}).toArray(this.callback)
 					},

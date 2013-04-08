@@ -1,4 +1,4 @@
-var main = require('../lib/main')({_tiar:1});
+var main = require('../lib/main')({_tiar:0});
 var temp = require('temp');
 var _ = require('underscore');
 var async = require('async');

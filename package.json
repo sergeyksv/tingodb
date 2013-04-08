@@ -1,7 +1,7 @@
 {
   "author": "Sergey Korotkov <sergeyksv@gmail.com>",
   "name": "tingodb",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -15,15 +15,21 @@
   "dependencies": {
     "async": "",
     "safe": "",
-    "underscore": ""
+    "lodash": "",
+    "underscore":""
   },
   "scripts": {
-      "test": "vows test/*-test.js --isolate"
+      "test": "./test.sh"
   },
   "devDependencies": {
 	"csv": "",
 	"mongodb": "",
-	"temp": "",
-	"vows": ""
+	"temp": "0.4.x",
+	"vows": "",
+	"integra":"",
+	"lorem-ipsum":"",
+	"optimist":"",
+	"step":"",
+	"benchmark":""
   }
 }
