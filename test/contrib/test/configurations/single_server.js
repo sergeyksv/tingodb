@@ -2,7 +2,7 @@ var Configuration = require('integra').Configuration
   , Runner = require('integra').Runner
   , ParallelRunner = require('integra').ParallelRunner
   , tutils = require('../../../utils')
-  , tingodb = require('../../../..');
+  , tingodb = require('../../../..')({});
 
 var single_server_config = function(options) {
   return function() {

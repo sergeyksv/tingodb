@@ -16,7 +16,8 @@ module.exports = function(configurations) {
     // Third parameter is the list of files to execute
     .add("functional_tests",
       [
-		'/test/tests/functional/collection_tests.js'      
+      	'/test/tests/functional/remove_tests.js'
+		, '/test/tests/functional/collection_tests.js'      
 		, '/test/tests/functional/find_tests.js'
         , '/test/tests/functional/insert_tests.js'
         , '/test/tests/functional/cursor_tests.js'
