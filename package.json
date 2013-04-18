@@ -1,7 +1,7 @@
 {
   "author": "Sergey Korotkov <sergeyksv@gmail.com>",
   "name": "tingodb",
-  "version": "0.0.6",
+  "version": "0.0.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
