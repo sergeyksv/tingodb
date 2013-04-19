@@ -1,6 +1,8 @@
 #!/bin/sh
 
-./node_modules/.bin/vows test/*-test.js --isolate
-cd ./test/contrib
+cd ./test
+../node_modules/.bin/vows import-test.js search-test.js search-array-test.js --isolate
+../node_modules/.bin/mocha basic-test.js
+cd ./contrib
 node ./test/runner.js -t functional
 cd ../..

@@ -29,6 +29,8 @@
 	"lorem-ipsum":"",
 	"optimist":"",
 	"step":"",
-	"benchmark":""
+	"benchmark":"",
+	"mocha":"",
+	"underscore":""
   }
 }
