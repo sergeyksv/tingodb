@@ -1,10 +1,7 @@
-var Configuration = require('integra').Configuration
-  , Runner = require('integra').Runner
-  , ParallelRunner = require('integra').ParallelRunner
-  , tutils = require('../../../utils')
-  , tingodb = require('../../../..')({});
+var tutils = require('./utils')
+  , tingodb = require('..')({});
 
-var single_server_config = function(options) {
+var config = function(options) {
   return function() {
     var self = this;
     options = options != null ? options : {};
@@ -66,4 +63,36 @@ var single_server_config = function(options) {
   }
 }
 
-exports.single_server_config = single_server_config;
+
+var assert = require('assert');
+var _ = require('lodash');
+
+var dir = './contrib';
+var files = [
+	'collection_tests',
+	'cursor_tests',
+	'find_tests',
+	'insert_tests',
+	'remove_tests'
+];
+
+_(files).each(function (file) {
+	var tests = require(dir + '/' + file);
+	describe(file, function () {
+		this.timeout(10000);
+		_(tests).each(function (fn, name) {
+			if (typeof fn != 'function') return;
+			it(name, function (done) {
+				var configuration = new (config())();
+				var test = {
+					ok: function (x) { assert.ok(x); },
+					equal: function (x, y) { assert.equal(x, y); },
+					deepEqual: function (x, y) { assert.deepEqual(x, y); },
+					throws: function (x, y) { assert.throws(x, y); },
+					done: done
+				};
+				fn(configuration, test);
+			});
+		});
+	});
+});

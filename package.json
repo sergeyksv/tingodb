@@ -25,12 +25,10 @@
 	"mongodb": "",
 	"temp": "0.4.x",
 	"vows": "",
-	"integra":"",
 	"lorem-ipsum":"",
 	"optimist":"",
 	"step":"",
 	"benchmark":"",
-	"mocha":"",
-	"underscore":""
+	"mocha":""
   }
 }

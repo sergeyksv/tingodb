@@ -1694,7 +1694,6 @@ exports.shouldPeformASimpleLimitSkipFindWithFields2 = function(configuration, te
 
         // Peform a simple find and return all the documents
         collection.find({a:2}, {fields: ['b']}).toArray(function(err, docs) {
-			console.log(err);
           test.equal(null, err);
           test.equal(1, docs.length);
           test.equal(null, docs[0].a);

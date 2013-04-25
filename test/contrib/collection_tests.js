@@ -227,7 +227,6 @@ exports.shouldCorrectlyDropCollectionWithDropFunction = function(configuration, 
 
       // Drop the collection
       collection.drop(function(err, reply) {
-		  console.log(err);
 
         // Ensure we don't have the collection in the set of names
         db.collectionNames(function(err, replies) {
