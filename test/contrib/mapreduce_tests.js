@@ -204,12 +204,6 @@ exports.shouldPerformMapReduceFunctionInline = function(configuration, test) {
   // Establish connection to db
   db.open(function(err, db) {
 
-    // Parse version of server if available
-    db.admin().serverInfo(function(err, result){
-
-      // Only run if the MongoDB version is higher than 1.7.6
-      if(parseInt((result.version.replace(/\./g, ''))) >= 176) {
-
         // Create a test collection
         db.createCollection('test_map_reduce_functions_inline', function(err, collection) {
 
@@ -234,10 +228,6 @@ exports.shouldPerformMapReduceFunctionInline = function(configuration, test) {
             });
           });
         });
-      } else {
-        test.done();
-      }
-    });
   });
   // DOC_END
 }
@@ -357,18 +347,10 @@ exports.shouldForceMapReduceError = function(configuration, test) {
       var map = "function() { emiddft(this.user_id, 1); }";
       var reduce = "function(k,vals) { return 1; }";
 
-      // Parse version of server if available
-      client.admin().serverInfo(function(err, result){
-
-        // Only run if the MongoDB version is higher than 1.7.6
-        if(parseInt((result.version.replace(/\./g, ''))) >= 176) {
-
           collection.mapReduce(map, reduce, {out: {inline : 1}}, function(err, collection) {
             test.ok(err != null);
             test.done();
           });
-        };
-      });
     });
   });
 }
