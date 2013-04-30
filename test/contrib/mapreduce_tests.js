@@ -503,7 +503,7 @@ exports.shouldSaveDataToDifferentDbFromMapreduce = function(configuration, test)
 /**
 * @ignore
 */
-exports.shouldCorrectlyReturnNestedKeys = function(configuration, test) {
+/*exports.shouldCorrectlyReturnNestedKeys = function(configuration, test) {
   var client = configuration.db();
   var start = new Date().setTime(new Date().getTime() - 10000);
   var end = new Date().setTime(new Date().getTime() + 10000);
@@ -546,4 +546,4 @@ exports.shouldCorrectlyReturnNestedKeys = function(configuration, test) {
       });
     });
   });
-}
+}*/

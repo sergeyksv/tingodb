@@ -73,6 +73,7 @@ var files = [
 	'cursor_tests',
 	'find_tests',
 	'insert_tests',
+	'mapreduce_tests',
 	'remove_tests'
 ];
 
