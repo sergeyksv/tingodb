@@ -1,11 +1,7 @@
-#! /usr/bin/env node
-
 var assert = require('assert');
 var async = require('async');
 var csv = require('csv');
 var fs = require('fs');
-var temp = require('temp');
-var vows = require('vows');
 var zlib = require('zlib');
 var _ = require('lodash');
 var safe = require('safe');
@@ -33,67 +29,52 @@ function load(file, iterator, callback) {
 	});
 }
 
-function import_context(rowcount) {
-	var sample = __dirname+'/sample-data/' + rowcount + '.csv.gz';
-	return {
-		topic: function (db) {
-			var cb = this.callback;
-			db.collection('c' + rowcount, {}, safe.sure(cb, function (coll) {
-				coll.ensureIndex({id:1}, safe.sure(cb, function () {
-					cb(null,coll);
-				}))
-			}))
-		},
-		'can be created': function (coll) {
-			assert.notEqual(coll, null);
-		},
-		'populated with test data': {
-			topic: function (coll) {
-				load(sample, function (value, index, callback) {
-					coll.insert(value, callback);
-				}, this.callback);
-			},
-			'ok': function () {},
-			'has proper size': {
-				topic: function (coll) {
-					coll.count(this.callback);
-				},
-				'ok': function (err, size) {
-					assert.equal(size, rowcount);
-				}
-			},
-			'test find $eq': {
-				topic: function (coll) {
-					load(sample, function (value, index, callback) {
-						if (Math.random() > 10 / rowcount) return process.nextTick(callback); // ~10 rows
-						coll.find({ id: value.id }, function (err, docs) {
-							if (err) return callback(err);
-							docs.toArray(function (err, rows) {
-								if (err) return callback(err);
-								assert.equal(rows.length, 1);
-								_.each(value, function (v, k) {
-									assert.equal(v, rows[0][k]);
-								});
-								callback();
-							});
-						});
-					}, this.callback);
-				},
-				'ok': function () {}
-			}
-		}
-	};
-}
+var rowcount = 500;
 
-vows.describe('Import').addBatch({
-		'New store': {
-			topic: function () {
-				tutils.getDb('test', true, this.callback);
-			},
-			'can be created by path': function (db) {
-				assert.notEqual(db, null);
-			},
-			'collection 500' : import_context(500)
-//			'collection 50000' : import_context(50000)
-		}
-}).export(module);
+describe('Import', function () {
+	describe('New store', function () {
+		var db, coll;
+		var sample = __dirname + '/sample-data/' + rowcount + '.csv.gz';
+		before(function (done) {
+			tutils.getDb('test', true, safe.sure(done, function (_db) {
+				db = _db;
+				done();
+			}));
+		});
+		it("Create new collection", function (done) {
+			db.collection('c' + rowcount, {}, safe.sure(done, function (_coll) {
+				coll = _coll;
+				done();
+			}));
+		});
+		it("Populated with test data", function (done) {
+			load(sample, function (value, index, callback) {
+				coll.insert(value, callback);
+			}, done);
+		});
+		it("Has right size", function (done) {
+			coll.count(safe.sure(done, function (count) {
+				safe.trap(done, function () {
+					assert.equal(count, rowcount);
+					done();
+				})();
+			}));
+		});
+		it("test find $eq", function (done) {
+			load(sample, function (value, index, callback) {
+				if (Math.random() > 10 / rowcount) return process.nextTick(callback); // ~10 rows
+				coll.find({ id: value.id }, function (err, docs) {
+					if (err) return callback(err);
+					docs.toArray(function (err, rows) {
+						if (err) return callback(err);
+						assert.equal(rows.length, 1);
+						_.each(value, function (v, k) {
+							assert.equal(v, rows[0][k]);
+						});
+						callback();
+					});
+				});
+			}, done);
+		});
+	});
+});
