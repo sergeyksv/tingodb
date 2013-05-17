@@ -10,6 +10,11 @@ COV="$(readlink -f "$COV")"
 MOCHA="$(readlink -f "$MOCHA")"
 
 if [ "$(basename "$0")" = "test-cov.sh" ]; then
+	if ! command -v jscoverage >/dev/null 2>&1; then
+		echo "Error: JSCoverage tool not found."
+		echo "Please install it from https://github.com/visionmedia/node-jscoverage"
+		exit 1
+	fi
 	echo "Generating coverage report..."
 	rm -rf lib-cov
 	jscoverage lib lib-cov
