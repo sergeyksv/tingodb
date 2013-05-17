@@ -1,5 +1,6 @@
-var tutils = require('./utils')
-  , tingodb = require('..')({});
+var libpath = process.env['TINGODB_COV'] ? '../lib-cov' : '../lib';
+var tingodb = require(libpath + '/main')({});
+var tutils = require('./utils');
 
 var config = function(options) {
   return function() {
