@@ -1,5 +1,4 @@
-coverage.html
-lib-cov
+coverage
 node_modules
 npm-debug.log
 *.swp

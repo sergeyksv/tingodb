@@ -81,7 +81,7 @@ var files = [
 _(files).each(function (file) {
 	var tests = require(dir + '/' + file);
 	describe(file, function () {
-		this.timeout(10000);
+		this.timeout(15000);
 		_(tests).each(function (fn, name) {
 			if (typeof fn != 'function') return;
 			it(name, function (done) {
