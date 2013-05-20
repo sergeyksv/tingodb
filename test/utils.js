@@ -1,5 +1,4 @@
-var libpath = process.env['TINGODB_COV'] ? '../lib-cov' : '../lib';
-var main = require(libpath + '/main')({_tiar:0});
+var main = require('../lib/main')({_tiar:0});
 var temp = require('temp');
 var _ = require('lodash');
 var async = require('async');
