@@ -14,7 +14,7 @@ function eq(docs1, docs2) {
 	});
 }
 
-describe('Basic', function () {
+describe('Sort Test', function () {
 	describe('New store', function () {
 		var db, coll, asc, desc, gt, gtr;
 		before(function (done) {
@@ -34,7 +34,7 @@ describe('Basic', function () {
 			}));
 		});
 		it("Populated with test data", function (done) {
-			this.timeout(5000);
+			this.timeout(10000);
 			//var nums = [ 4, 8, 3, 2, 7, 78, 3, 7, 32, 67, 3, 6, 2, 67, 8, 3, 7, 3, 7, 3, 67, 7, 8, 3, 1, 8, 9 ];
 			var nums = _.times(10000, function (n) {
 				return _.random(100);
