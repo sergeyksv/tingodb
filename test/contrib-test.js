@@ -71,6 +71,7 @@ var dir = './contrib';
 var files = [
 	'collection_tests',
 	'cursor_tests',
+	'cursorstream_tests',
 	'find_tests',
 	'insert_tests',
 	'mapreduce_tests',
