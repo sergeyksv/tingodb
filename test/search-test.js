@@ -10,7 +10,7 @@ var num = 1000;
 var gt0sin = 0;
 var _dt = null;
 
-describe('Basic', function () {
+describe('Search', function () {
 	describe('New store', function () {
 		var db, coll;
 		before(function (done) {
@@ -22,7 +22,10 @@ describe('Basic', function () {
 		it("Create new collection", function (done) {
 			db.collection("test1", {}, safe.sure(done, function (_coll) {
 				coll = _coll;
-				coll.ensureIndex({num:1}, {sparse:false,unique:false}, safe.sure(done, done));
+				coll.ensureIndex({num:1}, {sparse:false,unique:false}, safe.sure(done, function (name) {
+					assert.ok(name);
+					done();
+				}));
 			}));
 		});
 		it("Populated with test data", function (done) {

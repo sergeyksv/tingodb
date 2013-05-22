@@ -6,7 +6,7 @@ var tutils = require("./utils");
 
 var num = 100;
 
-describe('Basic', function () {
+describe('Search Array', function () {
 	describe('New store', function () {
 		var db, coll;
 		before(function (done) {
@@ -18,7 +18,10 @@ describe('Basic', function () {
 		it("Create new collection", function (done) {
 			db.collection("test1", {}, safe.sure(done, function (_coll) {
 				coll = _coll;
-				coll.ensureIndex({"arr.num":1}, {sparse:false,unique:false,_tiarr:true}, safe.sure(done, done));
+				coll.ensureIndex({"arr.num":1}, {sparse:false,unique:false,_tiarr:true}, safe.sure(done, function (name) {
+					assert.ok(name);
+					done();
+				}));
 			}));
 		});
 		it("Populated with test data", function (done) {
