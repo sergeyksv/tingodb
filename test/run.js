@@ -11,4 +11,6 @@ files.forEach(function (file) {
 	mocha.addFile(path.join(__dirname, file));
 });
 
-mocha.run();
+mocha.run(function (failures) {
+	process.exit(failures);
+});
