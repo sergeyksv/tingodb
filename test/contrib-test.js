@@ -1,11 +1,10 @@
-var tingodb = require('../lib/main')({});
 var tutils = require('./utils');
 
 var config = function(options) {
   return function() {
     var self = this;
     options = options != null ? options : {};
-    var db = tutils.getDbSync('test', true);
+    var db = tutils.getDbSync('test', {w: 0, native_parser: false}, {auto_reconnect: false, poolSize: 4});
 
     // Server Manager options
     var server_options = {
@@ -19,16 +18,19 @@ var config = function(options) {
 
     // Test suite start
     this.start = function(callback) {
-	callback();
-    }
+      tutils.openEmpty(db, callback);
+    };
 
     this.restart = function(callback) {
-	callback();
-    }
+      self.stop(function (err) {
+        if (err) callback(err);
+        else self.start(callback);
+      });
+    };
 
     // Test suite stop
     this.stop = function(callback) {
-        callback();
+      db.close(callback);
     };
 
     // Pr test functions
@@ -37,12 +39,12 @@ var config = function(options) {
 
     // Returns the package for using Mongo driver classes
     this.getMongoPackage = function() {
-      return tingodb;
+      return tutils.getDbPackage();
     }
 
 
-    this.newDbInstance = function() {
-		return tutils.getDbSync("test",true);
+    this.newDbInstance = function(db_options, server_options) {
+		return tutils.getDbSync("test", db_options, server_options);
     }
 
     // Returns a db
@@ -78,23 +80,38 @@ var files = [
 	'remove_tests'
 ];
 
-_(files).each(function (file) {
-	var tests = require(dir + '/' + file);
-	describe(file, function () {
-		this.timeout(15000);
-		_(tests).each(function (fn, name) {
-			if (typeof fn != 'function') return;
-			it(name, function (done) {
-				var configuration = new (config())();
-				var test = {
-					ok: function (x) { assert.ok(x); },
-					equal: function (x, y) { assert.equal(x, y); },
-					deepEqual: function (x, y) { assert.deepEqual(x, y); },
-					throws: function (x, y) { assert.throws(x, y); },
-					done: done
-				};
-				fn(configuration, test);
+var names = {};
+
+describe('contrib', function () {
+	var configuration = new (config())();
+	before(function (done) {
+		configuration.start(done);
+	});
+	_(files).each(function (file) {
+		var tests = require(dir + '/' + file);
+		describe(file, function () {
+			this.timeout(15000);
+			_(tests).each(function (fn, name) {
+				if (typeof fn != 'function') return;
+				it(name, function (done) {
+					if (names[name]) {
+						console.log('dup: ' + name);
+						return done();
+					}
+					names[name] = true;
+					var test = {
+						ok: function (x) { assert.ok(x); },
+						equal: function (x, y) { assert.equal(y, x); },
+						deepEqual: function (x, y) { assert.deepEqual(y, x); },
+						throws: function (x, y) { assert.throws(x, y); },
+						done: done
+					};
+					fn(configuration, test);
+				});
 			});
 		});
+	});
+	after(function (done) {
+		configuration.stop(done);
 	});
 });

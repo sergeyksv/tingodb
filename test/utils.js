@@ -6,10 +6,17 @@ var Db = require('mongodb').Db,
 	Server = require('mongodb').Server;
 var safe = require('safe');
 
+var cfg = { db: "tingodb" };
 var mongo = false;
+module.exports.setConfig = function (cfg_) {
+	_.defaults(cfg_, cfg);
+	cfg = cfg_;
+	mongo = cfg.db == 'mongodb';
+};
+
 var paths = {};
 
-function getDb(tag,drop,cb) {
+module.exports.getDb = function getDb(tag, drop, cb) {
 	if (mongo) {
 		var dbs = new Db(tag, new Server('localhost', 27017),{w:1});
 		dbs.open(safe.sure(cb, function (db) {
@@ -31,15 +38,33 @@ function getDb(tag,drop,cb) {
 		var db = new main.Db(paths[tag], {});
 		db.open(cb);
 	}
-}
+};
 
-module.exports.getDbSync = function (tag,drop) {
-	if (drop)
-		delete paths[tag];
-	if (!paths[tag]) {
-		paths[tag] = temp.mkdirSync(tag);
-	} 
-	return new main.Db(paths[tag], {name:tag})
-}
+module.exports.getDbSync = function (tag, db_options, server_options) {
+	if (mongo) {
+		return new Db(tag, new Server('localhost', 27017, server_options), db_options);
+	} else {
+		if (!paths[tag]) {
+			paths[tag] = temp.mkdirSync(tag);
+		} 
+		return new main.Db(paths[tag], {name:tag});
+	}
+};
 
-module.exports.getDb = getDb;
+module.exports.openEmpty = function (db, cb) {
+	db.open(safe.sure(cb, function () {
+		if (mongo) {
+			db.dropDatabase(cb);
+		} else {
+			db.collectionNames({namesOnly: true}, safe.sure(cb, function (names) {
+				async.forEachSeries(names, function (name, cb) {
+					db.dropCollection(name, cb);
+				}, cb);
+			}));
+		}
+	}));
+};
+
+module.exports.getDbPackage = function () {
+	return mongo ? require('mongodb') : main;
+};
