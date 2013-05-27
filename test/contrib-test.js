@@ -4,7 +4,7 @@ var config = function(options) {
   return function() {
     var self = this;
     options = options != null ? options : {};
-    var db = tutils.getDbSync('test', {w: 0, native_parser: false}, {auto_reconnect: false, poolSize: 4});
+    var db = tutils.getDbSync('test', {w: 0, native_parser: false}, {auto_reconnect: false, poolSize: 4}, true);
 
     // Server Manager options
     var server_options = {
@@ -44,7 +44,7 @@ var config = function(options) {
 
 
     this.newDbInstance = function(db_options, server_options) {
-		return tutils.getDbSync("test", db_options, server_options);
+		return tutils.getDbSync("test", db_options, server_options, true);
     }
 
     // Returns a db

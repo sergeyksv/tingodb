@@ -40,10 +40,12 @@ module.exports.getDb = function getDb(tag, drop, cb) {
 	}
 };
 
-module.exports.getDbSync = function (tag, db_options, server_options) {
+module.exports.getDbSync = function (tag, db_options, server_options, drop) {
 	if (mongo) {
 		return new Db(tag, new Server('localhost', 27017, server_options), db_options);
 	} else {
+		if (drop)
+			delete paths[tag];
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
 		} 
@@ -56,11 +58,9 @@ module.exports.openEmpty = function (db, cb) {
 		if (mongo) {
 			db.dropDatabase(cb);
 		} else {
-			db.collectionNames({namesOnly: true}, safe.sure(cb, function (names) {
-				async.forEachSeries(names, function (name, cb) {
-					db.dropCollection(name, cb);
-				}, cb);
-			}));
+			// nothing to do: for tingodb we can request
+			// empty database with getDbSync
+			cb();
 		}
 	}));
 };
