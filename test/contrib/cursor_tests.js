@@ -159,11 +159,11 @@ exports.shouldCorrectlyExecuteCursorCount = function(configuration, test) {
           });
 
           collection.find({}, {'limit':5}).count(function(err, count) {
-            test.equal(5, count); // REASON: was 10 for mongo db, but for optimization we didn't find more than required
+            test.equal(10, count);
           });
 
           collection.find({}, {'skip':5}).count(function(err, count) {
-            test.equal(5, count); // REASON: was 10 for mongo db, but for optimization we didn't find more than required
+            test.equal(10, count);
           });
 
           var cursor = collection.find();
