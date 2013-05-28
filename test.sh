@@ -6,7 +6,7 @@ if [ "$(basename "$0")" = "test-cov.sh" ]; then
 		echo "Please install it with npm install -g istanbul"
 		exit 1
 	fi
-	istanbul cover test/run.js && xdg-open coverage/lcov-report/index.html
+	istanbul cover test/run.js -- $* && xdg-open coverage/lcov-report/index.html
 else
-	test/run.js
+	test/run.js $*
 fi
