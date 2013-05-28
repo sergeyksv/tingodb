@@ -31,6 +31,10 @@ files.forEach(function (file) {
 	mocha.addFile(path.join(__dirname, file));
 });
 
-mocha.run(function (failures) {
-	process.exit(failures);
+tutils.startDb(function (err) {
+	if (err) throw err;
+	mocha.run(function (failures) {
+		tutils.stopDb();
+		process.exit(failures);
+	});
 });
