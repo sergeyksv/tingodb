@@ -93,20 +93,27 @@ describe('contrib', function () {
 			this.timeout(15000);
 			_(tests).each(function (fn, name) {
 				if (typeof fn != 'function') return;
-				it(name, function (done) {
-					if (names[name]) {
-						console.log('dup: ' + name);
-						return done();
-					}
-					names[name] = true;
-					var test = {
-						ok: function (x) { assert.ok(x); },
-						equal: function (x, y) { assert.equal(y, x); },
-						deepEqual: function (x, y) { assert.deepEqual(y, x); },
-						throws: function (x, y) { assert.throws(x, y); },
-						done: done
-					};
-					fn(configuration, test);
+				describe(name, function () {
+					var done;
+					it('test', function (_done) {
+						done = _done;
+						if (names[name]) {
+							console.log('dup: ' + name);
+							return done();
+						}
+						names[name] = true;
+						var test = {
+							ok: function (x) { assert.ok(x); },
+							equal: function (x, y) { assert.equal(y, x); },
+							deepEqual: function (x, y) { assert.deepEqual(y, x); },
+							throws: function (x, y) { assert.throws(x, y); },
+							done: function () { done(); }
+						};
+						fn(configuration, test);
+					});
+					afterEach(function () {
+						done = function () {};
+					});
 				});
 			});
 		});
