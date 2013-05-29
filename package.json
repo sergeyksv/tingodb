@@ -22,7 +22,7 @@
   },
   "devDependencies": {
 	"csv": "",
-	"mongodb": "",
+	"mongodb": "1.3.x",
 	"temp": "0.4.x",
 	"vows": "",
 	"lorem-ipsum":"",
