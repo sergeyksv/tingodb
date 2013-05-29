@@ -80,21 +80,28 @@ var files = [
 	'remove_tests'
 ];
 
-var names = {};
+var slow = {
+	'shouldNotFailDueToStackOverflowEach': 10000,
+	'shouldNotFailDueToStackOverflowToArray': 10000,
+	'shouldStream10KDocuments': 20000
+};
 
 describe('contrib', function () {
+	var names;
 	var configuration = new (config())();
+	this.timeout(5000);
 	before(function (done) {
+		names = {};
 		configuration.start(done);
 	});
 	_(files).each(function (file) {
 		var tests = require(dir + '/' + file);
 		describe(file, function () {
-			this.timeout(15000);
 			_(tests).each(function (fn, name) {
 				if (typeof fn != 'function') return;
 				describe(name, function () {
 					var done;
+					if (slow[name]) this.timeout(slow[name]);
 					it('test', function (_done) {
 						done = _done;
 						if (names[name]) {

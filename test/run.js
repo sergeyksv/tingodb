@@ -31,10 +31,22 @@ files.forEach(function (file) {
 	mocha.addFile(path.join(__dirname, file));
 });
 
-tutils.startDb(function (err) {
-	if (err) throw err;
-	mocha.run(function (failures) {
-		tutils.stopDb();
-		process.exit(failures);
+function run(cb) {
+	tutils.startDb(function (err) {
+		if (err) throw err;
+		mocha.run(function (failures) {
+			tutils.stopDb(function (err) {
+				if (err) throw err;
+				if (failures) process.exit(failures);
+				if (cb) cb();
+			});
+		});
 	});
+}
+
+console.log('Using tingodb ObjectID');
+run(function () {
+	console.log('Using BSON ObjectID');
+	tutils.setConfig({ nativeObjectID: true });
+	run();
 });

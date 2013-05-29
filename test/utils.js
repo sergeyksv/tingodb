@@ -1,4 +1,5 @@
-var main = require('../lib/main')({_tiar:0});
+var main = require('../lib/main')();
+var main_native = require('../lib/main')({ nativeObjectID: true });
 var temp = require('temp');
 var _ = require('lodash');
 var async = require('async');
@@ -71,7 +72,8 @@ var getDb = module.exports.getDb = function (tag, drop, cb) {
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
 		} 
-		var db = new main.Db(paths[tag], {});
+		var tingodb = cfg.nativeObjectID ? main_native : main;
+		var db = new tingodb.Db(paths[tag], {});
 		db.open(cb);
 	}
 };
@@ -102,5 +104,6 @@ module.exports.openEmpty = function (db, cb) {
 };
 
 module.exports.getDbPackage = function () {
-	return mongo ? require('mongodb') : main;
+	var tingodb = cfg.nativeObjectID ? main_native : main;
+	return mongo ? require('mongodb') : tingodb;
 };
