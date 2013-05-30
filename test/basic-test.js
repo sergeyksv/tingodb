@@ -29,6 +29,8 @@ describe('Basic', function () {
 			}))
 		})
 		it("Populated with test data", function (done) {
+			gt0sin = 0;
+			_dt = null;
 			var i=0;
 			async.whilst(function () { return i<num}, 
 				function (cb) {
