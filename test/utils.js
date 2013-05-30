@@ -87,7 +87,8 @@ module.exports.getDbSync = function (tag, db_options, server_options, drop) {
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
 		} 
-		return new main.Db(paths[tag], {name:tag});
+		var tingodb = cfg.nativeObjectID ? main_native : main;
+		return new tingodb.Db(paths[tag], {name:tag});
 	}
 };
 
