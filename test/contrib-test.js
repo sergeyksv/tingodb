@@ -88,10 +88,11 @@ var slow = {
 
 describe('contrib', function () {
 	var names;
-	var configuration = new (config())();
+	var configuration;
 	this.timeout(5000);
 	before(function (done) {
 		names = {};
+		configuration = new (config())();
 		configuration.start(done);
 	});
 	_(files).each(function (file) {
