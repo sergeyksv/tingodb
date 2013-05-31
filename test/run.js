@@ -13,10 +13,12 @@ var argv = require('optimist')
 	})
 	.argv;
 
+var config = {
+	mongo: argv.db == 'mongodb'
+};
+
 var tutils = require('./utils.js');
-tutils.setConfig({
-	db: argv.db
-});
+tutils.setConfig(config);
 
 var files = [
 	'basic-test.js',
@@ -44,8 +46,9 @@ function run(cb) {
 	});
 }
 
-console.log('Using tingodb ObjectID');
+console.log('Using default ObjectID');
 run(function () {
+	if (config.mongo) process.exit(0);
 	console.log('Using BSON ObjectID');
 	tutils.setConfig({ nativeObjectID: true });
 	run();

@@ -8,19 +8,17 @@ var Db = require('mongodb').Db,
 var safe = require('safe');
 var spawn = require('child_process').spawn;
 
-var cfg = { db: "tingodb" };
-var mongo = false;
+var cfg = {};
 module.exports.setConfig = function (cfg_) {
 	_.defaults(cfg_, cfg);
 	cfg = cfg_;
-	mongo = cfg.db == 'mongodb';
 };
 
 var dbPort = 37017;
 var dbInstance;
 
 var startDb = module.exports.startDb = function (cb) {
-	if (!mongo) return cb();
+	if (!cfg.mongo) return cb();
 	if (dbInstance) return cb(new Error('Database already started'));
 	var dbpath = temp.mkdirSync('mongodb');
 	dbInstance = spawn('mongod', ['--noprealloc', '--nojournal',
@@ -44,7 +42,7 @@ var startDb = module.exports.startDb = function (cb) {
 
 var stopDb = module.exports.stopDb = function (cb) {
 	cb = cb || function () {};
-	if (!mongo) return cb();
+	if (!cfg.mongo) return cb();
 	if (!dbInstance) return cb(new Error('Database is not started'));
 	dbInstance.kill();
 	dbInstance = null;
@@ -54,7 +52,7 @@ var stopDb = module.exports.stopDb = function (cb) {
 var paths = {};
 
 var getDb = module.exports.getDb = function (tag, drop, cb) {
-	if (mongo) {
+	if (cfg.mongo) {
 		var dbs = new Db(tag, new Server('localhost', dbPort),{w:1});
 		dbs.open(safe.sure(cb, function (db) {
 			if (drop) {
@@ -79,7 +77,7 @@ var getDb = module.exports.getDb = function (tag, drop, cb) {
 };
 
 module.exports.getDbSync = function (tag, db_options, server_options, drop) {
-	if (mongo) {
+	if (cfg.mongo) {
 		return new Db(tag, new Server('localhost', dbPort, server_options), db_options);
 	} else {
 		if (drop)
@@ -94,7 +92,7 @@ module.exports.getDbSync = function (tag, db_options, server_options, drop) {
 
 module.exports.openEmpty = function (db, cb) {
 	db.open(safe.sure(cb, function () {
-		if (mongo) {
+		if (cfg.mongo) {
 			db.dropDatabase(cb);
 		} else {
 			// nothing to do: for tingodb we can request
@@ -106,5 +104,5 @@ module.exports.openEmpty = function (db, cb) {
 
 module.exports.getDbPackage = function () {
 	var tingodb = cfg.nativeObjectID ? main_native : main;
-	return mongo ? require('mongodb') : tingodb;
+	return cfg.mongo ? require('mongodb') : tingodb;
 };
