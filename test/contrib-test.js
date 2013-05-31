@@ -81,9 +81,10 @@ var files = [
 ];
 
 var slow = {
-	'shouldNotFailDueToStackOverflowEach': 10000,
-	'shouldNotFailDueToStackOverflowToArray': 10000,
-	'shouldStream10KDocuments': 20000
+	'shouldStreamDocumentsWithPauseAndResumeForFetching': 10000,
+	'shouldNotFailDueToStackOverflowEach': 30000,
+	'shouldNotFailDueToStackOverflowToArray': 30000,
+	'shouldStream10KDocuments': 60000
 };
 
 describe('contrib', function () {
