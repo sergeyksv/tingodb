@@ -33,6 +33,8 @@ files.forEach(function (file) {
 	mocha.addFile(path.join(__dirname, file));
 });
 
+mocha.timeout(5000);
+
 function run(cb) {
 	tutils.startDb(function (err) {
 		if (err) throw err;
