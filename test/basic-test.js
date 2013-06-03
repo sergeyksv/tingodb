@@ -205,6 +205,21 @@ describe('Basic', function () {
 				}))
 			}))
 		})	
+		it("$unset and $inc on subfields", function (done) {
+			coll.update({pum:11},{$unset:{"sub.tub":1}, $inc:{"sub.num": 5, "sub.pum": 3}}, safe.sure(done, function () {
+				coll.find({pum:11}).toArray(safe.sure(done, function (docs) {
+					safe.trap(done, function () {
+						assert.equal(docs.length,1);
+						var obj = docs[0];
+						assert.equal(obj.pum, 11);
+						assert.equal(obj.sub.tub, null);
+						assert.equal(obj.sub.num, 15);
+						assert.equal(obj.sub.pum, 3);
+						done();
+					})();
+				}));
+			}));
+		});
 		it("dummy remove", function (done) {
 			coll.remove({pum:20}, safe.sure(done, function () {
 				coll.findOne({pum:20},done)
