@@ -110,6 +110,12 @@ describe('Basic', function () {
 				})()
 			}))
 		})		
+		it("find by two index fields", function (done) {
+			coll.find({num:{$lt:30},sin:{$lte:0}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 15);
+				done();
+			}));
+		});
 		it("average query", function (done) {
 			coll.find({sin:{$gt:0,$lt:0.5},t:15}).toArray(safe.sure(done, function (docs) {
 				safe.trap(done, function () {
