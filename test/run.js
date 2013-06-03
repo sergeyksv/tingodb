@@ -22,6 +22,7 @@ tutils.setConfig(config);
 
 var files = [
 	'basic-test.js',
+	'delete-test',
 	'import-test.js',
 	'search-test.js',
 	'search-array-test.js',
