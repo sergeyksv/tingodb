@@ -34,9 +34,9 @@ describe('Basic', function () {
 			var i=0;
 			async.whilst(function () { return i<num}, 
 				function (cb) {
-					var d = new Date();
-					if (_dt==null)
-						_dt=d;
+					var d;
+					if (!_dt) _dt = d = new Date();
+					else d = new Date(_dt.getTime() + 1000 * i);
 					var obj = {_dt:d, num:i, pum:i, sub:{num:i}, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
 					coll.insert(obj, cb);
 					if (obj.sin>0 && obj.sin<0.5)
@@ -100,6 +100,22 @@ describe('Basic', function () {
 				})()
 			}))
 		})
+		it("find date range", function (done) {
+			var start = new Date(_dt.getTime() + 5000);
+			var end = new Date(start.getTime() + 20000);
+			coll.find({ "_dt": { $gt: start, $lt: end } }).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 19);
+				done();
+			}));
+		});
+		it("find date range inclusive", function (done) {
+			var start = new Date(_dt.getTime() + 5000);
+			var end = new Date(start.getTime() + 20000);
+			coll.find({ "_dt": { $gte: start, $lte: end } }).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 21);
+				done();
+			}));
+		});
 		it("find ObjectID", function (done) {
 			coll.find({"_id":_id}).toArray(safe.sure(done, function (docs) {
 				safe.trap(done, function () {
