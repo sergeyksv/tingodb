@@ -38,6 +38,7 @@ describe('Basic', function () {
 					if (!_dt) _dt = d = new Date();
 					else d = new Date(_dt.getTime() + 1000 * i);
 					var obj = {_dt:d, num:i, pum:i, sub:{num:i}, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
+					obj.txt = obj.sin > 0 && "больше нуля" || obj.sin < 0 && "меньше нуля" || "ноль";
 					coll.insert(obj, cb);
 					if (obj.sin>0 && obj.sin<0.5)
 					   gt0sin++;
@@ -54,6 +55,9 @@ describe('Basic', function () {
 				})()
 			}))
 		})
+		after(function (done) {
+			db.close(done);
+		});
 	})
 	describe('Existing store', function () {
 		var db,coll;
@@ -80,6 +84,14 @@ describe('Basic', function () {
 				})()
 			}))
 		})		
+		it("utf8 text", function (done) {
+			coll.find({ sin: { $gt: 0 } }).toArray(safe.sure(done, function (docs) {
+				docs.forEach(function (doc) {
+					assert.equal(doc.txt, "больше нуля");
+				});
+				done();
+			}));
+		});
 		it("find $eq", function (done) {
 			coll.find({num:10}).toArray(safe.sure(done, function (docs) {
 				safe.trap(done, function () {
@@ -247,5 +259,8 @@ describe('Basic', function () {
 				coll.findOne({pum:20},done)
 			}))
 		})
+		after(function (done) {
+			db.close(done);
+		});
 	})
 })
