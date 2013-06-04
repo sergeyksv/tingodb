@@ -8,6 +8,8 @@ var mocha = new Mocha();
 var argv = require('optimist')
 	.default('db', 'tingodb')
 	.describe('db', 'tingodb | mongodb')
+	.boolean('fast')
+	.describe('fast', 'Run only fast tests')
 	.check(function (argv) {
 		return argv.db == 'tingodb' || argv.db == 'mongodb';
 	})
@@ -22,13 +24,16 @@ tutils.setConfig(config);
 
 var files = [
 	'basic-test.js',
-	'delete-test',
+	'delete-test.js'
+];
+var slow = [
 	'import-test.js',
 	'search-test.js',
 	'search-array-test.js',
 	'sort-test.js',
 	'contrib-test.js'
 ];
+if (!argv.fast) files = files.concat(slow);
 
 files.forEach(function (file) {
 	mocha.addFile(path.join(__dirname, file));
