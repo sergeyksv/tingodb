@@ -94,8 +94,8 @@ describe('Basic', function () {
 		it("find date", function (done) {
 			coll.find({"_dt":_dt}).toArray(safe.sure(done, function (docs) {
 				safe.trap(done, function () {
-					/*assert.equal(docs.length,1);					
-					assert.equal(docs[0]._dt.toString(), _dt.toString());*/
+					assert.equal(docs.length, 1);
+					assert.equal(docs[0]._dt.toString(), _dt.toString());
 					done();
 				})()
 			}))
