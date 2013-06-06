@@ -10,6 +10,8 @@ As a proof for upward compatibility all tests designed to run against both Mongo
 Usage
 ======
 
+	npm install tingodb
+
 As it stated API is fully compatible with MongoDB. Difference is only initialization thase and obtaining of Db object. Consider this MongoDB code:
 
 	var Db = require('mongodb').Db,
@@ -80,9 +82,9 @@ new Db(path, options)
 
 Database is just a folder containing file for every collection, so when you create database you need to specify it. Collection files are used in append only mode which makes them relatively safe for use.
 
-Compatibilty
+Compatibility
 =========
-We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implement support. I.e. if we support something it will work exactly the same, but something is not yet supported or support is limited. 
+We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same, but something is not yet supported or support is limited. 
 
 - Search, almost all clauses. Indexes are used to increase search speed and sorting.
 - Map reduce, almost all
