@@ -1,7 +1,7 @@
 {
   "author": "Sergey Korotkov <sergeyksv@gmail.com>",
   "name": "tingodb",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -10,7 +10,7 @@
   ],  
   "main": "./lib/main",
   "engines": {
-    "node": ">= v0.6.x"
+    "node": ">= v0.8.x"
   },  
   "dependencies": {
     "async": "",
