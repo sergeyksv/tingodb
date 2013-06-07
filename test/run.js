@@ -25,7 +25,9 @@ tutils.setConfig(config);
 
 var files = [
 	'basic-test.js',
-	'delete-test.js',
+	'delete-test.js'
+];
+var tingo = [
 	'compact-test.js'
 ];
 var slow = [
@@ -35,6 +37,7 @@ var slow = [
 	'sort-test.js',
 	'contrib-test.js'
 ];
+if (!config.mongo) files = files.concat(tingo);
 if (!argv.quick) files = files.concat(slow);
 
 files.forEach(function (file) {
