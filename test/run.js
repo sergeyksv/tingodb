@@ -24,7 +24,8 @@ tutils.setConfig(config);
 
 var files = [
 	'basic-test.js',
-	'delete-test.js'
+	'delete-test.js',
+	'compact-test.js'
 ];
 var slow = [
 	'import-test.js',
