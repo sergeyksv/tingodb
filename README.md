@@ -52,35 +52,49 @@ The same example using TingoDB will be following:
 
 So, as you can see difference is in require call and database object initialization. 
 
-API
-======
+#### require('tingodb')(options)
 
-require('tingodb')(options)
-------------------------
-In contrast to mongodb module require will not return object that contains Db and other classes. It will return callable function that being called will return something similar to MongoDB require. Such implementation allows to inject some options that will control database behavior. Following options supported:
+In contrast to MongoDB, module require call will not return usable module. It will return a function that accept configuration options. This function will return something similar to MongoDB module. Extra step allows to inject some options that will control database behavior.
 
-- nativeObjectID: true|false Default is false
+##### nativeObjectID: true|false Default is false
 
-Doing some experimentation we found that using integer ids we can get db work faster and save some space. Additionally for inprocess database there are almost no any drawbacks versus globally unique ids. However in the same time its relatively hard to keep unique integer ids outside of database engine. So we make it part of database engine code. So when you insert records and didn't provide id explicetly it will use require('tingodb')().ObjectID class. By default it will generate integer ids that are unique in collection scope. But if you want MongoDB.ObjectID you can do it by setting nativeObjectID function to true.
-If you want to have ability to switch between MongoDB and TingoDB ObjectID (that uses integers) you should avoid direct require of BSON.ObjectID class but always refer it thru primary db object (require('tingodb)() or require('mongodb'). TingoDB ObjectID class support basic subset of MongoDB.ObjectID functionality. It also can be created and used directly for any fields in your documents.
+Doing some experimentation we found that using integer keys we can get database work faster and save some space. Additionally for in-process database there are almost no any drawbacks versus globally unique keys. However in the same time it is relatively hard to keep unique integer keys outside of the database engine. So we make it part of the database engine code. Generated keys will be unique in collection scope. 
 
-- cacheSize: integer
+When required it is possible to switch to BSON ObjectID using the configuration option.
 
-Maximum number of memory cached objects per collection. Default 1000
+##### cacheSize: integer Default is 1000
 
-- cacheMaxObjSize: integer
-Maximum size of object that can be placed to cache. Default 1024 bytes
+Maximum number of cached objects per collection.
 
-- searchInArray: true|false
+##### cacheMaxObjSize: integer Default is 1024 bytes
 
-MongoDB allows search inside nested arrays. Sometime it is useful. Search code that didn't support that 2 to 4 times faster. And the problem is that we not know in advance what code to use. You know because you know your data, we not. So if you want this feature you can enbale it globally. However if you prefer you can finetune this in every find request by using kind of hack providing fields for which you expect arrays giving them _tiar prefix. Example:
+Maximum size of object that can be placed to cache.
 
-	coll.find({'arr.num':10},{"_tiar.arr.num":0})
+##### searchInArray: true|false Default is false
 
-new Db(path, options)
--------------------------------
+Globally enables support of search in nested array. MongoDB support this unconditionally. For TingoDB search in arrays when there are no arrays is performance penalty. That's why it is switched off by default. 
+Additionally, and it might be better approach, nested arrays support can be enabled for individual indexes or search queries.
 
-Database is just a folder containing file for every collection, so when you create database you need to specify it. Collection files are used in append only mode which makes them relatively safe for use.
+To enable nested arrays in individual index use "_tiarr:true" option.
+ 
+	self._cash_transactions.ensureIndex("splits.accountId",{_tiarr:true},cb); 
+ 
+To enable nested arrays in individual query for fields that do not use indexes use "_tiarr." prefixed field names.
+ 
+	coll.find({'arr.num':10},{"_tiar.arr.num":0}) 
+
+####  new Db(path, options)
+
+The only required parameter is database path. It should be valid path to empty folder or folder that already contain collection files.
+
+Dual usage
+=========
+
+It is possible to build application that will transparently support both MongoDB and TingoDB. Here are some rules that help to do it:
+
+* Wrap module require call into helper module or make it part of core object. This way you can control which engine is loaded in single place.
+* Use only native JavaScript types. BSON types can be slow in JavaScript and will need special attention when passed to or from client JavaScript.
+* Think about ObjectID as of just unique value that can be converted to and from String regardless its actual meaning.
 
 Compatibility
 =========
