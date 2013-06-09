@@ -1,4 +1,4 @@
-var main = require('../lib/main')();
+var main = require('../lib/main')({});
 var main_native = require('../lib/main')({ nativeObjectID: true });
 var temp = require('temp');
 var _ = require('lodash');
