@@ -5,7 +5,6 @@ var safe = require('safe');
 var loremIpsum = require('lorem-ipsum');
 var tutils = require("./utils");
 
-
 var num = 1000;
 var gt0sin = 0;
 var _dt = null;
@@ -269,5 +268,29 @@ describe('Search', function () {
 				done();
 			}));
 		});
+		it("find {'pum':{$exists:false}} (no index)", function (done) {
+			coll.find({'pum':{$exists:false}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 142);
+				done();
+			}));
+		});		
+		it("find {'num':{$exists:false}} (index)", function (done) {
+			coll.find({'num':{$exists:false}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 142);
+				done();
+			}));
+		});	
+		it("find {'pum':{$exists:true}} (no index)", function (done) {
+			coll.find({'pum':{$exists:true}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 858);
+				done();
+			}));
+		});		
+		it("find {'num':{$exists:true}} (index)", function (done) {
+			coll.find({'num':{$exists:true}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 858);
+				done();
+			}));
+		});	
 	});
 });

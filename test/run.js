@@ -11,6 +11,7 @@ var argv = require('optimist')
 	.boolean('quick')
 	.alias('q', 'quick')
 	.describe('quick', 'Run only quick tests')
+	.describe('single', 'Run only single file')
 	.check(function (argv) {
 		return argv.db == 'tingodb' || argv.db == 'mongodb';
 	})
@@ -37,8 +38,13 @@ var slow = [
 	'sort-test.js',
 	'contrib-test.js'
 ];
-if (!config.mongo) files = files.concat(tingo);
-if (!argv.quick) files = files.concat(slow);
+
+if (argv.single) {
+	files = [argv.single]
+} else {
+	if (!config.mongo) files = files.concat(tingo);
+	if (!argv.quick) files = files.concat(slow);
+}
 
 files.forEach(function (file) {
 	mocha.addFile(path.join(__dirname, file));

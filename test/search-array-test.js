@@ -234,5 +234,29 @@ describe('Search Array', function () {
 				done();
 			}));
 		});
+		it("find {'arr.pum':{$exists:false}} (no index)", function (done) {
+			coll.find({'arr.pum':{$exists:false}},{"_tiar.arr.pum":0}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 14);
+				done();
+			}));
+		});		
+		it("find {'arr.num':{$exists:false}} (index)", function (done) {
+			coll.find({'arr.num':{$exists:false}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 14);
+				done();
+			}));
+		});	
+		it("find {'arr.pum':{$exists:true}} (no index)", function (done) {
+			coll.find({'arr.pum':{$exists:true}},{"_tiar.arr.pum":0}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 86);
+				done();
+			}));
+		});		
+		it("find {'arr.num':{$exists:true}} (index)", function (done) {
+			coll.find({'arr.num':{$exists:true}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 86);
+				done();
+			}));
+		});			
 	});
 });
