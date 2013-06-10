@@ -1,18 +1,20 @@
 TingoDB
 =======
 
-Javascript in-process file system backed database upward compatible on API level with MongoDB.
+Embedded JavaScript in-process file system backed database upward compatible on API level with MongoDB.
 
-Upward compatible means that if you build app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This gretaly reduces implementation risks and give you freedom to switch to mature solution at any moment.
+Upward compatible means that if you build app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to mature solution at any moment.
 
 As a proof for upward compatibility all tests designed to run against both MongoDB and TingoDB. More over significant part of tests contributed from MongoDB nodejs driver project and used as is without modifications.
+
+For more details please visit http://www.tingodb.com
 
 Usage
 ======
 
 	npm install tingodb
 
-As it stated API is fully compatible with MongoDB. Difference is only initialization thase and obtaining of Db object. Consider this MongoDB code:
+As it stated API is fully compatible with MongoDB. Difference is only initialization and obtaining of Db object. Consider this MongoDB code:
 
 	var Db = require('mongodb').Db,
 		Server = require('mongodb').Server,
@@ -90,12 +92,150 @@ The only required parameter is database path. It should be valid path to empty f
 Dual usage
 =========
 
-It is possible to build application that will transparently support both MongoDB and TingoDB. Here are some rules that help to do it:
+It is possible to build application that will transparently support both MongoDB and TingoDB. Here are some hints that help to do it:
 
 * Wrap module require call into helper module or make it part of core object. This way you can control which engine is loaded in single place.
 * Use only native JavaScript types. BSON types can be slow in JavaScript and will need special attention when passed to or from client JavaScript.
 * Think about ObjectID as of just unique value that can be converted to and from String regardless its actual meaning.
 
+Please take a look to sample that consists from 3 files.
+
+###### engine.js - wrapper on TingoDB and MongoDB
+
+	
+	var fs = require('fs'),db,engine;
+
+	// load config
+	var cfg = JSON.parse(fs.readFileSync("./config.json"));
+
+	// load requestd engine and define engine agnostic getDB function
+	if (cfg.app.engine=="mongodb") {
+		engine = require("mongodb");
+		module.exports.getDB = function () {
+			if (!db) db = new engine.Db(cfg.mongo.db,
+				new engine.Server(cfg.mongo.host, cfg.mongo.port, cfg.mongo.opts),
+					{native_parser: false, safe:true});
+			return db;
+		}
+	} else {
+		engine = require("tingodb")({});
+		module.exports.getDB = function () {
+			if (!db) db = new engine.Db(cfg.tingo.path, {});
+			return db;
+		}
+	}
+	// Depending on engine this can be different class
+	module.exports.ObjectID = engine.ObjectID;
+
+###### sample.js - Dummy usage example, pay attention to comments
+
+	
+	var engine = require('./engine');
+	var db = engine.getDB();
+
+	console.time("sample")
+	db.open(function(err,db) {
+		db.collection("homes", function (err, homes) {
+			// its fine to create ObjectID in advance
+			// NOTE!!! we get class thru engine because its type
+			// can depends on database type
+			var homeId = new engine.ObjectID();
+			// but with TingoDB.ObjectID righ here it will be negative
+			// which means temporary. However its uniq and can be used for 
+			// comparisons
+			console.log(homeId);
+			homes.insert({_id:homeId, name:"test"}, function (err, home) {
+				var home = home[0];
+				// in this place homeID will change its value and will be in sync
+				// with database
+				console.log(homeId,home);
+				db.collection("rooms", function (err, rooms) {
+					for (var i=0; i<5; i++) {
+						// its ok also to not provide id, then it will be
+						// generated
+						rooms.insert({name:"room_"+i,_idHome:homeId}, function (err, room) {
+							console.log(room[0]);
+							i--;
+							if (i==0) {
+								// now lets assume we serving request like
+								// /rooms?homeid=_some_string_
+								var query = "/rooms?homeid="+homeId.toString();
+								// dirty code to get simulated GET variable
+								var getId = query.match("homeid=(.*)")[1];
+								console.log(query, getId)
+								// typical code to get id from external world
+								// and use it for queries
+								rooms.find({_idHome:new engine.ObjectID(getId)})
+									.count(function (err, count) {
+										console.log(count);
+										console.timeEnd("sample");
+								})
+							}
+						})
+					}
+				})
+			})
+		})
+	})
+
+###### config.json - Dummy config
+
+	
+	{
+		"app":{
+			"engine":"tingodb"
+		},
+		"mongo":{
+			"host":"127.0.0.1",
+			"port":27017,
+			"db":"data",
+			"opts":{
+				"auto_reconnect": true,
+				"safe": true
+			}
+		},
+		"tingo":{
+			"path":"./data"
+		}
+	}
+
+###### Console output running on TingoDB
+
+	
+	-2
+	13 { _id: 13, name: 'test' }
+	{ name: 'room_0', _idHome: 13, _id: 57 }
+	{ name: 'room_1', _idHome: 13, _id: 58 }
+	{ name: 'room_2', _idHome: 13, _id: 59 }
+	{ name: 'room_3', _idHome: 13, _id: 60 }
+	{ name: 'room_4', _idHome: 13, _id: 61 }
+	/rooms?homeid=13 13
+	5
+	sample: 27ms
+
+###### Console output running on MongoDB
+
+	51b43a05f092a1c544000001
+	51b43a05f092a1c544000001 { _id: 51b43a05f092a1c544000001, name: 'test' }
+	{ name: 'room_3',
+	  _idHome: 51b43a05f092a1c544000001,
+	  _id: 51b43a05f092a1c544000005 }
+	{ name: 'room_2',
+	  _idHome: 51b43a05f092a1c544000001,
+	  _id: 51b43a05f092a1c544000004 }
+	{ name: 'room_1',
+	  _idHome: 51b43a05f092a1c544000001,
+	  _id: 51b43a05f092a1c544000003 }
+	{ name: 'room_0',
+	  _idHome: 51b43a05f092a1c544000001,
+	  _id: 51b43a05f092a1c544000002 }
+	{ name: 'room_4',
+	  _idHome: 51b43a05f092a1c544000001,
+	  _id: 51b43a05f092a1c544000006 }
+	/rooms?homeid=51b43a05f092a1c544000001 51b43a05f092a1c544000001
+	5
+	sample: 22ms
+	
 Compatibility
 =========
 We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same, but something is not yet supported or support is limited. 
