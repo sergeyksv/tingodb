@@ -4,6 +4,7 @@ var path = require('path');
 
 var Mocha = require('mocha');
 var mocha = new Mocha();
+var async = require('async');
 
 var argv = require('optimist')
 	.default('db', 'tingodb')
@@ -65,10 +66,24 @@ function run(cb) {
 	});
 }
 
-console.log('Using default ObjectID');
-run(function () {
-	if (config.mongo) process.exit(0);
-	console.log('Using BSON ObjectID');
-	tutils.setConfig({ nativeObjectID: true });
-	run();
-});
+var sessions = [
+	function (cb) {
+		console.log('Using defaults');
+		run(cb);
+	}
+]
+
+if (!config.mongo) {
+	sessions.push(function (cb) {
+		console.log('Using global searchInArray');
+		tutils.setConfig({ searchInArray: true , nativeObjectID: false });
+		run(cb);
+	})
+	sessions.push(function (cb) {
+		console.log('Using BSON ObjectID');
+		tutils.setConfig({ searchInArray: false , nativeObjectID: true });
+		run(cb);
+	})	
+}
+
+async.series(sessions, function () {});

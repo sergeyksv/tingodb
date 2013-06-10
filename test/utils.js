@@ -1,5 +1,6 @@
 var main = require('../lib/main')({});
 var main_native = require('../lib/main')({ nativeObjectID: true });
+var main_array = require('../lib/main')({ searchInArray: true });
 var temp = require('temp');
 var _ = require('lodash');
 var async = require('async');
@@ -70,7 +71,7 @@ var getDb = module.exports.getDb = function (tag, drop, cb) {
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
 		} 
-		var tingodb = cfg.nativeObjectID ? main_native : main;
+		var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
 		var db = new tingodb.Db(paths[tag], {});
 		db.open(cb);
 	}
@@ -85,7 +86,7 @@ module.exports.getDbSync = function (tag, db_options, server_options, drop) {
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
 		} 
-		var tingodb = cfg.nativeObjectID ? main_native : main;
+		var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
 		return new tingodb.Db(paths[tag], {name:tag});
 	}
 };
@@ -103,6 +104,6 @@ module.exports.openEmpty = function (db, cb) {
 };
 
 module.exports.getDbPackage = function () {
-	var tingodb = cfg.nativeObjectID ? main_native : main;
+	var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
 	return cfg.mongo ? require('mongodb') : tingodb;
 };
