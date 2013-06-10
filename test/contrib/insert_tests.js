@@ -849,7 +849,7 @@ exports['Should correctly insert object and retrieve it when containing array an
   var ObjectID = configuration.getMongoPackage().ObjectID;
 
   var doc = {
-   "_id" : new ObjectID("4e886e687ff7ef5e00000162"),
+   "_id" : new ObjectID(),
    "str" : "foreign",
    "type" : 2,
    "timestamp" : ISODate("2011-10-02T14:00:08.383Z"),
@@ -912,7 +912,7 @@ exports['Should fail on insert due to key starting with $'] = function(configura
   var ObjectID = configuration.getMongoPackage().ObjectID;
 
   var doc = {
-   "_id" : new ObjectID("4e886e687ff7ef5e00000162"),
+   "_id" : new ObjectID(),
    "$key" : "foreign",
   }
 
