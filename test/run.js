@@ -27,16 +27,17 @@ tutils.setConfig(config);
 
 var files = [
 	'basic-test.js',
-	'delete-test.js'
+	'delete-test.js',
+	'search-test.js',
+	'search-array-test.js',
+	'sort-test.js',	
+	'crud-test.js'
 ];
 var tingo = [
 	'compact-test.js'
 ];
 var slow = [
 	'import-test.js',
-	'search-test.js',
-	'search-array-test.js',
-	'sort-test.js',
 	'contrib-test.js'
 ];
 
@@ -86,4 +87,4 @@ if (!config.mongo) {
 	})	
 }
 
-async.series(sessions, function () {});
+async.series(sessions, function () { process.exit(0)});
