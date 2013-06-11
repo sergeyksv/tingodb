@@ -19,8 +19,12 @@ describe('Search Array', function () {
 			db.collection("test1", {}, safe.sure(done, function (_coll) {
 				coll = _coll;
 				coll.ensureIndex({"arr.num":1}, {sparse:false,unique:false,_tiarr:true}, safe.sure(done, function (name) {
-					assert.ok(name);
-					done();
+					coll.ensureIndex({"tags":1}, {sparse:false,unique:false,_tiarr:true}, safe.sure(done, function (name) {
+						coll.ensureIndex({"nested.tags":1}, {sparse:false,unique:false,_tiarr:true}, safe.sure(done, function (name) {
+							assert.ok(name);
+							done();
+						}));
+					}));
 				}));
 			}));
 		});
@@ -41,7 +45,7 @@ describe('Search Array', function () {
 					for (j=0; j<10; j++) {
 						arr[j].sub.arr = arr2;
 					}							
-					obj = {num:i, pum:i, arr:arr};
+					obj = {num:i, pum:i, arr:arr, tags:["tag"+i,"tag"+(i+1)], nested:{tags:["tag"+i,"tag"+(i+1)]}};
 					coll.insert(obj, cb);
 					i++;
 				},
@@ -255,6 +259,30 @@ describe('Search Array', function () {
 		it("find {'arr.num':{$exists:true}} (index)", function (done) {
 			coll.find({'arr.num':{$exists:true}}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 86);
+				done();
+			}));
+		});			
+		it("find flat array {'tags':'tag2'} (no index)", function (done) {
+			coll.find({'tags':'tag2'},{"_tiar.tags":0},{hint:{}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 2);
+				done();
+			}));
+		});			
+		it("find nested flat array {'nested.tags':'tag2'} (no index)", function (done) {
+			coll.find({'nested.tags':'tag2'},{"_tiar.nested.tags":0},{hint:{}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 2);
+				done();
+			}));
+		});			
+		it("find flat array {'tags':'tag2'} (index)", function (done) {
+			coll.find({'tags':'tag2'}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 2);
+				done();
+			}));
+		});			
+		it("find nested flat array {'nested.tags':'tag2'} (index)", function (done) {
+			coll.find({'nested.tags':'tag2'}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 2);
 				done();
 			}));
 		});			
