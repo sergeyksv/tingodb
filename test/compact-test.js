@@ -118,3 +118,64 @@ describe('Compact', function () {
 		}));
 	});
 });
+
+describe('Update+Hash', function () {
+	var db, coll, fsize;
+	it('Open database', function (done) {
+		tutils.getDb('test', true, safe.sure(done, function (_db) {
+			db = _db;
+			done();
+		}));
+	});
+	it('Create new collection', function (done) {
+		db.collection('test', {}, safe.sure(done, function (_coll) {
+			coll = _coll;
+			done();
+		}));
+	});
+	it('Add test data', function (done) {
+		coll.insert({ k: 1, v: 123 }, { w: 1 }, done);
+	});
+	it('Remember collection size', function (done) {
+		fs.stat(coll._filename, safe.sure(done, function (stats) {
+			fsize = stats.size;
+			done();
+		}));
+	});
+	it('Update data', function (done) {
+		coll.update({ k: 1 }, { k: 1, v: 456 }, { w: 1 }, done);
+	});
+	it('Collection should grow', function (done) {
+		fs.stat(coll._filename, safe.sure(done, function (stats) {
+			assert(stats.size > fsize);
+			fsize = stats.size;
+			done();
+		}));
+	});
+	it('Update with the same value', function (done) {
+		coll.update({ k: 1 }, { k: 1, v: 456 }, { w: 1 }, done);
+	});
+	it('Collection should not change', function (done) {
+		fs.stat(coll._filename, safe.sure(done, function (stats) {
+			assert.equal(stats.size, fsize);
+			done();
+		}));
+	});
+	it('Update data again', function (done) {
+		coll.update({ k: 1 }, { k: 1, v: 789 }, { upsert: true, w: 1 }, done);
+	});
+	it('Collection should grow again', function (done) {
+		fs.stat(coll._filename, safe.sure(done, function (stats) {
+			assert(stats.size > fsize);
+			fsize = stats.size;
+			done();
+		}));
+	});
+	it('Ensure data is correct', function (done) {
+		coll.find({ k: 1 }).toArray(safe.sure(done, function (docs) {
+			assert.equal(docs.length, 1);
+			assert.equal(docs[0].v, 789);
+			done();
+		}));
+	});
+});
