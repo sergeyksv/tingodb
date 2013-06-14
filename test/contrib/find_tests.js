@@ -386,7 +386,6 @@ exports.shouldCorrectlyFindNoRecords = function(configuration, test) {
 /**
  * @ignore
  */
-/* REASON: Where is not supported
 exports.shouldCorrectlyPerformFindByWhere = function(configuration, test) {
   var Code = configuration.getMongoPackage().Code;
   var client = configuration.db();
@@ -411,7 +410,6 @@ exports.shouldCorrectlyPerformFindByWhere = function(configuration, test) {
     });
   });
 }
-*/
 
 
 /**
