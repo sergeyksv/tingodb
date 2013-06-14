@@ -1,12 +1,20 @@
 {
-  "author": "Sergey Korotkov <sergeyksv@gmail.com>",
+  "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
-  "version": "0.1.0",
+  "version": "0.1.4",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
   },  
   "contributors": [
+    {
+      "name": "Sergey Korotkov",
+      "email": "sergeyksv@gmail.com"
+    },
+    {
+      "name": "Alexander Somov",
+      "email": "al-s@yandex.ru"
+    } 
   ],  
   "main": "./lib/main",
   "engines": {
