@@ -7,6 +7,8 @@ Upward compatible means that if you build app that uses functionality implemente
 
 As a proof for upward compatibility all tests designed to run against both MongoDB and TingoDB. More over significant part of tests contributed from MongoDB nodejs driver project and used as is without modifications.
 
+For more details please visit http://www.tingodb.com
+
 Usage
 ======
 
