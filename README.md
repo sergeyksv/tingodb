@@ -9,6 +9,8 @@ As a proof for upward compatibility all tests designed to run against both Mongo
 
 For more details please visit http://www.tingodb.com
 
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sergeyksv/tingodb/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
 Usage
 ======
 
