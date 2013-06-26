@@ -5,7 +5,12 @@ Embedded JavaScript in-process file system backed database upward compatible on 
 
 Upward compatible means that if you build app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to mature solution at any moment.
 
-As a proof for upward compatibility all tests designed to run against both MongoDB and TingoDB. More over significant part of tests contributed from MongoDB nodejs driver project and used as is without modifications.
+As a proof for upward compatibility all tests designed to run against both MongoDB and TingoDB.
+More over significant part of tests contributed from MongoDB nodejs driver project and used as is without modifications.
+
+For those folks who familiar with Mongoose.js ODM we suggest to look at [Tungus](https://github.com/sergeyksv/tungus), experimental driver that allows to use famous ODM tool with our database.
+
+
 
 For more details please visit http://www.tingodb.com
 
