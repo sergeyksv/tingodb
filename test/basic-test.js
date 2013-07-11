@@ -37,7 +37,7 @@ describe('Basic', function () {
 					var d;
 					if (!_dt) _dt = d = new Date();
 					else d = new Date(_dt.getTime() + 1000 * i);
-					var obj = {_dt:d, num:i, pum:i, sub:{num:i}, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
+					var obj = {_dt:d, dum:parseInt(i/2), num:i, pum:i, sub:{num:i}, sin:Math.sin(i),cos:Math.cos(i),t:15,junk:loremIpsum({count:1,units:"paragraphs"})};
 					obj.txt = obj.sin > 0 && "больше нуля" || obj.sin < 0 && "меньше нуля" || "ноль";
 					coll.insert(obj, cb);
 					if (obj.sin>0 && obj.sin<0.5)
@@ -254,6 +254,16 @@ describe('Basic', function () {
 				}));
 			}));
 		});
+		it("multi update", function (done) {
+			coll.update({dum:1},{$set:{pum:10}},{multi:true}, safe.sure(done, function () {
+				coll.find({dum:1}).sort({num:1}).toArray(safe.sure(done, function (docs) {
+					assert.equal(docs.length,2);
+					assert.equal(docs[0].num,2);
+					assert.equal(docs[1].num,3);
+					done();
+				}))
+			}))
+		})	
 		it("dummy remove", function (done) {
 			coll.remove({pum:20}, safe.sure(done, function () {
 				coll.findOne({pum:20},done)
