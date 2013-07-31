@@ -4,15 +4,48 @@ var async = require('async');
 var safe = require('safe');
 var tutils = require("./utils");
 
-var num = 1000;
-var gt0sin = 0;
-var _dt = null;
-
-describe.skip('CRUD', function () {
+describe('CRUD', function () {
+	var db,coll;
+	before(function (done) {
+		tutils.getDb('test', true, safe.sure(done, function (_db) {
+			db = _db;
+			done();
+		}))
+	})
+	before(function (done) {
+		db.collection("test", {}, safe.sure(done,function (_coll) {
+			coll = _coll;
+			coll.ensureIndex({i:1}, safe.sure(done, function () {
+				done();
+			}))
+		}))
+	})	
 	describe('save', function () {
-		it('create new')
-		it('modify it')
-		it('delete it')
+		var obj;
+		it('create new', function (done) {
+			obj = {i:1, j:1}
+			coll.save(obj, done)
+		})
+		it('id is assigned', function () {
+			assert(obj._id)
+		})
+		it('modify it', function (done) {
+			obj.i++;
+			coll.save(obj, safe.sure(done, function () {
+				coll.findOne({_id:obj._id}, safe.sure(done, function (obj1) {
+					assert.deepEqual(obj,obj1)
+					done()
+				}))
+			}))
+		})	
+		it('delete it', function (done) {
+			coll.remove({_id:obj._id}, safe.sure(done, function () {
+				coll.findOne({_id:obj._id}, {sort:{i:1}}, safe.sure(done, function (obj1) {
+					assert(!obj1)
+					done()
+				}))
+			}))
+		})	
 	})
 	describe('update', function () {
 		it('create with upsert')
