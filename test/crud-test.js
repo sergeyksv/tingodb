@@ -48,10 +48,62 @@ describe('CRUD', function () {
 		})	
 	})
 	describe('update', function () {
-		it('create with upsert')
-		it('modify it')
-		it('insert one more')
-		it('modify multi')
-		it('modify did not touch _id')
+		var obj;
+		it('create with upsert and $set apply $set to query', function (done) {
+			obj = {j:3, c:"multi", a:[1,2,3,4,5]}
+			coll.update({i:2}, {$set:obj}, {upsert:true}, safe.sure(done, function (n,r) {
+				assert.equal(n,1);
+				assert.equal(r.updatedExisting,false)
+				assert(r.upserted)
+				coll.findOne({i:2}, safe.sure(done, function (obj1) {
+					assert.equal(obj1.i,2);
+					done()
+				}))
+			}))
+		})
+		it('update array field is possible', function (done) {
+			coll.update({i:2}, {$set:{a:[1,2]}},safe.sure(done, function (n,r) {
+				assert.equal(n,1);
+				assert.equal(r.updatedExisting,true)
+				coll.findOne({i:2}, safe.sure(done, function (obj1) {
+					assert.deepEqual([1,2],obj1.a);
+					done()
+				}))
+			}))
+		})
+		it('upsert one more did not touch initial object', function (done) {
+			obj = {j:4, i:3, c:"multi", a:[1,2,3,4,5]}
+			var clone = _.cloneDeep(obj);
+			coll.update({i:3}, obj, {upsert:true}, safe.sure(done, function (n,r) {
+				assert.equal(n,1);
+				assert.equal(r.updatedExisting,false)
+				assert(r.upserted)
+				coll.findOne({i:3}, safe.sure(done, function (obj1) {
+					assert.deepEqual(obj,clone);
+					clone._id = obj1._id;
+					assert.deepEqual(obj1,clone);
+					done()
+				}))
+			}))
+		})			
+		it('modify multi changes only specific field for many documents', function (done) {
+			coll.update({c:"multi"}, {$set:{a:[]}}, {multi:true}, safe.sure(done, function (n,r) {
+				assert.equal(n,2);
+				assert.equal(r.updatedExisting,true)
+				coll.find({c:"multi"}).toArray(safe.sure(done, function (docs) {
+					assert(docs[0].j,docs[1].j)
+					_.each(docs, function (doc) {
+						assert.deepEqual(doc.a,[])
+					})
+					done()
+				}))
+			}))
+		})
+		it('update with setting of _id field is not possible', function (done) {
+			coll.update({c:"multi"}, {$set:{_id:"newId"}}, {multi:true}, function (err) {
+				assert(err);
+				done();
+			})
+		})
 	})
 });
