@@ -106,4 +106,32 @@ describe('CRUD', function () {
 			})
 		})
 	})
+	describe("insert", function () {
+		it("works with String id", function (done) {
+			coll.insert({_id:"some@email.goes.here.com",data:"some data"}, safe.sure(done, function () {
+				coll.findOne({_id:"some@email.goes.here.com"}, safe.sure(function (obj) {
+					assert(obj);
+					done()
+				}))
+			}))
+		})
+		it("works with Date id", function (done) {
+			var _id = new Date();
+			coll.insert({_id:_id,data:"some data"}, safe.sure(done, function () {
+				coll.findOne({_id:_id}, safe.sure(function (obj) {
+					assert(obj);
+					done()
+				}))
+			}))
+		})
+		it("works with Number id", function (done) {
+			var _id = 1976;
+			coll.insert({_id:_id,data:"some data"}, safe.sure(done, function () {
+				coll.findOne({_id:_id}, safe.sure(function (obj) {
+					assert(obj);
+					done()
+				}))
+			}))
+		})		
+	})
 });
