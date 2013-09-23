@@ -51,10 +51,8 @@ describe('Search', function () {
 		});
 		it("Has right size", function (done) {
 			coll.count(safe.sure(done, function (count) {
-				safe.trap(done, function () {
-					assert.equal(count, num);
-					done();
-				})();
+				assert.equal(count, num);
+				done();
 			}));
 		});
 		it("find {num:10} (index)", function (done) {
