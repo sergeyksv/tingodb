@@ -90,7 +90,7 @@ var slow = {
 describe('contrib', function () {
 	var names;
 	var configuration;
-	this.timeout(5000);
+	this.timeout(10000);
 	before(function (done) {
 		names = {};
 		configuration = new (config())();
