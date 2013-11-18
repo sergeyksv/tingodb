@@ -263,13 +263,13 @@ describe('Search Array', function () {
 			}));
 		});			
 		it("find flat array {'tags':'tag2'} (no index)", function (done) {
-			coll.find({'tags':'tag2'},{"_tiar.tags":0},{hint:{}}).toArray(safe.sure(done, function (docs) {
+			coll.find({'tags':'tag2'},{"_tiar.tags":0}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 2);
 				done();
 			}));
 		});			
 		it("find nested flat array {'nested.tags':'tag2'} (no index)", function (done) {
-			coll.find({'nested.tags':'tag2'},{"_tiar.nested.tags":0},{hint:{}}).toArray(safe.sure(done, function (docs) {
+			coll.find({'nested.tags':'tag2'},{"_tiar.nested.tags":0}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 2);
 				done();
 			}));

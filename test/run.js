@@ -41,7 +41,8 @@ var files = [
 	'search-test.js',
 	'search-array-test.js',
 	'sort-test.js',	
-	'crud-test.js'
+	'crud-test.js',
+	'misc-test.js'
 ];
 var tingo = [
 	'compact-test.js'
