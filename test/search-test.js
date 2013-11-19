@@ -9,6 +9,8 @@ var num = 1000;
 var gt0sin = 0;
 var _dt = null;
 
+var words = ["Sergey Brin","Serg Kosting","Pupking Sergey","Munking Sirgey"];
+
 describe('Search', function () {
 	describe('New store', function () {
 		var db, coll;
@@ -18,7 +20,7 @@ describe('Search', function () {
 				done();
 			}));
 		});
-		it("Create new collection", function (done) {
+		before(function (done) {
 			db.collection("test1", {}, safe.sure(done, function (_coll) {
 				coll = _coll;
 				coll.ensureIndex({num:1}, {sparse:false,unique:false}, safe.sure(done, function (name) {
@@ -27,7 +29,7 @@ describe('Search', function () {
 				}));
 			}));
 		});
-		it("Populated with test data", function (done) {
+		before(function (done) {
 			var i=1;
 			async.whilst(function () { return i<=num; }, 
 				function (cb) {
@@ -36,8 +38,10 @@ describe('Search', function () {
 						_dt=d;
 					var obj = { _dt: d, anum: [i,i+1,i+2], apum: [i,i+1,i+2], num: i, pum: i,
 						sub: { num: i }, sin: Math.sin(i), cos: Math.cos(i), t: 15,
-						junk: loremIpsum({ count: 1, units: "paragraphs" }) };
+						junk: loremIpsum({ count: 5, units: "words" })+words[i%words.length]+ loremIpsum({ count: 5, units: "words" })
+					};
 					if (i % 7 === 0) {
+						obj.words=words;
 						delete obj.num;
 						delete obj.pum;
 					}
@@ -290,5 +294,41 @@ describe('Search', function () {
 				done();
 			}));
 		});	
+		it("find {'junk':{$regex:'Sergey'}}", function (done) {
+			coll.find({'junk':{$regex:'Sergey'}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 500);
+				done();
+			}));
+		});			
+		it("find {'junk':/Sergey/i}", function (done) {
+			coll.find({'junk':/seRgey/i}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 500);
+				done();
+			}));
+		});		
+		it("find {'junk':{$regex:'seRgey',$options:'i'}}", function (done) {
+			coll.find({'junk':{$regex:'seRgey',$options:'i'}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 500);
+				done();
+			}));
+		});	
+		it("find {'junk':{$options:'i',$regex:'seRgey'}}", function (done) {
+			coll.find({'junk':{$options:'i',$regex:'seRgey'}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 500);
+				done();
+			}));
+		});			
+		it("find {'junk':{$not:/sirgei/i}}", function (done) {
+			coll.find({'junk':{$not:/sirgey/i}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 750);
+				done();
+			}));
+		});			
+		it("find {'words':{$all:[/sirgey/i,/sergey/i]}}", function (done) {
+			coll.find({'words':{$all:[/sirgey/i,/sergey/i]}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 142);
+				done();
+			}));
+		});				
 	});
 });
