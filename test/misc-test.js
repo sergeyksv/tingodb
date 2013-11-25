@@ -57,17 +57,24 @@ describe('Misc', function () {
 								assert(!_.contains(_.keys(obj),'_id'));
 								assert(!_.contains(_.keys(obj),'age'));					
 								assert(_.contains(_.keys(obj),'name'));
-								_coll.findOne({},{_id:1,age:0}, safe.sure(done, function (obj) {
-									assert(_.contains(_.keys(obj),'_id'));
-									assert(!_.contains(_.keys(obj),'age'));					
-									assert(_.contains(_.keys(obj),'name'));
+								_coll.findOne({},{_id:1,age:0}, function (err) {
+									assert(err!=null)
 									done();
-								}))
+								})
 							}))
 						}))
 					}))
 				}))
 			}))
 		}))
-	})		
+	})
+	it('GH-26 sort order can also be optional for findAndRemove', function (done) {
+		db.collection("GH26", {}, safe.sure(done,function (_coll) {
+			_coll.insert({}, safe.sure(done, function () {
+				_coll.findAndRemove({},safe.sure(done, function (res) {
+					done();
+				}))
+			}))
+		}))
+	})
 });
