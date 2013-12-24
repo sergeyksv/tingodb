@@ -172,7 +172,7 @@ describe('Index Test', function () {
 	});
 	it("Populate with test data", function (done) {
 		async.forEachSeries(dataset, function (doc, cb) {
-			coll.insert(doc, cb);
+			coll.insert(_.clone(doc), cb);
 		}, done);
 	});
 	_.each(queries, function (query) {
