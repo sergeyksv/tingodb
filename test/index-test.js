@@ -52,6 +52,10 @@ var queries = [
 		value: { b: 1 }
 	},
 	{
+		name: 'by index another single field $lt',
+		value: { b: { $lt: 2 } }
+	},
+	{
 		name: 'no index single field',
 		value: { n: 3 }
 	},
@@ -62,6 +66,10 @@ var queries = [
 	{
 		name: 'by index another 2-field',
 		value: { a: 2, s: 'test' }
+	},
+	{
+		name: 'by index 2-field $gt',
+		value: { a: 1, b: { $gt: 1 } }
 	},
 	{
 		name: 'partially by index 2-field',
@@ -122,7 +130,15 @@ function check(query, sort, docs) {
 	var sample = _.uniq(_.flatten(_.map(query, function (keys) {
 		return _.filter(dataset, function (doc) {
 			return _.every(keys, function (v, k) {
-				return doc[k] === v;
+				var vv = doc[k];
+				if (!_.isObject(v)) return vv === v;
+				return _.every(v, function (ov, ok) {
+					if (ok == '$gt') return vv > ov;
+					else if (ok == '$gte') return vv >= ov;
+					else if (ok == '$lt') return vv < ov;
+					else if (ok == '$lte') return vv <= ov;
+					else return false;
+				});
 			});
 		});
 	})));
