@@ -56,6 +56,10 @@ var queries = [
 		value: { b: { $lt: 2 } }
 	},
 	{
+		name: 'by index another single field $range',
+		value: { b: { $lt: 2, $gt: 0 } }
+	},
+	{
 		name: 'no index single field',
 		value: { n: 3 }
 	},
