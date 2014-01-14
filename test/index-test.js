@@ -36,6 +36,10 @@ var indexes = [
 		name: '3-field',
 		value: [ [ 'a', -1 ], [ 'b', 1 ], [ 's', -1 ] ]
 	},
+	{
+		name: '2-field n',
+		value: [ [ 'b', 1 ], [ 'n', 1 ] ]
+	},
 ];
 
 var queries = [
@@ -94,6 +98,10 @@ var queries = [
 	{
 		name: '2-field-no-result',
 		value: { a: 2, b: 7 }
+	},
+	{
+		name: 'by index but! only if selected the right one',
+		value: { a: 2, b: 1, n: 6 }
 	},
 ];
 
