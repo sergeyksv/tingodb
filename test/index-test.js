@@ -103,6 +103,14 @@ var queries = [
 		name: 'by index but! only if selected the right one',
 		value: { a: 2, b: 1, n: 6 }
 	},
+	{
+		name: 'by index 2-field $in',
+		value: { a: { $in: [ 1, 2, 3, 2 ] }, b: 2 }
+	},
+	{
+		name: 'by index 2-field $nin',
+		value: { a: { $nin: [ 2, 3, 2 ] }, b: 2 }
+	},
 ];
 
 var sorting = [
@@ -149,6 +157,8 @@ function check(query, sort, docs) {
 					else if (ok == '$gte') return vv >= ov;
 					else if (ok == '$lt') return vv < ov;
 					else if (ok == '$lte') return vv <= ov;
+					else if (ok == '$in') return _.contains(ov, vv);
+					else if (ok == '$nin') return !_.contains(ov, vv);
 					else return false;
 				});
 			});
