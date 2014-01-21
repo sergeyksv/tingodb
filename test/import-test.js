@@ -54,10 +54,8 @@ describe('Import', function () {
 		});
 		it("Has right size", function (done) {
 			coll.count(safe.sure(done, function (count) {
-				safe.trap(done, function () {
-					assert.equal(count, rowcount);
-					done();
-				})();
+				assert.equal(count, rowcount);
+				done();
 			}));
 		});
 		it("test find $eq", function (done) {

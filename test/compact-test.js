@@ -4,6 +4,7 @@ var fs = require('fs');
 var safe = require('safe');
 var tutils = require('./utils');
 var _ = require('lodash');
+var tingodb = require('../lib/main')({});
 
 describe('Compact', function () {
 	var db, coll, items, length, fsize;
@@ -177,5 +178,21 @@ describe('Update+Hash', function () {
 			assert.equal(docs[0].v, 789);
 			done();
 		}));
+	});
+});
+
+describe('Store', function () {
+	var db, coll, fsize;
+	it('Operations must fail if db is linked to not existent path', function (done) {
+		var Db = tingodb.Db;
+		var db = new Db('/tmp/some_unexistant_path_667676qwe', {})
+		var c = db.collection( 'test' );
+		c.remove( {}, function (err) {
+			assert(err)
+			c.insert( {  name: 'Chiara',    surname: 'Mobily',     age: 22 } , function( err ){
+				assert(err);
+				done();
+			})
+		})
 	});
 });

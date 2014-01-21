@@ -28,7 +28,9 @@ describe('Sort Test', function () {
 				coll = _coll;
 				coll.ensureIndex({ num: 1 }, function () {
 					coll.ensureIndex({ num2: 1 }, function () {
-						done();
+						coll.ensureIndex({ inul: 1 }, function () {
+							done();
+						});
 					});
 				});
 			}));
@@ -40,7 +42,15 @@ describe('Sort Test', function () {
 				return _.random(100);
 			});
 			var docs = nums.map(function (num) {
-				return { num: num, num2: 100 - num, val: num };
+				var doc = { num: num, num2: 100 - num, val: num, nul:num,inul:num };
+				if (num%33==0) {
+					delete doc.nul;
+					delete doc.inul;
+				}
+				if (num%21==0) {
+					doc.nul = doc.inul = null;
+				}				
+				return doc;
 			});
 			asc = docs.slice().sort(function (a, b) {
 				return a.num - b.num;
@@ -60,6 +70,48 @@ describe('Sort Test', function () {
 				done();
 			}));
 		});
+		it("Sort with absent/null fields no index", function (done) {
+			coll.find().sort({ nul: 1 }).toArray(safe.sure(done, function (docs) {
+				var state = "nulls_start";
+				var prev_value;
+				_.each(docs, function (doc) {
+					if (state=="nulls_start") {
+						assert(!doc.nul);
+						state="nulls";
+					} else if (state=="nulls") {
+						if (doc.nul) {
+							state = "ordered";
+							prev_value = doc.nul;
+						}
+					} else {
+						assert(prev_value<=doc.nul)
+						prev_value = doc.nul;
+					}
+				})
+				done();
+			}));
+		});
+		it("Sort with absent/null fields with index", function (done) {
+			coll.find().sort({ nul: 1 }).toArray(safe.sure(done, function (docs) {
+				var state = "nulls_start";
+				var prev_value;
+				_.each(docs, function (doc) {
+					if (state=="nulls_start") {
+						assert(!doc.inul);
+						state="nulls";
+					} else if (state=="nulls") {
+						if (doc.inul) {
+							state = "ordered";
+							prev_value = doc.inul;
+						}
+					} else {
+						assert(prev_value<=doc.inul)
+						prev_value = doc.inul;
+					}
+				})
+				done();
+			}));
+		});		
 		it("Sort asc index 2", function (done) {
 			coll.find().sort({ num2: 1 }).toArray(safe.sure(done, function (docs) {
 				eq(docs, desc);

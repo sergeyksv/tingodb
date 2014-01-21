@@ -15,6 +15,7 @@ For those folks who familiar with Mongoose.js ODM we suggest to look at [Tungus]
 For more details please visit http://www.tingodb.com
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sergeyksv/tingodb/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+[![Build Status](https://travis-ci.org/sergeyksv/tingodb.png?branch=master)](https://travis-ci.org/sergeyksv/tingodb)
 
 Usage
 ======
