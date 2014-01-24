@@ -1,7 +1,7 @@
 {
   "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
-  "version": "0.1.18",
+  "version": "0.2.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
