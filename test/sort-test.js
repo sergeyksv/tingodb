@@ -71,6 +71,7 @@ describe('Sort Test', function () {
 			}));
 		});
 		it("Sort with absent/null fields no index", function (done) {
+			this.timeout(10000);
 			coll.find().sort({ nul: 1 }).toArray(safe.sure(done, function (docs) {
 				var state = "nulls_start";
 				var prev_value;
@@ -92,7 +93,7 @@ describe('Sort Test', function () {
 			}));
 		});
 		it("Sort with absent/null fields with index", function (done) {
-			coll.find().sort({ nul: 1 }).toArray(safe.sure(done, function (docs) {
+			coll.find().sort({ inul: 1 }).toArray(safe.sure(done, function (docs) {
 				var state = "nulls_start";
 				var prev_value;
 				_.each(docs, function (doc) {
