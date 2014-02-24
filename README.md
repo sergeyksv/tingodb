@@ -24,41 +24,45 @@ Usage
 
 As stated, the API is fully compatible with MongoDB. The only differences are the initialization and getting the Db object. Consider this MongoDB code:
 
-	var Db = require('mongodb').Db,
-		Server = require('mongodb').Server,
-		assert = require('assert');
+```javascript
+var Db = require('mongodb').Db,
+	Server = require('mongodb').Server,
+	assert = require('assert');
 
-	var db = new Db('test', new Server('locahost', 27017));
-	var collection = db.collection("batch_document_insert_collection_safe");
-	collection.insert([{hello:'world_safe1'}
-	  , {hello:'world_safe2'}], {w:1}, function(err, result) {
-	  assert.equal(null, err);
+var db = new Db('test', new Server('locahost', 27017));
+var collection = db.collection("batch_document_insert_collection_safe");
+collection.insert([{hello:'world_safe1'}
+  , {hello:'world_safe2'}], {w:1}, function(err, result) {
+  assert.equal(null, err);
 
-	  collection.findOne({hello:'world_safe2'}, function(err, item) {
-		assert.equal(null, err);
-		assert.equal('world_safe2', item.hello);
-	  })
-	});
+  collection.findOne({hello:'world_safe2'}, function(err, item) {
+	assert.equal(null, err);
+	assert.equal('world_safe2', item.hello);
+  })
+});
+```
 
 The same example using TingoDB will be as follows:
 
-	var Db = require('tingodb')().Db,
-		assert = require('assert');
+```javascript
+var Db = require('tingodb')().Db,
+	assert = require('assert');
 
-	var db = new Db('/some/local/path', {});
-	// Fetch a collection to insert document into
-	var collection = db.collection("batch_document_insert_collection_safe");
-	// Insert a single document
-	collection.insert([{hello:'world_safe1'}
-	  , {hello:'world_safe2'}], {w:1}, function(err, result) {
-	  assert.equal(null, err);
+var db = new Db('/some/local/path', {});
+// Fetch a collection to insert document into
+var collection = db.collection("batch_document_insert_collection_safe");
+// Insert a single document
+collection.insert([{hello:'world_safe1'}
+  , {hello:'world_safe2'}], {w:1}, function(err, result) {
+  assert.equal(null, err);
 
-	  // Fetch the document
-	  collection.findOne({hello:'world_safe2'}, function(err, item) {
-		assert.equal(null, err);
-		assert.equal('world_safe2', item.hello);
-	  })
-	});
+  // Fetch the document
+  collection.findOne({hello:'world_safe2'}, function(err, item) {
+	assert.equal(null, err);
+	assert.equal('world_safe2', item.hello);
+  })
+});
+```
 
 As you can see, the difference is in the `require` call and database object initialization. 
 
@@ -110,101 +114,106 @@ Example below (please see the three files).
 
 ###### engine.js - wrapper around TingoDB and MongoDB
 
-	
-	var fs = require('fs'),db,engine;
 
-	// load config
-	var cfg = JSON.parse(fs.readFileSync("./config.json"));
+```javascript	
+var fs = require('fs'),db,engine;
 
-	// load requestd engine and define engine-agnostic getDB function
-	if (cfg.app.engine=="mongodb") {
-		engine = require("mongodb");
-		module.exports.getDB = function () {
-			if (!db) db = new engine.Db(cfg.mongo.db,
-				new engine.Server(cfg.mongo.host, cfg.mongo.port, cfg.mongo.opts),
-					{native_parser: false, safe:true});
-			return db;
-		}
-	} else {
-		engine = require("tingodb")({});
-		module.exports.getDB = function () {
-			if (!db) db = new engine.Db(cfg.tingo.path, {});
-			return db;
-		}
+// load config
+var cfg = JSON.parse(fs.readFileSync("./config.json"));
+
+// load requestd engine and define engine-agnostic getDB function
+if (cfg.app.engine=="mongodb") {
+	engine = require("mongodb");
+	module.exports.getDB = function () {
+		if (!db) db = new engine.Db(cfg.mongo.db,
+			new engine.Server(cfg.mongo.host, cfg.mongo.port, cfg.mongo.opts),
+				{native_parser: false, safe:true});
+		return db;
 	}
-	// Depending on engine, this can be a different class
-	module.exports.ObjectID = engine.ObjectID;
+} else {
+	engine = require("tingodb")({});
+	module.exports.getDB = function () {
+		if (!db) db = new engine.Db(cfg.tingo.path, {});
+		return db;
+	}
+}
+// Depending on engine, this can be a different class
+module.exports.ObjectID = engine.ObjectID;
+```
 
 ###### sample.js - Dummy usage example, pay attention to comments
 
-	
-	var engine = require('./engine');
-	var db = engine.getDB();
 
-	console.time("sample")
-	db.open(function(err,db) {
-		db.collection("homes", function (err, homes) {
-			// it's fine to create ObjectID in advance
-			// NOTE!!! we get class through engine because its type
-			// can depends on database type
-			var homeId = new engine.ObjectID();
-			// but with TingoDB.ObjectID righ here it will be negative
-			// which means temporary. However it's unique and can be used for 
-			// comparisons
-			console.log(homeId);
-			homes.insert({_id:homeId, name:"test"}, function (err, home) {
-				var home = home[0];
-				// here, homeID will change its value and will be in sync
-				// with the database
-				console.log(homeId,home);
-				db.collection("rooms", function (err, rooms) {
-					for (var i=0; i<5; i++) {
-						// it's ok also to not provide id, then it will be generated
-						rooms.insert({name:"room_"+i,_idHome:homeId}, function (err, room) {
-							console.log(room[0]);
-							i--;
-							if (i==0) {
-								// now lets assume we serving request like
-								// /rooms?homeid=_some_string_
-								var query = "/rooms?homeid="+homeId.toString();
-								// dirty code to get simulated GET variable
-								var getId = query.match("homeid=(.*)")[1];
-								console.log(query, getId)
-								// typical code to get id from external world
-								// and use it for queries
-								rooms.find({_idHome:new engine.ObjectID(getId)})
-									.count(function (err, count) {
-										console.log(count);
-										console.timeEnd("sample");
-								})
-							}
-						})
-					}
-				})
+```javascript	
+var engine = require('./engine');
+var db = engine.getDB();
+
+console.time("sample")
+db.open(function(err,db) {
+	db.collection("homes", function (err, homes) {
+		// it's fine to create ObjectID in advance
+		// NOTE!!! we get class through engine because its type
+		// can depends on database type
+		var homeId = new engine.ObjectID();
+		// but with TingoDB.ObjectID righ here it will be negative
+		// which means temporary. However it's unique and can be used for 
+		// comparisons
+		console.log(homeId);
+		homes.insert({_id:homeId, name:"test"}, function (err, home) {
+			var home = home[0];
+			// here, homeID will change its value and will be in sync
+			// with the database
+			console.log(homeId,home);
+			db.collection("rooms", function (err, rooms) {
+				for (var i=0; i<5; i++) {
+					// it's ok also to not provide id, then it will be generated
+					rooms.insert({name:"room_"+i,_idHome:homeId}, function (err, room) {
+						console.log(room[0]);
+						i--;
+						if (i==0) {
+							// now lets assume we serving request like
+							// /rooms?homeid=_some_string_
+							var query = "/rooms?homeid="+homeId.toString();
+							// dirty code to get simulated GET variable
+							var getId = query.match("homeid=(.*)")[1];
+							console.log(query, getId)
+							// typical code to get id from external world
+							// and use it for queries
+							rooms.find({_idHome:new engine.ObjectID(getId)})
+								.count(function (err, count) {
+									console.log(count);
+									console.timeEnd("sample");
+							})
+						}
+					})
+				}
 			})
 		})
 	})
+})
+```
 
 ###### config.json - Dummy config
 
-	
-	{
-		"app":{
-			"engine":"tingodb"
-		},
-		"mongo":{
-			"host":"127.0.0.1",
-			"port":27017,
-			"db":"data",
-			"opts":{
-				"auto_reconnect": true,
-				"safe": true
-			}
-		},
-		"tingo":{
-			"path":"./data"
+```javascript	
+{
+	"app":{
+		"engine":"tingodb"
+	},
+	"mongo":{
+		"host":"127.0.0.1",
+		"port":27017,
+		"db":"data",
+		"opts":{
+			"auto_reconnect": true,
+			"safe": true
 		}
+	},
+	"tingo":{
+		"path":"./data"
 	}
+}
+```
 
 ###### Console output running on TingoDB
 
