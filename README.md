@@ -1,14 +1,14 @@
 TingoDB
 =======
 
-Embedded JavaScript in-process file system backed database upward compatible on API level with MongoDB.
+**TingoDB** is an embedded JavaScript in-process filesystem-backed database upwards compatible with MongoDB at the API level.
 
-Upward compatible means that if you build app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to mature solution at any moment.
+Upwards compatible means that if you build an app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to a mature solution at any moment.
 
-As a proof for upward compatibility all tests designed to run against both MongoDB and TingoDB.
-More over significant part of tests contributed from MongoDB nodejs driver project and used as is without modifications.
+As a proof for upward compatibility, all tests designed to run against both MongoDB and TingoDB.
+Moreover, significant parts of tests contributed from MongoDB nodejs driver projects and are used as is without modifications.
 
-For those folks who familiar with Mongoose.js ODM we suggest to look at [Tungus](https://github.com/sergeyksv/tungus), experimental driver that allows to use famous ODM tool with our database.
+For those folks who familiar with the Mongoose.js ODM, we suggest to look at [Tungus](https://github.com/sergeyksv/tungus), an experimental driver that allows using the famous ODM tool with our database.
 
 
 
@@ -22,7 +22,7 @@ Usage
 
 	npm install tingodb
 
-As it stated API is fully compatible with MongoDB. Difference is only initialization and obtaining of Db object. Consider this MongoDB code:
+As stated, the API is fully compatible with MongoDB. The only differences are the initialization and getting the Db object. Consider this MongoDB code:
 
 	var Db = require('mongodb').Db,
 		Server = require('mongodb').Server,
@@ -40,7 +40,7 @@ As it stated API is fully compatible with MongoDB. Difference is only initializa
 	  })
 	});
 
-The same example using TingoDB will be following:
+The same example using TingoDB will be as follows:
 
 	var Db = require('tingodb')().Db,
 		assert = require('assert');
@@ -60,17 +60,17 @@ The same example using TingoDB will be following:
 	  })
 	});
 
-So, as you can see difference is in require call and database object initialization. 
+As you can see, the difference is in the `require` call and database object initialization. 
 
 #### require('tingodb')(options)
 
-In contrast to MongoDB, module require call will not return usable module. It will return a function that accept configuration options. This function will return something similar to MongoDB module. Extra step allows to inject some options that will control database behavior.
+In contrast to MongoDB, the module `require` call will not return a usable module. It will return a function that accepts configuration options. This function will return something similar to the MongoDB module. THe extra step allows for passing some options that will control database behavior.
 
 ##### nativeObjectID: true|false Default is false
 
-Doing some experimentation we found that using integer keys we can get database work faster and save some space. Additionally for in-process database there are almost no any drawbacks versus globally unique keys. However in the same time it is relatively hard to keep unique integer keys outside of the database engine. So we make it part of the database engine code. Generated keys will be unique in collection scope. 
+Doing some experimentation we found that using integer keys we can get the database to work faster and save some space. Additionally, for in-process databases there are almost no drawbacks versus globally unique keys. However, at the same time, it is relatively hard to keep unique integer keys outside of the database engine, so we made it part of the database engine code. Generated keys will be unique in the collection scope.
 
-When required it is possible to switch to BSON ObjectID using the configuration option.
+When required, it is possible to switch to BSON ObjectID using the configuration option.
 
 ##### cacheSize: integer Default is 1000
 
@@ -78,37 +78,37 @@ Maximum number of cached objects per collection.
 
 ##### cacheMaxObjSize: integer Default is 1024 bytes
 
-Maximum size of object that can be placed to cache.
+Maximum size of objects that can be placed in the cache.
 
 ##### searchInArray: true|false Default is false
 
-Globally enables support of search in nested array. MongoDB support this unconditionally. For TingoDB search in arrays when there are no arrays is performance penalty. That's why it is switched off by default. 
-Additionally, and it might be better approach, nested arrays support can be enabled for individual indexes or search queries.
+Globally enables support of search in nested arrays. MongoDB supports this unconditionally. For TingoDB, search in arrays when there are no arrays incurs a performance penalty. That's why this is switched off by default. 
+Additionally, and this might be better a approach, nested arrays support can be enabled for individual indexes or search queries.
 
-To enable nested arrays in individual index use "_tiarr:true" option.
+To enable nested arrays in individual indexed, use "_tiarr:true" option.
  
 	self._cash_transactions.ensureIndex("splits.accountId",{_tiarr:true},cb); 
  
-To enable nested arrays in individual query for fields that do not use indexes use "_tiarr." prefixed field names.
+To enable nested arrays in individual queries for fields that do not use indexes, use "_tiarr." to prefix field names.
  
 	coll.find({'arr.num':10},{"_tiar.arr.num":0}) 
 
 ####  new Db(path, options)
 
-The only required parameter is database path. It should be valid path to empty folder or folder that already contain collection files.
+The only required parameter is the database path. It should be a valid path to an empty folder or a folder that already contains collection files.
 
 Dual usage
 =========
 
-It is possible to build application that will transparently support both MongoDB and TingoDB. Here are some hints that help to do it:
+It is possible to build applications that will transparently support both MongoDB and TingoDB. Here are some hints on how to do that:
 
-* Wrap module require call into helper module or make it part of core object. This way you can control which engine is loaded in single place.
+* Wrap the module `require` call into a helper module or make it part of the core object. This way you can control which engine is loaded in one place.
 * Use only native JavaScript types. BSON types can be slow in JavaScript and will need special attention when passed to or from client JavaScript.
-* Think about ObjectID as of just unique value that can be converted to and from String regardless its actual meaning.
+* Treat ObjectID just as a unique value that can be converted to and from String regardless its actual meaning.
 
-Please take a look to sample that consists from 3 files.
+Example below (please see the three files).
 
-###### engine.js - wrapper on TingoDB and MongoDB
+###### engine.js - wrapper around TingoDB and MongoDB
 
 	
 	var fs = require('fs'),db,engine;
@@ -116,7 +116,7 @@ Please take a look to sample that consists from 3 files.
 	// load config
 	var cfg = JSON.parse(fs.readFileSync("./config.json"));
 
-	// load requestd engine and define engine agnostic getDB function
+	// load requestd engine and define engine-agnostic getDB function
 	if (cfg.app.engine=="mongodb") {
 		engine = require("mongodb");
 		module.exports.getDB = function () {
@@ -132,7 +132,7 @@ Please take a look to sample that consists from 3 files.
 			return db;
 		}
 	}
-	// Depending on engine this can be different class
+	// Depending on engine, this can be a different class
 	module.exports.ObjectID = engine.ObjectID;
 
 ###### sample.js - Dummy usage example, pay attention to comments
@@ -144,23 +144,22 @@ Please take a look to sample that consists from 3 files.
 	console.time("sample")
 	db.open(function(err,db) {
 		db.collection("homes", function (err, homes) {
-			// its fine to create ObjectID in advance
-			// NOTE!!! we get class thru engine because its type
+			// it's fine to create ObjectID in advance
+			// NOTE!!! we get class through engine because its type
 			// can depends on database type
 			var homeId = new engine.ObjectID();
 			// but with TingoDB.ObjectID righ here it will be negative
-			// which means temporary. However its uniq and can be used for 
+			// which means temporary. However it's unique and can be used for 
 			// comparisons
 			console.log(homeId);
 			homes.insert({_id:homeId, name:"test"}, function (err, home) {
 				var home = home[0];
-				// in this place homeID will change its value and will be in sync
-				// with database
+				// here, homeID will change its value and will be in sync
+				// with the database
 				console.log(homeId,home);
 				db.collection("rooms", function (err, rooms) {
 					for (var i=0; i<5; i++) {
-						// its ok also to not provide id, then it will be
-						// generated
+						// it's ok also to not provide id, then it will be generated
 						rooms.insert({name:"room_"+i,_idHome:homeId}, function (err, room) {
 							console.log(room[0]);
 							i--;
@@ -246,16 +245,16 @@ Please take a look to sample that consists from 3 files.
 	
 Compatibility
 =========
-We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same, but something is not yet supported or support is limited. 
+We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same way, but some features are not yet supported or support is limited. 
 
 - Search, almost all clauses. Indexes are used to increase search speed and sorting.
 - Map reduce, almost all
 - Grouping, almost all
 - Collection, almost all methods
 - Cursor, almost all methods
-- Indexes, no support for compaund indxes, only single field indexes are supported. Full text search is also not supprted
+- Indexes, no support for compound indxes, only single-field indexes are supported. Full text search is also not supprted
 - GridFS, no support
-- Feature X, now know, might be :)
+- Feature X, might be :)
 
 
 ## MIT License
