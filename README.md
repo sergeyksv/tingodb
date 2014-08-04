@@ -261,7 +261,6 @@ We maintain full API and functionality compatibility with MongoDB **BUT** only f
 - Grouping, almost all
 - Collection, almost all methods
 - Cursor, almost all methods
-- Indexes, no support for compound indxes, only single-field indexes are supported. Full text search is also not supprted
 - GridFS, no support
 - Feature X, might be :)
 
