@@ -1,7 +1,7 @@
 {
   "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -29,22 +29,21 @@
     "node": ">= v0.8.x"
   },  
   "dependencies": {
-    "async": "",
+    "async": "0.9.x",
     "safe": ">=0.1.2",
-    "lodash": ""
+    "lodash": "2.4.x"
   },
   "scripts": {
       "test": "./test.sh"
   },
   "devDependencies": {
-	"csv": "",
-	"mongodb": "1.3.x",
+	"csv": "0.3.x",
+	"mongodb": "1.4.x",
 	"temp": "0.4.x",
-	"vows": "",
-	"lorem-ipsum":"",
-	"optimist":"",
-	"step":"",
-	"benchmark":"",
-	"mocha":""
+	"lorem-ipsum":"1.0.x",
+	"optimist":"0.6.x",
+	"step":"0.0.x",
+	"benchmark":"1.0.x",
+	"mocha":"1.21.x"
   }
 }
