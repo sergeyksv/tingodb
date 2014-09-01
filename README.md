@@ -1,6 +1,10 @@
 TingoDB
 =======
 
+[![Build Status](https://travis-ci.org/sergeyksv/tingodb.png?branch=master)](https://travis-ci.org/sergeyksv/tingodb)
+[![Deps Status](https://david-dm.org/sergeyksv/tingodb.png)](https://david-dm.org/sergeyksv/tingodb)
+[![Dev deps Status](https://david-dm.org/sergeyksv/tingodb/dev-status.png)](https://david-dm.org/sergeyksv/tingodb)
+
 **TingoDB** is an embedded JavaScript in-process filesystem-backed database upwards compatible with MongoDB at the API level.
 
 Upwards compatible means that if you build an app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to a mature solution at any moment.
@@ -13,9 +17,6 @@ For those folks who familiar with the Mongoose.js ODM, we suggest to look at [Tu
 
 
 For more details please visit http://www.tingodb.com
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/sergeyksv/tingodb/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-[![Build Status](https://travis-ci.org/sergeyksv/tingodb.png?branch=master)](https://travis-ci.org/sergeyksv/tingodb)
 
 Usage
 ======
