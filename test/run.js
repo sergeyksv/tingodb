@@ -99,6 +99,23 @@ if (!config.mongo) {
 		tutils.setConfig({ searchInArray: false , nativeObjectID: true });
 		run(cb);
 	})	
+	sessions.push(function (cb) {
+		mocha.grep("(FS)");
+		mocha.invert();
+		console.log('InMemory using defaults');
+		tutils.setConfig({ memStore:true });
+		run(cb);
+	})		
+	sessions.push(function (cb) {
+		console.log('InMemory using global searchInArray');
+		tutils.setConfig({ memStore:true, searchInArray: true , nativeObjectID: false });
+		run(cb);
+	})
+	sessions.push(function (cb) {
+		console.log('InMemory using BSON ObjectID');
+		tutils.setConfig({ memStore:true, searchInArray: false , nativeObjectID: true });
+		run(cb);
+	})		
 }
 
 async.series(sessions, function () { process.exit(0)});
