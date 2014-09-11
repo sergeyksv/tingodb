@@ -5,7 +5,7 @@ TingoDB
 [![Deps Status](https://david-dm.org/sergeyksv/tingodb.png)](https://david-dm.org/sergeyksv/tingodb)
 [![Dev deps Status](https://david-dm.org/sergeyksv/tingodb/dev-status.png)](https://david-dm.org/sergeyksv/tingodb)
 
-**TingoDB** is an embedded JavaScript in-process filesystem-backed database upwards compatible with MongoDB at the API level.
+**TingoDB** is an embedded JavaScript in-process filesystem or in-memory database upwards compatible with MongoDB at the API level.
 
 Upwards compatible means that if you build an app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to a mature solution at any moment.
 
@@ -14,9 +14,16 @@ Moreover, significant parts of tests contributed from MongoDB nodejs driver proj
 
 For those folks who familiar with the Mongoose.js ODM, we suggest to look at [Tungus](https://github.com/sergeyksv/tungus), an experimental driver that allows using the famous ODM tool with our database.
 
-
-
 For more details please visit http://www.tingodb.com
+
+Submiting bugs
+--------------
+
+Goal of our project is to fully mimics MongoDB functionality. Which means that we will consider bug as bug only when you find something that is working with MongoDB but didn't work with TingoDB. It would be very helful to get bugs in that case as pull requests to /test/misc-test.js file (or new file) which will contain code that reproduce issue. 
+
+To run test with MongoDB: ```./test.sh --quick --single=misc-test --db=mongodb```. 
+
+To run test with TingoDB: ```./test.sh --quick --single=misc-test --db=tingodb```
 
 Usage
 ======
@@ -70,6 +77,9 @@ As you can see, the difference is in the `require` call and database object init
 #### require('tingodb')(options)
 
 In contrast to MongoDB, the module `require` call will not return a usable module. It will return a function that accepts configuration options. This function will return something similar to the MongoDB module. THe extra step allows for passing some options that will control database behavior.
+
+##### memStore: true|false Default is false
+Enable in memory (no file access) mode. Can be useful for unit tests. File path will be used as db identity.
 
 ##### nativeObjectID: true|false Default is false
 

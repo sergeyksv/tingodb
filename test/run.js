@@ -100,8 +100,7 @@ if (!config.mongo) {
 		run(cb);
 	})	
 	sessions.push(function (cb) {
-		mocha.grep("(FS)");
-		mocha.invert();
+		global.nofs = true;
 		console.log('InMemory using defaults');
 		tutils.setConfig({ memStore:true });
 		run(cb);

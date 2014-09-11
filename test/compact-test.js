@@ -6,7 +6,7 @@ var tutils = require('./utils');
 var _ = require('lodash');
 var tingodb = require('../lib/main')({});
 
-describe('(FS) Compact', function () {
+(global.nofs?describe.skip:describe)('(FS) Compact', function () {
 	var db, coll, items, length, fsize;
 	function checkCount(done) {
 		coll.find().count(safe.sure(done, function (count) {
@@ -120,7 +120,7 @@ describe('(FS) Compact', function () {
 	});
 });
 
-describe('(FS) Update+Hash', function () {
+(global.nofs?describe.skip:describe)('(FS) Update+Hash', function () {
 	var db, coll, fsize;
 	it('Open database', function (done) {
 		tutils.getDb('test', true, safe.sure(done, function (_db) {
@@ -181,7 +181,7 @@ describe('(FS) Update+Hash', function () {
 	});
 });
 
-describe('(FS) Store', function () {
+(global.nofs?describe.skip:describe)('(FS) Store', function () {
 	var db, coll, fsize;
 	it('Operations must fail if db is linked to not existent path', function (done) {
 		var Db = tingodb.Db;

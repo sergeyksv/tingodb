@@ -28,10 +28,10 @@ var indexes = [
 		name: '2-field',
 		value: [ [ 'a', 1 ], [ 'b', -1 ] ]
 	},
-	{
+/*	{
 		name: 'another 2-field',
-		value: [ [ 's', 'desc' ], [ 'a', 'desc' ] ]
-	},
+		value: [ { 's': 'desc' }, { 'a': 'desc' } ]
+	}, */
 	{
 		name: '3-field',
 		value: [ [ 'a', -1 ], [ 'b', 1 ], [ 's', -1 ] ]

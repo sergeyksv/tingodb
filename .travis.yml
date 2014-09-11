@@ -2,3 +2,9 @@ language: node_js
 node_js:
   - "0.10"
   - "0.8"
+services:
+  - mongodb
+script:
+  - npm install
+  - ./test.sh --db=tingodb
+  - ./test.sh --db=mongodb
