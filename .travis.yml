@@ -6,5 +6,5 @@ services:
   - mongodb
 script:
   - npm install
-  - ./test.sh --db=mongodb --reporter=spec
+  - ./test.sh --db=mongodb --reporter=spec --quick
   - ./test.sh --db=tingodb --reporter=spec
