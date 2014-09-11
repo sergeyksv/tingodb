@@ -5,7 +5,7 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
-  },  
+  },
   "contributors": [
     {
       "name": "Sergey Korotkov",
@@ -14,8 +14,8 @@
     {
       "name": "Alexander Somov",
       "email": "al-s@yandex.ru"
-    } 
-  ],  
+    }
+  ],
   "description": "Embedded Node.js database upward compatible with MongoDB",
   "homepage": "http://www.tingodb.com",
   "keywords": [
@@ -23,11 +23,11 @@
     "datastore",
     "embedded",
     "mongodb"
-  ],  
+  ],
   "main": "./lib/main",
   "engines": {
     "node": ">= v0.8.x"
-  },  
+  },
   "dependencies": {
     "async": "0.9.x",
     "safe": ">=0.1.2",
@@ -38,7 +38,7 @@
   },
   "devDependencies": {
 	"csv": "0.3.x",
-	"mongodb": "1.3.x",
+	"mongodb": "1.4.x",
 	"temp": "0.4.x",
 	"lorem-ipsum":"1.0.x",
 	"optimist":"0.6.x",
