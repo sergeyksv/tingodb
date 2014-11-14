@@ -129,6 +129,14 @@ exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, tes
 
               client.dropCollection("test_collection_methods3", function(err, result) {
                 test.equal(true, result);
+
+                // Create and rename collection without options from collection object
+                client.createCollection('test_collection_methods5', function(err, collection) {
+                  test.equal('test_collection_methods5', collection.collectionName);
+                  collection.rename('test_collection_methods6', function(err, reply) {
+                    test.equal(null, err);
+                  })
+                })
                 test.done();
               });
             });
@@ -419,8 +427,14 @@ exports.shouldCorrectlyExecuteIndexExists = function(configuration, test) {
             collection.indexExists("c_1", function(err, result) {
               test.equal(false, result);
 
-              db.close();
-              test.done();
+              // Try creating index via db
+              db.createIndex('test_collection_index_exists', 'b', {w: 1}, function(err, indexName) {
+                collection.indexExists("b_1", function(err, result) {
+                  test.equal(true, result);
+                  db.close();
+                  test.done();
+                });
+              });
             });
           });
         });
