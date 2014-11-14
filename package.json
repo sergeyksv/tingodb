@@ -1,7 +1,7 @@
 {
   "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -14,6 +14,10 @@
     {
       "name": "Alexander Somov",
       "email": "al-s@yandex.ru"
+    },
+    {
+      "name": "Maya",
+      "email": "code@maya.ink"
     }
   ],
   "description": "Embedded Node.js database upward compatible with MongoDB",
