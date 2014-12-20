@@ -37,7 +37,7 @@ var Db = require('mongodb').Db,
 	Server = require('mongodb').Server,
 	assert = require('assert');
 
-var db = new Db('test', new Server('locahost', 27017));
+var db = new Db('test', new Server('localhost', 27017));
 var collection = db.collection("batch_document_insert_collection_safe");
 collection.insert([{hello:'world_safe1'}
   , {hello:'world_safe2'}], {w:1}, function(err, result) {
