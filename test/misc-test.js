@@ -77,4 +77,14 @@ describe('Misc', function () {
 			}))
 		}))
 	})
+        it('GH-21 $in should work as the intersection between the property array and the parameter array', function(done) {
+                db.collection("GH21", {}, safe.sure(done,function (_coll) {
+			_coll.insert({item: "abc", qty: 10, tags: [ "school", "clothing" ], sale: false }, safe.sure(done, function () {
+				_coll.find({tags: { $in: ["appliances", "school"] }}).toArray(safe.sure(done, function (docs) {
+					assert(docs.length,1);
+					done()
+				}))
+			}))
+		}))
+        })
 });
