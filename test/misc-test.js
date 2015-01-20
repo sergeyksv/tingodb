@@ -37,25 +37,25 @@ describe('Misc', function () {
 				}))
 			}))
 		}))
-	})	
+	})
 	it('GH-14 Exclude projection for _id can be mixed with include projections', function (done) {
 		db.collection("GH14", {}, safe.sure(done,function (_coll) {
 			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
 				_coll.findOne({},{_id:0,age:1}, safe.sure(done, function (obj) {
 					assert(!_.contains(_.keys(obj),'_id'));
-					assert(_.contains(_.keys(obj),'age'));					
-					assert(!_.contains(_.keys(obj),'name'));										
+					assert(_.contains(_.keys(obj),'age'));
+					assert(!_.contains(_.keys(obj),'name'));
 					_coll.findOne({},{age:1}, safe.sure(done, function (obj) {
 						assert(_.contains(_.keys(obj),'_id'));
-						assert(_.contains(_.keys(obj),'age'));					
+						assert(_.contains(_.keys(obj),'age'));
 						assert(!_.contains(_.keys(obj),'name'));
 						_coll.findOne({},{age:0}, safe.sure(done, function (obj) {
 							assert(_.contains(_.keys(obj),'_id'));
-							assert(!_.contains(_.keys(obj),'age'));					
+							assert(!_.contains(_.keys(obj),'age'));
 							assert(_.contains(_.keys(obj),'name'));
 							_coll.findOne({},{_id:0,age:0}, safe.sure(done, function (obj) {
 								assert(!_.contains(_.keys(obj),'_id'));
-								assert(!_.contains(_.keys(obj),'age'));					
+								assert(!_.contains(_.keys(obj),'age'));
 								assert(_.contains(_.keys(obj),'name'));
 								_coll.findOne({},{_id:1,age:0}, function (err) {
 									assert(err!=null)
@@ -77,14 +77,14 @@ describe('Misc', function () {
 			}))
 		}))
 	})
-        it('GH-21 $in should work as the intersection between the property array and the parameter array', function(done) {
-                db.collection("GH21", {}, safe.sure(done,function (_coll) {
+	it('GH-21 $in should work as the intersection between the property array and the parameter array', function(done) {
+		db.collection("GH21", {}, safe.sure(done,function (_coll) {
 			_coll.insert({item: "abc", qty: 10, tags: [ "school", "clothing" ], sale: false }, safe.sure(done, function () {
-				_coll.find({tags: { $in: ["appliances", "school"] }}).toArray(safe.sure(done, function (docs) {
+				_coll.find({tags: { $in: ["appliances", "school"] }},{"_tiar.tags":0}).toArray(safe.sure(done, function (docs) {
 					assert(docs.length,1);
 					done()
 				}))
 			}))
 		}))
-        })
+	})
 });
