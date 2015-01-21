@@ -277,8 +277,15 @@ We maintain full API and functionality compatibility with MongoDB **BUT** only f
 
 3rd Party Integrations
 =========
-- Sails.js TingoDB adapter: http://github.com/andyhu/sails-tingo
-- Running KeystoneJS with TingoDB: http://ifrederik.com/blog/2014/11/cms-without-db-running-keystonejs-without-mongodb/
+
+__Sails.js__
+
+TingoDB adapter for Sails.js: http://github.com/andyhu/sails-tingo
+Sails.js is a RoR like Node.js framework. It has a powerful ORM system called `waterline`, it supports all major databases (and web services) and provides an easy to use, unified interface for querying all different kind of databases. It also supports cross database (or different database engines) joins.
+
+__KeystoneJS__
+
+Running KeystoneJS with TingoDB: http://ifrederik.com/blog/2014/11/cms-without-db-running-keystonejs-without-mongodb/
 
 
 ## MIT License
