@@ -275,6 +275,11 @@ We maintain full API and functionality compatibility with MongoDB **BUT** only f
 - GridFS, no support
 - Feature X, might be :)
 
+3rd Party Integrations
+=========
+- Sails.js TingoDB adapter: http://github.com/andyhu/sails-tingo
+- Running KeystoneJS with TingoDB: http://ifrederik.com/blog/2014/11/cms-without-db-running-keystonejs-without-mongodb/
+
 
 ## MIT License
 
