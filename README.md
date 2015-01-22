@@ -3,7 +3,6 @@ TingoDB
 
 [![Build Status](https://travis-ci.org/sergeyksv/tingodb.png?branch=master)](https://travis-ci.org/sergeyksv/tingodb)
 [![Deps Status](https://david-dm.org/sergeyksv/tingodb.png)](https://david-dm.org/sergeyksv/tingodb)
-[![Dev deps Status](https://david-dm.org/sergeyksv/tingodb/dev-status.png)](https://david-dm.org/sergeyksv/tingodb)
 
 **TingoDB** is an embedded JavaScript in-process filesystem or in-memory database upwards compatible with MongoDB at the API level.
 
@@ -13,6 +12,8 @@ As a proof for upward compatibility, all tests designed to run against both Mong
 Moreover, significant parts of tests contributed from MongoDB nodejs driver projects and are used as is without modifications.
 
 For those folks who familiar with the Mongoose.js ODM, we suggest to look at [Tungus](https://github.com/sergeyksv/tungus), an experimental driver that allows using the famous ODM tool with our database.
+
+TingoDB can be dropin replacement for existing apps and frameworks that are based on MongoDB. Please some of [3rd party integrations](#integrations)
 
 For more details please visit http://www.tingodb.com
 
@@ -275,6 +276,22 @@ We maintain full API and functionality compatibility with MongoDB **BUT** only f
 - GridFS, no support
 - Feature X, might be :)
 
+<a name="integrations"></a>3rd Party Integrations
+=========
+We are open for contributions for this section. If you found or implemented some integration please open pull request :).
+
+__Sails.js__
+
+TingoDB adapter for Sails.js: http://github.com/andyhu/sails-tingo
+Sails.js is a RoR like Node.js framework. It has a powerful ORM system called `waterline`, it supports all major databases (and web services) and provides an easy to use, unified interface for querying all different kind of databases. It also supports cross database (or different database engines) joins.
+
+__KeystoneJS__
+
+Running KeystoneJS with TingoDB: http://ifrederik.com/blog/2014/11/cms-without-db-running-keystonejs-without-mongodb/
+
+__Realistic app with dual database support__
+
+Web based GnuCash clone: https://github.com/sergeyksv/skilap
 
 ## MIT License
 
@@ -285,5 +302,3 @@ Permission is hereby granted, free of charge, to any person obtaining a copy of 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-[![githalytics.com alpha](https://cruel-carlota.pagodabox.com/43ade4aa68ffeff6305805e22bcf676a "githalytics.com")](http://githalytics.com/sergeyksv/tingodb)
