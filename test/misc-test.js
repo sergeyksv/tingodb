@@ -87,4 +87,14 @@ describe('Misc', function () {
 			}))
 		}))
 	})
+	it('GH-65 $regex modifier does not work', function (done) {
+		db.collection("GH65", {}, safe.sure(done,function (_coll) {
+			_coll.insert([{hello:'world_safe1'}, {hello:'world_safe2'}], {w:1}, safe.sure(done, function(result) {
+				_coll.findOne({hello: {$regex: /^world_safe2$/}}, safe.sure(done, function(item) {
+					assert.equal('world_safe2', item.hello);
+					done()
+				}))
+			}))
+		}))
+	})
 });
