@@ -6,7 +6,6 @@ var loremIpsum = require('lorem-ipsum');
 var tutils = require("./utils");
 
 var num = 1000;
-var _dt = null;
 
 var words = ["Sergey Brin","Serg Kosting","Pupking Sergey","Munking Sirgey"];
 
@@ -33,10 +32,16 @@ describe('Search', function () {
 			async.whilst(function () { return i<=num; },
 				function (cb) {
 					var d = new Date();
-					if (_dt === null)
-						_dt=d;
-					var obj = { _dt: d, anum: [i,i+1,i+2], apum: [i,i+1,i+2], num: i, pum: i,
-						sub: { num: i }, sin: Math.sin(i), cos: Math.cos(i), t: 15,
+					var obj = {
+						_dt: d,
+						anum: [i, i + 1, i + 2],
+						apum: [i, i + 1, i + 2],
+						num: i,
+						pum: i,
+						sub: { num: i },
+						sin: Math.sin(i),
+						cos: Math.cos(i),
+						t: 15,
 						junk: loremIpsum({ count: 5, units: "words" })+words[i%words.length]+ loremIpsum({ count: 5, units: "words" })
 					};
 					if (i % 7 === 0) {
