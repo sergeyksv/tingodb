@@ -20,9 +20,9 @@ For more details please visit http://www.tingodb.com
 Submiting bugs
 --------------
 
-Goal of our project is to fully mimics MongoDB functionality. Which means that we will consider bug as bug only when you find something that is working with MongoDB but didn't work with TingoDB. It would be very helful to get bugs in that case as pull requests to /test/misc-test.js file (or new file) which will contain code that reproduce issue. 
+Goal of our project is to fully mimics MongoDB functionality. Which means that we will consider bug as bug only when you find something that is working with MongoDB but didn't work with TingoDB. It would be very helful to get bugs in that case as pull requests to /test/misc-test.js file (or new file) which will contain code that reproduce issue.
 
-To run test with MongoDB: ```./test.sh --quick --single=misc-test --db=mongodb```. 
+To run test with MongoDB: ```./test.sh --quick --single=misc-test --db=mongodb```.
 
 To run test with TingoDB: ```./test.sh --quick --single=misc-test --db=tingodb```
 
@@ -73,7 +73,7 @@ collection.insert([{hello:'world_safe1'}
 });
 ```
 
-As you can see, the difference is in the `require` call and database object initialization. 
+As you can see, the difference is in the `require` call and database object initialization.
 
 #### require('tingodb')(options)
 
@@ -98,16 +98,16 @@ Maximum size of objects that can be placed in the cache.
 
 ##### searchInArray: true|false Default is false
 
-Globally enables support of search in nested arrays. MongoDB supports this unconditionally. For TingoDB, search in arrays when there are no arrays incurs a performance penalty. That's why this is switched off by default. 
+Globally enables support of search in nested arrays. MongoDB supports this unconditionally. For TingoDB, search in arrays when there are no arrays incurs a performance penalty. That's why this is switched off by default.
 Additionally, and this might be better a approach, nested arrays support can be enabled for individual indexes or search queries.
 
 To enable nested arrays in individual indexed, use "_tiarr:true" option.
- 
-	self._cash_transactions.ensureIndex("splits.accountId",{_tiarr:true},cb); 
- 
+
+	self._cash_transactions.ensureIndex("splits.accountId",{_tiarr:true},cb);
+
 To enable nested arrays in individual queries for fields that do not use indexes, use "_tiarr." to prefix field names.
- 
-	coll.find({'arr.num':10},{"_tiar.arr.num":0}) 
+
+	coll.find({'arr.num':10},{"_tiar.arr.num":0})
 
 ####  new Db(path, options)
 
@@ -127,7 +127,7 @@ Example below (please see the three files).
 ###### engine.js - wrapper around TingoDB and MongoDB
 
 
-```javascript	
+```javascript
 var fs = require('fs'),db,engine;
 
 // load config
@@ -156,7 +156,7 @@ module.exports.ObjectID = engine.ObjectID;
 ###### sample.js - Dummy usage example, pay attention to comments
 
 
-```javascript	
+```javascript
 var engine = require('./engine');
 var db = engine.getDB();
 
@@ -168,7 +168,7 @@ db.open(function(err,db) {
 		// can depends on database type
 		var homeId = new engine.ObjectID();
 		// but with TingoDB.ObjectID righ here it will be negative
-		// which means temporary. However it's unique and can be used for 
+		// which means temporary. However it's unique and can be used for
 		// comparisons
 		console.log(homeId);
 		homes.insert({_id:homeId, name:"test"}, function (err, home) {
@@ -207,7 +207,7 @@ db.open(function(err,db) {
 
 ###### config.json - Dummy config
 
-```javascript	
+```javascript
 {
 	"app":{
 		"engine":"tingodb"
@@ -229,7 +229,7 @@ db.open(function(err,db) {
 
 ###### Console output running on TingoDB
 
-	
+
 	-2
 	13 { _id: 13, name: 'test' }
 	{ name: 'room_0', _idHome: 13, _id: 57 }
@@ -263,10 +263,10 @@ db.open(function(err,db) {
 	/rooms?homeid=51b43a05f092a1c544000001 51b43a05f092a1c544000001
 	5
 	sample: 22ms
-	
+
 Compatibility
 =========
-We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same way, but some features are not yet supported or support is limited. 
+We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same way, but some features are not yet supported or support is limited.
 
 - Search, almost all clauses. Indexes are used to increase search speed and sorting.
 - Map reduce, almost all

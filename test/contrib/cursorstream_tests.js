@@ -300,14 +300,14 @@ exports.shouldStreamDocumentsAcrossGetMoreCommandAndCountCorrectly = function(co
 
   var collection = client.collection('test_streaming_function_with_limit_for_fetching');
   var updateCollection = client.collection('test_streaming_function_with_limit_for_fetching_update');
-  
+
   // Insert the docs
-  collection.insert(docs, {w:1}, function(err, ids) {        
+  collection.insert(docs, {w:1}, function(err, ids) {
     var cursor = collection.find({});
     // Execute find on all the documents
-    var stream = cursor.stream(); 
+    var stream = cursor.stream();
 
-    stream.on('end', function() { 
+    stream.on('end', function() {
       updateCollection.findOne({id:1}, function(err, doc) {
         test.equal(null, err);
         test.equal(2000, doc.count);
@@ -316,12 +316,12 @@ exports.shouldStreamDocumentsAcrossGetMoreCommandAndCountCorrectly = function(co
       })
     });
 
-    stream.on('data',function(data){ 
+    stream.on('data',function(data){
       stream.pause();
 
       updateCollection.update({id: 1}, {$inc: {count: 1}}, {w:1, upsert:true}, function(err, result) {
         stream.resume();
       });
-    }); 
+    });
   });
 }

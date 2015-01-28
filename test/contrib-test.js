@@ -61,7 +61,7 @@ var config = function(options) {
     }
 
     // Used in tests
-    this.db_name = "test";    
+    this.db_name = "test";
   }
 }
 

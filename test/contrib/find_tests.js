@@ -415,7 +415,7 @@ exports.shouldCorrectlyPerformFindByWhere = function(configuration, test) {
 /**
  * @ignore
  */
-/* REASON: Hints not supported 
+/* REASON: Hints not supported
 exports.shouldCorrectlyPerformFindsWithHintTurnedOn = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_hint', function(err, collection) {
@@ -1133,7 +1133,7 @@ exports.shouldCorrectlyHandlerErrorForFindAndModifyWhenNoRecordExists = function
  * @ignore
  */
 exports.shouldCorrectlyExecuteFindAndModifyShouldGenerateCorrectBSON = function(configuration, test) {
-  var ObjectID = configuration.getMongoPackage().ObjectID;  
+  var ObjectID = configuration.getMongoPackage().ObjectID;
   var client = configuration.db();
   var transaction = {};
   transaction.document = {};
@@ -1884,17 +1884,17 @@ exports['Each should not hang on iterating over no results'] = function(configur
 }
 
 exports.shouldCorrectlyFindDocumentsByRegExp = function(configuration, test) {
-  var client = configuration.db();  
+  var client = configuration.db();
   // Serialized regexes contain extra trailing chars. Sometimes these trailing chars contain / which makes
   // the original regex invalid, and leads to segmentation fault.
   client.createCollection('test_regex_serialization', function(err, collection) {
     collection.insert({keywords: ["test", "segmentation", "fault", "regex", "serialization", "native"]}, {w:1}, function(err, r) {
-      
+
       var count = 20,
           run = function(i) {
-            // search by regex            
-            collection.findOne({keywords: {$all: [/ser/, /test/, /seg/, /fault/, /nat/]}}, function(err, item) {            
-              test.equal(6, item.keywords.length);              
+            // search by regex
+            collection.findOne({keywords: {$all: [/ser/, /test/, /seg/, /fault/, /nat/]}}, function(err, item) {
+              test.equal(6, item.keywords.length);
               if (i === 0) {
                test.done()
              }
@@ -1904,23 +1904,23 @@ exports.shouldCorrectlyFindDocumentsByRegExp = function(configuration, test) {
       while (count--) {
         run(count);
       }
-    });      
-  });    
+    });
+  });
 }
 
 exports.shouldCorrectlyDoFindMinMax = function(configuration, test) {
-  var client = configuration.db();  
+  var client = configuration.db();
   // Serialized regexes contain extra trailing chars. Sometimes these trailing chars contain / which makes
   // the original regex invalid, and leads to segmentation fault.
   client.createCollection('shouldCorrectlyDoFindMinMax', function(err, collection) {
     collection.insert({"_id": 123, "name": "some name", "min": 1, "max": 10}, {w:1}, function(err, doc) {
       test.equal(null, err);
 
-      collection.find({"_id": {$in:['some', 'value', 123]}}, {"_id":1, "max":1}, {}).toArray(function(err, docs) {        
+      collection.find({"_id": {$in:['some', 'value', 123]}}, {"_id":1, "max":1}, {}).toArray(function(err, docs) {
         test.equal(null, err);
         test.equal(10, docs[0].max)
 
-        collection.find({"_id": {$in:['some', 'value', 123]}}, {fields: {"_id":1, "max":1}}).toArray(function(err, docs) {        
+        collection.find({"_id": {$in:['some', 'value', 123]}}, {fields: {"_id":1, "max":1}}).toArray(function(err, docs) {
           test.equal(null, err);
           test.equal(10, docs[0].max)
 
@@ -1928,5 +1928,5 @@ exports.shouldCorrectlyDoFindMinMax = function(configuration, test) {
         });
       });
     });
-  });    
+  });
 }

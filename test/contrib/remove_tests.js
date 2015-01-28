@@ -10,19 +10,19 @@ exports.shouldRemoveAllDocumentsNoSafe = function(configuration, test) {
 
   // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
   // DOC_START
-  // Establish connection to db  
+  // Establish connection to db
   db.open(function(err, db) {
-    
+
     // Fetch a collection to insert document into
     db.collection("remove_all_documents_no_safe", function(err, collection) {
-      
+
       // Insert a bunch of documents
       collection.insert([{a:1}, {b:2}], {w:1}, function(err, result) {
         test.equal(null, err);
-        
+
         // Remove all the document
         collection.remove();
-        
+
         // Fetch all results
         collection.find().toArray(function(err, items) {
           test.equal(null, err);
@@ -32,7 +32,7 @@ exports.shouldRemoveAllDocumentsNoSafe = function(configuration, test) {
         });
       });
     })
-  });  
+  });
   // DOC_END
 }
 
@@ -48,26 +48,26 @@ exports.shouldRemoveSubsetOfDocumentsSafeMode = function(configuration, test) {
 
   // DOC_LINE var db = new Db('test', new Server('locahost', 27017));
   // DOC_START
-  // Establish connection to db  
+  // Establish connection to db
   db.open(function(err, db) {
-    
+
     // Fetch a collection to insert document into
     db.collection("remove_subset_of_documents_safe", function(err, collection) {
-      
+
       // Insert a bunch of documents
       collection.insert([{a:1}, {b:2}], {w:1}, function(err, result) {
         test.equal(null, err);
-        
+
         // Remove all the document
         collection.remove({a:1}, {w:1}, function(err, numberOfRemovedDocs) {
           test.equal(null, err);
           test.equal(1, numberOfRemovedDocs);
           db.close();
           test.done();
-        });        
+        });
       });
     })
-  });  
+  });
   // DOC_END
 }
 
@@ -86,7 +86,7 @@ exports.shouldCorrectlyClearOutCollection = function(configuration, test) {
             // Clear the collection
             collection.remove({}, {w:1}, function(err, result) {
               test.equal(2, result);
-              
+
               collection.count(function(err, count) {
                 test.equal(0, count);
                 // Let's close the db
@@ -97,7 +97,7 @@ exports.shouldCorrectlyClearOutCollection = function(configuration, test) {
         });
       });
     });
-  });    
+  });
 }
 
 /**
@@ -112,7 +112,7 @@ exports.shouldCorrectlyRemoveDocumentUsingRegExp = function(configuration, test)
         // Clear the collection
         collection.remove({address:/485 7th ave/}, {w:1}, function(err, result) {
           test.equal(1, result);
-          
+
           collection.count(function(err, count) {
             test.equal(0, count);
             // Let's close the db
@@ -121,7 +121,7 @@ exports.shouldCorrectlyRemoveDocumentUsingRegExp = function(configuration, test)
         });
       });
     });
-  });    
+  });
 }
 
 /**
@@ -134,11 +134,11 @@ exports.shouldCorrectlyRemoveOnlyFirstDocument = function(configuration, test) {
     client.collection('shouldCorrectlyRemoveOnlyFirstDocument', function(err, collection) {
       collection.insert([{a:1}, {a:1}, {a:1}, {a:1}], {w:1}, function(err, result) {
         test.equal(null, err);
-        
+
         // Remove the first
         collection.remove({a:1}, {w:1, single:true}, function(err, number) {
           test.equal(1, number);
-          
+
           collection.find({a:1}).count(function(err, result) {
             test.equal(3, result);
             test.done();
@@ -146,5 +146,5 @@ exports.shouldCorrectlyRemoveOnlyFirstDocument = function(configuration, test) {
         });
       });
     });
-  });    
+  });
 }

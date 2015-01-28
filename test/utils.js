@@ -70,7 +70,7 @@ var getDb = module.exports.getDb = function (tag, drop, cb) {
 			delete paths[tag];
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
-		} 
+		}
 		var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
 		var db = new tingodb.Db(paths[tag], {});
 		db.open(cb);
@@ -85,7 +85,7 @@ module.exports.getDbSync = function (tag, db_options, server_options, drop) {
 			delete paths[tag];
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
-		} 
+		}
 		var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
 		return new tingodb.Db(paths[tag], {name:tag});
 	}

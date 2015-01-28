@@ -31,7 +31,7 @@ describe('Basic', function () {
 			gt0sin = 0;
 			_dt = null;
 			var i=0;
-			async.whilst(function () { return i<num}, 
+			async.whilst(function () { return i<num},
 				function (cb) {
 					var d;
 					if (!_dt) _dt = d = new Date();
@@ -65,7 +65,7 @@ describe('Basic', function () {
 					coll = _coll;
 					coll.ensureIndex({sin:1}, safe.sure(done, function () {
 						coll.ensureIndex({num:1}, safe.sure(done, function () {
-							coll.ensureIndex({_dt:1}, safe.sure(done, function () {							
+							coll.ensureIndex({_dt:1}, safe.sure(done, function () {
 								done()
 							}))
 						}))
@@ -78,7 +78,7 @@ describe('Basic', function () {
 				assert.equal(count, num);
 				done();
 			}))
-		})		
+		})
 		it("utf8 text", function (done) {
 			coll.find({ sin: { $gt: 0 } }).toArray(safe.sure(done, function (docs) {
 				docs.forEach(function (doc) {
@@ -126,7 +126,7 @@ describe('Basic', function () {
 				assert.equal(docs[0]._id.toString(), _id.toString());
 				done();
 			}))
-		})		
+		})
 		it("find by two index fields", function (done) {
 			coll.find({num:{$lt:30},sin:{$lte:0}}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 15);
@@ -138,41 +138,41 @@ describe('Basic', function () {
 				assert.equal(docs.length, gt0sin);
 				done();
 			}))
-		})	
+		})
 		it("sort ascending no index", function (done) {
 			coll.find({num:{$lt:11}}).sort({num:1}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 11);
 				assert.equal(docs[0].num,0);
 				done();
 			}))
-		})		
+		})
 		it("sort descending no index", function (done) {
 			coll.find({num:{$lt:11}}).sort({num:-1}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 11);
 				assert.equal(docs[0].num,10);
 				done();
 			}))
-		})				
+		})
 		it("sort ascending with index", function (done) {
 			coll.find({pum:{$lt:11}}).sort({num:1}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 11);
 				assert.equal(docs[0].num,0);
 				done();
 			}))
-		})		
+		})
 		it("sort descending with index", function (done) {
 			coll.find({pum:{$lt:11}}).sort({num:-1}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 11);
 				assert.equal(docs[0].num,10);
 				done();
 			}))
-		})			
+		})
 		it("find with exclude fields {junk:0}", function (done) {
 			coll.find({num:10},{junk:0}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs[0].junk, null);
 				done();
 			}))
-		})		
+		})
 		it("find with exclude fields {'sub.num':0,junk:0}", function (done) {
 			coll.find({num:10},{'sub.num':0,junk:0}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs[0].junk, null);
@@ -182,18 +182,18 @@ describe('Basic', function () {
 		})
 		it("find with fields {'num':1}", function (done) {
 			coll.find({num:10},{'num':1}).toArray(safe.sure(done, function (docs) {
-				assert.equal(_.size(docs[0]),2);					
+				assert.equal(_.size(docs[0]),2);
 				assert.equal(docs[0].num, 10);
 				done();
 			}))
-		})	
+		})
 		it("find with fields {'sub.num':1}", function (done) {
 			coll.find({num:10},{'sub.num':1}).toArray(safe.sure(done, function (docs) {
-				assert.equal(_.size(docs[0]),2);					
+				assert.equal(_.size(docs[0]),2);
 				assert.equal(docs[0].sub.num, 10);
 				done();
 			}))
-		})	
+		})
 		it("dummy update", function (done) {
 			coll.update({pum:11},{$set:{num:10,"sub.tub":10,"sub.num":10},$unset:{sin:1}}, safe.sure(done, function () {
 				coll.find({pum:11}).toArray(safe.sure(done, function (docs) {
@@ -201,13 +201,13 @@ describe('Basic', function () {
 					var obj = docs[0];
 					assert.equal(obj.pum, 11);
 					assert.equal(obj.num, 10);
-					assert.equal(obj.sub.num, 10);					
-					assert.equal(obj.sub.tub, 10);	
-					assert.equal(obj.sin,null);	
+					assert.equal(obj.sub.num, 10);
+					assert.equal(obj.sub.tub, 10);
+					assert.equal(obj.sin,null);
 					done();
 				}))
 			}))
-		})	
+		})
 		it("$unset and $inc on subfields", function (done) {
 			coll.update({pum:11},{$unset:{"sub.tub":1}, $inc:{"sub.num": 5, "sub.pum": 3}}, safe.sure(done, function () {
 				coll.find({pum:11}).toArray(safe.sure(done, function (docs) {
@@ -230,7 +230,7 @@ describe('Basic', function () {
 					done();
 				}))
 			}))
-		})	
+		})
 		it("dummy remove", function (done) {
 			coll.remove({pum:20}, safe.sure(done, function () {
 				coll.findOne({pum:20},done)
