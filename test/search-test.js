@@ -6,7 +6,6 @@ var loremIpsum = require('lorem-ipsum');
 var tutils = require("./utils");
 
 var num = 1000;
-var gt0sin = 0;
 var _dt = null;
 
 var words = ["Sergey Brin","Serg Kosting","Pupking Sergey","Munking Sirgey"];
@@ -46,8 +45,6 @@ describe('Search', function () {
 						delete obj.pum;
 					}
 					coll.insert(obj, cb);
-					if (obj.sin>0 && obj.sin<0.5)
-						gt0sin++;
 					i++;
 				},
 				safe.sure(done, done)
