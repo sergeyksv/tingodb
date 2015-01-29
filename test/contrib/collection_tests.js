@@ -118,11 +118,11 @@ exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, tes
         client.createCollection('test_collection_methods3', function(err, collection) {
           // Verify that all the result are correct coming back (should contain the value ok)
           test.equal('test_collection_methods3', collection.collectionName);
-        
+
           client.createCollection('test_collection_methods4', function(err, collection) {
             // Verify that all the result are correct coming back (should contain the value ok)
             test.equal('test_collection_methods4', collection.collectionName);
-        
+
             // Rename the collection and with the dropTarget boolean, and check to make sure only onen exists.
             client.renameCollection("test_collection_methods4", "test_collection_methods3", {dropTarget:true}, function(err, reply) {
               test.equal(null, err);
@@ -549,7 +549,7 @@ exports.shouldFailToInsertDueToIllegalKeys = function(configuration, test) {
  */
 exports.shouldFailDueToIllegalCollectionNames = function(configuration, test) {
   var client = configuration.db();
-  
+
   client.collection(5, function(err, collection) {
     test.equal("collection name must be a String", err.message);
   });
@@ -898,7 +898,7 @@ exports.shouldCorrectlyUpdateMultipleDocuments = function(configuration, test) {
  * @_function distinct
  * @ignore
  */
-/* REASON: distinct is not supported 
+/* REASON: distinct is not supported
 exports.shouldCorrectlyHandleDistinctIndexes = function(configuration, test) {
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
 
@@ -1393,14 +1393,14 @@ exports.shouldThrowErrorDueToIllegalUpdate = function(configuration, test) {
       coll.update({}, null, function (err, res) {});
     } catch (err) {
       test.equal("document must be a valid JavaScript object", err.message)
-    }    
+    }
 
     try {
       coll.update(null, null, function (err, res) {});
     } catch (err) {
       test.equal("selector must be a valid JavaScript object", err.message)
-    }    
+    }
 
-    test.done()    
+    test.done()
   });
 }

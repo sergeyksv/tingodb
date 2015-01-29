@@ -12,7 +12,7 @@ var optimist = require('optimist')
 	.default('db', 'tingodb')
 	.describe('db', 'tingodb | mongodb')
     .describe('h', 'Display the usage')
-    .alias('h', 'help')	
+    .alias('h', 'help')
 	.boolean('quick')
 	.alias('q', 'quick')
 	.describe('quick', 'Run only quick tests')
@@ -22,11 +22,11 @@ var optimist = require('optimist')
 	})
 	.usage();
 var argv = optimist.argv;
-	
+
 if (argv.help) {
     optimist.showHelp();
     process.exit(0);
-}	
+}
 
 var config = {
 	mongo: argv.db == 'mongodb'
@@ -41,7 +41,7 @@ var files = [
 	'index-test.js',
 	'search-test.js',
 	'search-array-test.js',
-	'sort-test.js',	
+	'sort-test.js',
 	'crud-test.js',
 	'misc-test.js',
 	"update-test.js"
@@ -98,13 +98,13 @@ if (!config.mongo) {
 		console.log('Using BSON ObjectID');
 		tutils.setConfig({ searchInArray: false , nativeObjectID: true });
 		run(cb);
-	})	
+	})
 	sessions.push(function (cb) {
 		global.nofs = true;
 		console.log('InMemory using defaults');
 		tutils.setConfig({ memStore:true });
 		run(cb);
-	})		
+	})
 	sessions.push(function (cb) {
 		console.log('InMemory using global searchInArray');
 		tutils.setConfig({ memStore:true, searchInArray: true , nativeObjectID: false });
@@ -114,7 +114,7 @@ if (!config.mongo) {
 		console.log('InMemory using BSON ObjectID');
 		tutils.setConfig({ memStore:true, searchInArray: false , nativeObjectID: true });
 		run(cb);
-	})		
+	})
 }
 
 async.series(sessions, function () { process.exit(0)});

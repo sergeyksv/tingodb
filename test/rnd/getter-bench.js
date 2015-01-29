@@ -2,7 +2,7 @@ var finder = require('../lib/finder');
 var Benchmark = require('benchmark');
 var _ = require('underscore');
 
-var suite = new Benchmark.Suite();	
+var suite = new Benchmark.Suite();
 suite.on('cycle', function(event) {
   console.log(String(event.target));
 })
@@ -27,7 +27,7 @@ console.log(sn3(obj2));
 
 suite.add({name:"simple obj getter", defer:false, fn:function(next) {
 	return sn1(obj1);
-}});	
+}});
 suite.add({name:"recursive array getter", defer:false, fn:function(next) {
 	return sn2(obj2);
 }});

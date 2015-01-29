@@ -1,7 +1,7 @@
 var finder = require('../lib/finder');
 var Benchmark = require('benchmark');
 
-var suite = new Benchmark.Suite();	
+var suite = new Benchmark.Suite();
 suite.on('cycle', function(event) {
   console.log(String(event.target));
 })
@@ -27,7 +27,7 @@ var matcher = function (obj) {
 
 suite.add({name:"matcher", defer:false, fn:function(next) {
 	return matcher(obj);
-}});	
+}});
 suite.add({name:"seminative", defer:false, fn:function(next) {
 	return sn(obj);
 }});

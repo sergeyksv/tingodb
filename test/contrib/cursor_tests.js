@@ -1222,7 +1222,7 @@ exports['should be able to stream documents'] = function(configuration, test) {
  * @ignore
  * @api private
  */
-/* REASON: Cursor stream is not supported 
+/* REASON: Cursor stream is not supported
 exports['immediately destroying a stream prevents the query from executing'] = function(configuration, test) {
   var i = 0
     , docs = [{ b: 2 }, { b: 3 }]
@@ -1313,7 +1313,7 @@ exports['destroying a stream stops it'] = function(configuration, test) {
  * @ignore
  * @api private
  */
-/* REASON: Cursor stream is not supported 
+/* REASON: Cursor stream is not supported
 exports['cursor stream errors']= function(configuration, test) {
   if(configuration.db().serverConfig instanceof configuration.getMongoPackage().ReplSet) return test.done();
   var client = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
@@ -2024,12 +2024,12 @@ exports.shouldFailToSetReadPreferenceOnCursor = function(configuration, test) {
   // Establish connection to db
   db.open(function(err, db) {
     try {
-      db.collection('shouldFailToSetReadPreferenceOnCursor').find().setReadPreference("notsecondary");      
+      db.collection('shouldFailToSetReadPreferenceOnCursor').find().setReadPreference("notsecondary");
       test.ok(false);
     } catch (err) {
     }
 
-    db.collection('shouldFailToSetReadPreferenceOnCursor').find().setReadPreference("secondary");      
+    db.collection('shouldFailToSetReadPreferenceOnCursor').find().setReadPreference("secondary");
 
     db.close();
     test.done()
@@ -2055,7 +2055,7 @@ exports.shouldNotFailDueToStackOverflowEach = function(configuration, test) {
       collection.find({}).each(function(err, item) {
         if(item == null) {
           var e = new Date().getTime();
-          
+
           test.equal(30000, total);
           test.done();
         }

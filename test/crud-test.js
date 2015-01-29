@@ -19,7 +19,7 @@ describe('CRUD', function () {
 				done();
 			}))
 		}))
-	})	
+	})
 	describe('save', function () {
 		var obj;
 		it('create new', function (done) {
@@ -37,7 +37,7 @@ describe('CRUD', function () {
 					done()
 				}))
 			}))
-		})	
+		})
 		it('delete it', function (done) {
 			coll.remove({_id:obj._id}, safe.sure(done, function () {
 				coll.findOne({_id:obj._id}, {sort:{i:1}}, safe.sure(done, function (obj1) {
@@ -45,7 +45,7 @@ describe('CRUD', function () {
 					done()
 				}))
 			}))
-		})	
+		})
 	})
 	describe('update', function () {
 		var obj;
@@ -85,7 +85,7 @@ describe('CRUD', function () {
 					done()
 				}))
 			}))
-		})			
+		})
 		it('modify multi changes only specific field for many documents', function (done) {
 			coll.update({c:"multi"}, {$set:{a:[]}}, {multi:true}, safe.sure(done, function (n,r) {
 				assert.equal(n,2);
@@ -132,6 +132,6 @@ describe('CRUD', function () {
 					done()
 				}))
 			}))
-		})		
+		})
 	})
 });

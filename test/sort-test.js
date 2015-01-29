@@ -49,7 +49,7 @@ describe('Sort Test', function () {
 				}
 				if (num%21==0) {
 					doc.nul = doc.inul = null;
-				}				
+				}
 				return doc;
 			});
 			asc = docs.slice().sort(function (a, b) {
@@ -112,7 +112,7 @@ describe('Sort Test', function () {
 				})
 				done();
 			}));
-		});		
+		});
 		it("Sort asc index 2", function (done) {
 			coll.find().sort({ num2: 1 }).toArray(safe.sure(done, function (docs) {
 				eq(docs, desc);

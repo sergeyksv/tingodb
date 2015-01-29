@@ -757,14 +757,14 @@ exports.shouldCorrectlyInsertDBRefWithDbNotDefined = function(configuration, tes
   var doc = {_id: new ObjectID()};
   var doc2 = {_id: new ObjectID()};
   var doc3 = {_id: new ObjectID()};
-  
+
   collection.insert(doc, {w:1}, function(err, result) {
     // Create object with dbref
     doc2.ref = new DBRef('shouldCorrectlyInsertDBRefWithDbNotDefined', doc._id);
     doc3.ref = new DBRef('shouldCorrectlyInsertDBRefWithDbNotDefined', doc._id, configuration.db_name);
 
     collection.insert([doc2, doc3], {w:1}, function(err, result) {
-      
+
       // Get all items
       collection.find().toArray(function(err, items) {
         test.equal("shouldCorrectlyInsertDBRefWithDbNotDefined", items[1].ref.namespace);
@@ -927,7 +927,7 @@ exports['Should fail on insert due to key starting with $'] = function(configura
 /**
  * @ignore
  */
-/* REASON: inserting code is not supported 
+/* REASON: inserting code is not supported
 exports['Should Correctly allow for control of serialization of functions on command level'] = function(configuration, test) {
   var Code = configuration.getMongoPackage().Code;
 
@@ -1124,7 +1124,7 @@ exports.shouldFailDueToMessageBeingBiggerThanMaxMessageSize = function(configura
 
       db.close();
       test.done();
-    });    
+    });
   })
 }
 */
@@ -1285,7 +1285,7 @@ exports.executesCallbackOnceWithOveriddenDefaultDbWriteConcern = function(config
   var db = configuration.db();
   var collection = db.collection('gh-completely');
   collection.insert({ a: 1 }, { w: 0 }, cb);
-  
+
   setTimeout(function(){
     test.done();
   }, 100)
@@ -1305,7 +1305,7 @@ exports.executesCallbackOnceWithOveriddenDefaultDbWriteConcernWithUpdate = funct
   var db = configuration.db();
   var collection = db.collection('gh-completely');
   collection.update({ a: 1 }, {a:2}, { upsert:true, w: 0 }, cb);
-  
+
   setTimeout(function(){
     test.done();
   }, 100)
@@ -1325,7 +1325,7 @@ exports.executesCallbackOnceWithOveriddenDefaultDbWriteConcernWithRemove = funct
   var db = configuration.db();
   var collection = db.collection('gh-completely');
   collection.remove({ a: 1 }, { w: 0 }, cb);
-  
+
   setTimeout(function(){
     test.done();
   }, 100);
@@ -1334,7 +1334,7 @@ exports.executesCallbackOnceWithOveriddenDefaultDbWriteConcernWithRemove = funct
 /**
  * @ignore
  */
-/* REASON: Not compatible with BSON 
+/* REASON: Not compatible with BSON
 exports.handleBSONTypeInsertsCorrectly = function(configuration, test) {
   var ObjectID = configuration.getMongoPackage().ObjectID
     , Symbol = configuration.getMongoPackage().Symbol
@@ -1364,27 +1364,27 @@ exports.handleBSONTypeInsertsCorrectly = function(configuration, test) {
       test.equal(null, err);
       test.equal("abcdefghijkl", doc.symbol.toString());
 
-      collection.findOne({"objid": new ObjectID("abcdefghijkl")}, function(err, doc) {            
+      collection.findOne({"objid": new ObjectID("abcdefghijkl")}, function(err, doc) {
         test.equal(null, err);
         test.equal("6162636465666768696a6b6c", doc.objid.toString());
 
-        collection.findOne({"double": new Double(1)}, function(err, doc) {            
+        collection.findOne({"double": new Double(1)}, function(err, doc) {
           test.equal(null, err);
           test.equal(1, doc.double);
 
-          collection.findOne({"binary": new Binary(new Buffer("hello world"))}, function(err, doc) {            
+          collection.findOne({"binary": new Binary(new Buffer("hello world"))}, function(err, doc) {
             test.equal(null, err);
             test.equal("hello world", doc.binary.toString());
 
-            collection.findOne({"minkey": new MinKey()}, function(err, doc) {            
+            collection.findOne({"minkey": new MinKey()}, function(err, doc) {
               test.equal(null, err);
               test.ok(doc.minkey instanceof MinKey);
 
-              collection.findOne({"maxkey": new MaxKey()}, function(err, doc) {            
+              collection.findOne({"maxkey": new MaxKey()}, function(err, doc) {
                 test.equal(null, err);
                 test.ok(doc.maxkey instanceof MaxKey);
 
-                collection.findOne({"code": new Code("function () {}", {a: 77})}, function(err, doc) {            
+                collection.findOne({"code": new Code("function () {}", {a: 77})}, function(err, doc) {
                   test.equal(null, err);
                   test.ok(doc != null);
                   test.done();
@@ -1421,7 +1421,7 @@ exports.mixedTimestampAndDateQuery = function(configuration, test) {
       test.equal(null, err);
       test.ok(doc != null);
 
-      collection.findOne({"x": d}, function(err, doc) {            
+      collection.findOne({"x": d}, function(err, doc) {
         test.equal(null, err);
         test.ok(doc != null);
         test.done();
@@ -1482,6 +1482,6 @@ exports.shouldCorrectlyInsertSimpleUTF8Regexp = function(configuration, test) {
         test.done();
       });
     });
-  });    
+  });
 }
 
