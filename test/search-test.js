@@ -42,7 +42,8 @@ describe('Search', function () {
 						sin: Math.sin(i),
 						cos: Math.cos(i),
 						t: 15,
-						junk: loremIpsum({ count: 5, units: "words" })+words[i%words.length]+ loremIpsum({ count: 5, units: "words" })
+						junk: loremIpsum({ count: 5, units: "words" })+words[i%words.length]+ loremIpsum({ count: 5, units: "words" }),
+						sometimesNull: i % 2 ? null : 'something'
 					};
 					if (i % 7 === 0) {
 						obj.words=words;
@@ -329,6 +330,18 @@ describe('Search', function () {
 		it("find {'words':{$all:[/sirgey/i,/sergey/i]}}", function (done) {
 			coll.find({'words':{$all:[/sirgey/i,/sergey/i]}}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 142);
+				done();
+			}));
+		});
+		it("find {'sometimesNull':null}", function (done) {
+			coll.find({'sometimesNull':null}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 500);
+				done();
+			}));
+		});
+		it("find {'sometimesNull': {$ne: null}}", function (done) {
+			coll.find({'sometimesNull': {$ne: null}}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 500);
 				done();
 			}));
 		});
