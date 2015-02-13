@@ -97,4 +97,54 @@ describe('Misc', function () {
 			}))
 		}))
 	})
+	it('GH-22 $in should work with property of objects', function(done) {
+                var people = [
+                    {   name: 'mark',
+                        purchases: [
+                            {item: "abc", qty: 10, tags: [ "school", "clothing" ] }, 
+                            {item: "abd", qty: 14, tags: [ "clothing" ] }
+                        ]
+                    },
+                    {   name: 'nick',
+                        purchases: [
+                            {item: "abcx", qty: 10, tags: [ "school", "clothing" ] }, 
+                            {item: "abdx", qty: 14, tags: [ "clothing" ] }
+                        ]
+                    }
+                ]
+		db.collection("GH22", {}, safe.sure(done,function (_coll) {
+			_coll.insert(people, safe.sure(done, function () {
+				_coll.find({'purchases.item': { $in: ["abd", "ddd"] }},{"_tiarr.purchases.item":0}).toArray(safe.sure(done, function (docs) {
+					assert(docs.length,1);
+                                        assert(docs[0].name, "mark");
+					done()
+				}))
+			}))
+		}))
+	})
+	it('GH-23 $in and $elemMatch should work with property of objects', function(done) {
+                var people = [
+                    {   name: 'mark',
+                        purchases: [
+                            {item: "abc", qty: 10, tags: [ "school", "clothing" ] }, 
+                            {item: "abd", qty: 14, tags: [ "clothing" ] }
+                        ]
+                    },
+                    {   name: 'nick',
+                        purchases: [
+                            {item: "abcx", qty: 10, tags: [ "school", "clothing" ] }, 
+                            {item: "abdx", qty: 14, tags: [ "clothing" ] }
+                        ]
+                    }
+                ]
+		db.collection("GH23", {}, safe.sure(done,function (_coll) {
+			_coll.insert(people, safe.sure(done, function () {
+				_coll.find({purchases: {"$elemMatch": {item: {'$in' : ["abd", "ddd"] }}}},{"_tiarr.purchases":0}).toArray(safe.sure(done, function (docs) {
+					assert(docs.length,1);
+                                        assert(docs[0].name, "mark");
+					done()
+				}))
+			}))
+		}))
+	})
 });
