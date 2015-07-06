@@ -97,4 +97,14 @@ describe('Misc', function () {
 			}))
 		}))
 	})
+	it('GH-56 escaping regex characters in regex search', function (done) {
+		db.collection("GH56", {}, safe.sure(done,function (_coll) {
+			_coll.insert([{path: '/aaa/bbb/ccc/'}, {path:'/aaa/bbb'}, {path:'/aaa/bbb/qqq/'}], {w:1}, safe.sure(done, function(result) {
+				_coll.find({path: {$regex: '\/aaa\/'}}).toArray( safe.sure(done, function(docs) {
+					assert(docs.length,1);
+					done()
+				}))
+			}))
+		}))
+	})
 });
