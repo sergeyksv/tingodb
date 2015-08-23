@@ -107,4 +107,18 @@ describe('Misc', function () {
 			}))
 		}))
 	})
+	it('double escape for . can not be found in tingodb but in mongodb', function (done) {
+		db.collection("GHXX", {}, safe.sure(done,function (_coll) {
+			_coll.insert([{hello:'.'}, {hello:'something else'}], {w:1}, safe.sure(done, function(result) {
+				_coll.findOne({hello: new RegExp('^\.$')}, safe.sure(done, function(item) {
+					assert.equal('.', item.hello); //normally escaped works					
+					_coll.findOne({hello: new RegExp('^\\.$')}, safe.sure(done, function(item) {
+						assert.equal('.', item.hello); //doubly escaped does not work
+						done()
+					}))	
+				}))
+				
+			}))
+		}))
+	})
 });
