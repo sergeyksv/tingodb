@@ -6,7 +6,7 @@ var tutils = require('./utils');
 var _ = require('lodash');
 var tingodb = require('../lib/main')({});
 
-(global.nofs?describe.skip:describe)('(FS) Corrupted DB Load', function () {
+describe('(FS) Corrupted DB Load', function () {
 	var db, coll, items, length, fsize;
 	function checkCount(done) {
 		coll.find().count(safe.sure(done, function (count) {
