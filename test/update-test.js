@@ -1,6 +1,5 @@
 var assert = require('assert');
 var _ = require('lodash');
-var async = require('async');
 var safe = require('safe');
 var tutils = require("./utils");
 

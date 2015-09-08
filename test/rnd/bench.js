@@ -38,7 +38,7 @@ tutils.getDb('bench', true, function (err, db) {
 //		coll.ensureIndex({sin:1}, safe.sure(cb, function () {
 //			coll.ensureIndex({num:1}, safe.sure(cb, function () {
 		var i=0;
-		async.whilst(function () { return i<1000},
+		safe.whilst(function () { return i<1000},
 			function (cb) {
 				var obj = {num:i,sin:Math.sin(i),cos:Math.cos(i),t:15};
 				coll.insert(obj, cb);

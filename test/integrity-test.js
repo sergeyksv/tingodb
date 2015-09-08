@@ -1,5 +1,4 @@
 var assert = require('assert');
-var async = require('async');
 var fs = require('fs');
 var safe = require('safe');
 var tutils = require('./utils');
@@ -15,7 +14,7 @@ describe('(FS) Corrupted DB Load', function () {
 		}));
 	}
 	function checkData(done) {
-		async.forEachSeries(items, function (item, cb) {
+		safe.forEachSeries(items, function (item, cb) {
 			coll.findOne({ k: item.k }, safe.sure(cb, function (doc) {
 				if (item.x) {
 					assert.equal(doc, null);

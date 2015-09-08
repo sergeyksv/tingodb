@@ -1,6 +1,5 @@
 var assert = require('assert');
 var _ = require('lodash');
-var async = require('async');
 var safe = require('safe');
 var tutils = require("./utils");
 
@@ -30,7 +29,7 @@ describe('Search Array', function () {
 		});
 		it("Populated with test data", function (done) {
 			var i=1;
-			async.whilst(function () { return i<=num; },
+			safe.whilst(function () { return i<=num; },
 				function (cb) {
 					var arr = [], arr2=[], j, obj;
 					for (j=i; j<i+10; j++) {

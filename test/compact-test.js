@@ -1,5 +1,4 @@
 var assert = require('assert');
-var async = require('async');
 var fs = require('fs');
 var safe = require('safe');
 var tutils = require('./utils');
@@ -15,7 +14,7 @@ describe('(FS) Compact', function () {
 		}));
 	}
 	function checkData(done) {
-		async.forEachSeries(items, function (item, cb) {
+		safe.forEachSeries(items, function (item, cb) {
 			coll.findOne({ k: item.k }, safe.sure(cb, function (doc) {
 				if (item.x) {
 					assert.equal(doc, null);
@@ -53,7 +52,7 @@ describe('(FS) Compact', function () {
 			doc.v = _.random(101, 200);
 			return doc;
 		});
-		async.forEachSeries(docs, function (doc, cb) {
+		safe.forEachSeries(docs, function (doc, cb) {
 			coll.update({ k: doc.k }, doc, { w: 1 }, cb);
 		}, done);
 	});
@@ -83,7 +82,7 @@ describe('(FS) Compact', function () {
 			doc.v = _.random(201, 300);
 			return doc;
 		});
-		async.forEachSeries(docs, function (doc, cb) {
+		safe.forEachSeries(docs, function (doc, cb) {
 			coll.update({ k: doc.k }, doc, { upsert: true, w: 1 }, cb);
 		}, done);
 	});
@@ -129,7 +128,7 @@ describe('(FS) Hot Compact', function () {
 		}));
 	}
 	function checkData(done) {
-		async.forEachSeries(items, function (item, cb) {
+		safe.forEachSeries(items, function (item, cb) {
 			coll.findOne({ k: item.k }, safe.sure(cb, function (doc) {
 				if (item.x) {
 					assert.equal(doc, null);
@@ -167,7 +166,7 @@ describe('(FS) Hot Compact', function () {
 			doc.v = _.random(101, 200);
 			return doc;
 		});
-		async.forEachSeries(docs, function (doc, cb) {
+		safe.forEachSeries(docs, function (doc, cb) {
 			coll.update({ k: doc.k }, doc, { w: 1 }, cb);
 		}, done);
 	});
@@ -197,7 +196,7 @@ describe('(FS) Hot Compact', function () {
 			doc.v = _.random(201, 300);
 			return doc;
 		});
-		async.forEachSeries(docs, function (doc, cb) {
+		safe.forEachSeries(docs, function (doc, cb) {
 			coll.update({ k: doc.k }, doc, { upsert: true, w: 1 }, cb);
 		}, done);
 	});
@@ -287,14 +286,14 @@ describe('(FS) Store', function () {
 	var db, coll, fsize;
 	it('Operations must fail if db is linked to not existent path', function (done) {
 		var Db = tingodb.Db;
-		var db = new Db('/tmp/some_unexistant_path_667676qwe', {})
+		var db = new Db('/tmp/some_unexistant_path_667676qwe', {});
 		var c = db.collection( 'test' );
 		c.remove( {}, function (err) {
-			assert(err)
+			assert(err);
 			c.insert( {  name: 'Chiara',    surname: 'Mobily',     age: 22 } , function( err ){
 				assert(err);
 				done();
-			})
-		})
+			});
+		});
 	});
 });

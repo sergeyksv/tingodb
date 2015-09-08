@@ -1,5 +1,4 @@
 var assert = require('assert');
-var async = require('async');
 var csv = require('csv');
 var fs = require('fs');
 var zlib = require('zlib');
@@ -9,7 +8,7 @@ var tutils = require("./utils");
 
 function load(file, iterator, callback) {
 	var schema;
-	var queue = async.queue(function (task, cb) {
+	var queue = safe.queue(function (task, cb) {
 		if (task.value) iterator(task.value, task.index, cb);
 		else callback();
 	}, 1);

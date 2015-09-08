@@ -1,6 +1,5 @@
 var assert = require('assert');
 var _ = require('lodash');
-var async = require('async');
 var safe = require('safe');
 var loremIpsum = require('lorem-ipsum');
 var tutils = require("./utils");
@@ -29,7 +28,7 @@ describe('Search', function () {
 		});
 		before(function (done) {
 			var i=1;
-			async.whilst(function () { return i<=num; },
+			safe.whilst(function () { return i<=num; },
 				function (cb) {
 					var d = new Date();
 					var obj = {

@@ -96,10 +96,10 @@ describe('contrib', function () {
 		configuration = new (config())();
 		configuration.start(done);
 	});
-	_(files).each(function (file) {
+	_.each(files,function (file) {
 		var tests = require(dir + '/' + file);
 		describe(file, function () {
-			_(tests).each(function (fn, name) {
+			_.each(tests,function (fn, name) {
 				if (typeof fn != 'function') return;
 				describe(name, function () {
 					var done;

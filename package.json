@@ -37,9 +37,8 @@
     "node": ">= v0.8.x"
   },
   "dependencies": {
-    "async": "0.9.x",
-    "safe": ">=0.1.2",
-    "lodash": "2.4.x"
+    "safe": "~0.3.0",
+    "lodash": "~2.4.x"
   },
   "scripts": {
       "test": "./test.sh"

@@ -1,12 +1,11 @@
 var assert = require('assert');
 var _ = require('lodash');
-var async = require('async');
 var safe = require('safe');
 var tutils = require("./utils");
 
 function eq(docs1, docs2) {
 	assert.equal(docs1.length, docs2.length);
-	_(docs1).each(function (a, i) {
+	_.each(docs1,function (a, i) {
 		var b = docs2[i];
 		assert.equal(a.num, b.num);
 		assert.equal(a.num2, b.num2);
@@ -60,7 +59,7 @@ describe('Sort Test', function () {
 				return x.num > 25;
 			});
 			gtr = gt.slice().reverse();
-			async.forEachSeries(docs, function (doc, cb) {
+			safe.forEachSeries(docs, function (doc, cb) {
 				coll.insert(doc, cb);
 			}, done);
 		});

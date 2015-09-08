@@ -1,6 +1,5 @@
 var _ = require('lodash');
 var assert = require('assert');
-var async = require('async');
 var safe = require('safe');
 var tutils = require("./utils");
 
@@ -209,7 +208,7 @@ describe('Index Test', function () {
 		});
 	});
 	it("Populate with test data", function (done) {
-		async.forEachSeries(dataset, function (doc, cb) {
+		safe.forEachSeries(dataset, function (doc, cb) {
 			coll.insert(_.clone(doc), cb);
 		}, done);
 	});

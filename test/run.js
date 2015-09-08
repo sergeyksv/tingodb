@@ -4,7 +4,7 @@ var path = require('path');
 
 var Mocha = require('mocha');
 var mocha = new Mocha();
-var async = require('async');
+var safe = require('safe');
 
 var optimist = require('optimist')
 	.default('reporter','dot')
@@ -120,4 +120,4 @@ if (!config.mongo && !argv.default) {
 	})
 }
 
-async.series(sessions, function () { process.exit(0)});
+safe.series(sessions, function (err) { if (err) console.log(err); process.exit(0)});

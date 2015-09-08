@@ -1,5 +1,4 @@
 var assert = require('assert');
-var async = require('async');
 var safe = require('safe');
 var tutils = require("./utils");
 
@@ -12,7 +11,7 @@ describe('Delete', function () {
 		}));
 	}
 	function checkData(done) {
-		async.forEach(items, function (item, cb) {
+		safe.forEach(items, function (item, cb) {
 			coll.findOne({ k: item.k }, safe.sure(cb, function (doc) {
 				if (item.x) {
 					assert.equal(doc, null);

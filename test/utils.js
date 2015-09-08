@@ -3,7 +3,6 @@ var main_native = require('../lib/main')({ nativeObjectID: true });
 var main_array = require('../lib/main')({ searchInArray: true });
 var temp = require('temp');
 var _ = require('lodash');
-var async = require('async');
 var Db = require('mongodb').Db,
 	Server = require('mongodb').Server;
 var safe = require('safe');
