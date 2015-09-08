@@ -2,7 +2,6 @@ TingoDB
 =======
 
 [![Build Status](https://travis-ci.org/sergeyksv/tingodb.png?branch=master)](https://travis-ci.org/sergeyksv/tingodb)
-[![Deps Status](https://david-dm.org/sergeyksv/tingodb.png)](https://david-dm.org/sergeyksv/tingodb)
 
 **TingoDB** is an embedded JavaScript in-process filesystem or in-memory database upwards compatible with MongoDB at the API level.
 
@@ -112,6 +111,13 @@ To enable nested arrays in individual queries for fields that do not use indexes
 ####  new Db(path, options)
 
 The only required parameter is the database path. It should be a valid path to an empty folder or a folder that already contains collection files.
+
+API extensions
+==============
+
+#### Collection.compactCollection, Database.compactDatabase
+
+From the initial release compactionation function was available internally. Thre was several requests to make this avilable through API and we did it. Please keep in mind that compactination best to be called as first operation with database. Use compactionation in the middle of work session is also possible, but all cursors obatined prior to that will be invalidated and will throw errors on data access.
 
 Dual usage
 =========
