@@ -17,6 +17,7 @@ var optimist = require('optimist')
 	.alias('q', 'quick')
 	.describe('quick', 'Run only quick tests')
 	.describe('single', 'Run only single file')
+	.describe('default', 'Run only default configuration check')
 	.check(function (argv) {
 		return argv.db == 'tingodb' || argv.db == 'mongodb';
 	})
@@ -44,7 +45,8 @@ var files = [
 	'sort-test.js',
 	'crud-test.js',
 	'misc-test.js',
-	"update-test.js"
+	"update-test.js",
+	"integrity-test.js"
 ];
 var tingo = [
 	'compact-test.js'
@@ -88,7 +90,7 @@ var sessions = [
 	}
 ]
 
-if (!config.mongo) {
+if (!config.mongo && !argv.default) {
 	sessions.push(function (cb) {
 		console.log('Using global searchInArray');
 		tutils.setConfig({ searchInArray: true , nativeObjectID: false });
