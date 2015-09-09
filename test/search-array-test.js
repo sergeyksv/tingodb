@@ -44,7 +44,7 @@ describe('Search Array', function () {
 					for (j=0; j<10; j++) {
 						arr[j].sub.arr = arr2;
 					}
-					obj = {num:i, pum:i, arr:arr, tags:["tag"+i,"tag"+(i+1)], nested:{tags:["tag"+i,"tag"+(i+1)]}};
+					obj = {num:i, pum:i, arr:arr, nags:["tag"+i,"tag"+(i+1)], tags:["tag"+i,"tag"+(i+1)], nested:{tags:["tag"+i,"tag"+(i+1)]}};
 					coll.insert(obj, cb);
 					i++;
 				},
@@ -276,6 +276,18 @@ describe('Search Array', function () {
 		it("find flat array {'tags':'tag2'} (index)", function (done) {
 			coll.find({'tags':'tag2'}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 2);
+				done();
+			}));
+		});
+		it("find flat array {'tags':{'$regex':'tag1.'}} (index)", function (done) {
+			coll.find({'tags':{'$regex':'tag1.'}},{"_tiar.nags":0}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 13);
+				done();
+			}));
+		});
+		it("find flat array {'nags':{'$regex':'tag'}} (no index)", function (done) {
+			coll.find({'nags':{'$regex':'tag1.'}},{"_tiar.nags":0}).toArray(safe.sure(done, function (docs) {
+				assert.equal(docs.length, 13);
 				done();
 			}));
 		});
