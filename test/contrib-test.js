@@ -81,10 +81,10 @@ var files = [
 ];
 
 var slow = {
-	'shouldStreamDocumentsWithPauseAndResumeForFetching': 10000,
+	'shouldStreamDocumentsWithPauseAndResumeForFetching': 20000,
 	'shouldNotFailDueToStackOverflowEach': 30000,
 	'shouldNotFailDueToStackOverflowToArray': 30000,
-	'shouldStream10KDocuments': 60000
+	'shouldStream10KDocuments': 90000
 };
 
 describe('contrib', function () {
