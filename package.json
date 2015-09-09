@@ -1,7 +1,7 @@
 {
   "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "safe": "~0.3.0",
-    "lodash": "~3.1.x"
+    "lodash": "~3.10.x"
   },
   "scripts": {
       "test": "./test.sh"
