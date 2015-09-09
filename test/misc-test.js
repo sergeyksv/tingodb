@@ -115,14 +115,15 @@ describe('Misc', function () {
 					_coll.find({hello: /^\.$/}).toArray(safe.sure(done, function(items) {
 						assert.equal(items.length,1);
 						assert.equal('.', items[0].hello); //normally escaped works
-						done()
-					}))
-				}))
-			}))
-		}))
-	})
-	it('regexp with double quote', function (done) {
-		db.collection("doublequote", {}, safe.sure(done,function (_coll) {
+						done();
+					}));
+				}));
+			}));
+		}));
+	});
+
+	it('regexp with double quotes', function (done) {
+		db.collection("doublequotes", {}, safe.sure(done,function (_coll) {
 			_coll.insert([{hello:'"quote"'}, {hello:'""'}], {w:1}, safe.sure(done, function(result) {
 				_coll.find({hello: new RegExp('^".*"$')}).toArray(safe.sure(done, function(items) {
 					assert.equal(items.length,2);
@@ -131,7 +132,7 @@ describe('Misc', function () {
 						done();
 					}));
 				}));
-			}))
-		}))
-	})
+			}));
+		}));
+	});
 });
