@@ -45,19 +45,20 @@ var files = [
 	'sort-test.js',
 	'crud-test.js',
 	'misc-test.js',
-	"update-test.js",
-	"integrity-test.js"
+	"update-test.js"
 ];
 var tingo = [
-	'compact-test.js'
+	'compact-test.js',
+	'integrity-test.js'
 ];
+
 var slow = [
 	'import-test.js',
 	'contrib-test.js'
 ];
 
 if (argv.single) {
-	files = [argv.single]
+	files = [argv.single];
 } else {
 	if (!config.mongo) files = files.concat(tingo);
 	if (!argv.quick) files = files.concat(slow);
