@@ -280,7 +280,7 @@ describe('Search Array', function () {
 			}));
 		});
 		it("find flat array {'tags':{'$regex':'tag1.'}} (index)", function (done) {
-			coll.find({'tags':{'$regex':'tag1.'}},{"_tiar.nags":0}).toArray(safe.sure(done, function (docs) {
+			coll.find({'tags':{'$regex':'tag1.'}},{"_tiar.tags":0}).toArray(safe.sure(done, function (docs) {
 				assert.equal(docs.length, 13);
 				done();
 			}));
