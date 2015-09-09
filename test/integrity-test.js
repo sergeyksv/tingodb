@@ -47,9 +47,10 @@ describe('(FS) Corrupted DB Load', function () {
 	it('Close database and trunkate collection file', function (done) {
 		db.close(safe.sure(done, function () {
 			fs.stat(coll._filename, safe.sure(done, function (stats) {
-				fs.truncate(coll._filename, stats.size-100, done);
+				console.log(stats,coll._filename);
 				items = items.slice(0,99);
 				length--;
+				fs.truncate(coll._filename, stats.size-100, done);
 			}));
 		}));
 	});

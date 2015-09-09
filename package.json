@@ -38,7 +38,7 @@
   },
   "dependencies": {
     "safe": "~0.3.0",
-    "lodash": "~2.4.x"
+    "lodash": "~3.1.x"
   },
   "scripts": {
       "test": "./test.sh"
