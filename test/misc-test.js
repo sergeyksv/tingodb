@@ -67,6 +67,7 @@ describe('Misc', function () {
 			}))
 		}))
 	})
+
 	it('GH-26 sort order can also be optional for findAndRemove', function (done) {
 		db.collection("GH26", {}, safe.sure(done,function (_coll) {
 			_coll.insert({}, safe.sure(done, function () {
@@ -76,6 +77,39 @@ describe('Misc', function () {
 			}))
 		}))
 	})
+
+	it('GH-26-1 sort order and opts can be undefined for findAndRemove', function (done) {
+		db.collection("GH26-1", {}, safe.sure(done,function (_coll) {
+			_coll.insert({}, safe.sure(done, function () {
+				_coll.findAndRemove({},undefined,undefined,safe.sure(done, function (res) {
+					done();
+				}))
+			}))
+		}))
+	})
+
+	it('GH-26-2 sort order can also be optional and undefined for findAndRemove', function (done) {
+		db.collection("GH26-2", {}, safe.sure(done,function (_coll) {
+			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
+				_coll.findAndModify({},{age:1},{$set: {name: 'Tony'}, $unset: { age: true }},undefined,safe.sure(done, function (doc) {
+					assert(doc.age);
+					done();
+				}))
+			}))
+		}))
+	})
+
+	it('GH-26-3 optional find paramater can be undefined', function (done) {
+		db.collection("GH26-3", {}, safe.sure(done,function (_coll) {
+			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
+				_coll.find({},undefined,undefined).toArray(safe.sure(done, function (docs) {
+					assert(docs.length==1);
+					done();
+				}))
+			}))
+		}))
+	})
+
 	it('GH-21 $in should work as the intersection between the property array and the parameter array', function(done) {
 		db.collection("GH21", {}, safe.sure(done,function (_coll) {
 			_coll.insert({item: "abc", qty: 10, tags: [ "school", "clothing" ], sale: false }, safe.sure(done, function () {
