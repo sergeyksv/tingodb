@@ -99,6 +99,17 @@ describe('Misc', function () {
 		}))
 	})
 
+	it('GH-26-3 doc can be undefined if remote is true for findAndModify', function (done) {
+		db.collection("GH26-3", {}, safe.sure(done,function (_coll) {
+			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
+				_coll.findAndModify({},{age:1},undefined,{remove:true},safe.sure(done, function (doc) {
+					assert(doc.age);
+					done();
+				}))
+			}))
+		}))
+	})
+
 	it('GH-26-3 optional find paramater can be undefined', function (done) {
 		db.collection("GH26-3", {}, safe.sure(done,function (_coll) {
 			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
