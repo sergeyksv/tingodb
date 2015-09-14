@@ -138,13 +138,17 @@ describe('Misc', function () {
 
 	it('GH-85 numberic properties should be supported', function (done) {
 		db.collection("GH85", {}, safe.sure(done,function (_coll) {
-			_coll.insert({1234:"test"}, safe.sure(done, function () {
+			_coll.insert({1234:"test",nested:{level:{123:"test"}}}, safe.sure(done, function () {
 				_coll.findOne({1234:"test"},safe.sure(done, function (res) {
 					assert(res);
 					assert.equal(res[1234],"test");
-					done();
-				}))
-			}))
-		}))
-	})
+					_coll.findOne({"nested.level.123":"test"},safe.sure(done, function (res) {
+						assert(res);
+						assert.equal(res.nested.level[123],"test");
+						done();
+					}));
+				}));
+			}));
+		}));
+	});
 });
