@@ -196,4 +196,36 @@ describe('Misc', function () {
 			}));
 		}));
 	});
+
+	it('GH-88 multiple fields search by range', function (done) {
+
+		var samples = [
+			{"date2": "2008-12-29T23:00:00.000Z", "n_length": 16},
+			{"date2": "2009-12-29T23:00:00.000Z", "n_length": 5},
+			{"date2": "2009-12-30T23:00:00.000Z", "n_length": 10},
+			{"date2": "2009-12-28T23:00:00.000Z", "n_length": 11},
+			{"date2": "2008-12-29T23:00:00.000Z", "n_length": 16},
+			{"date2": "2008-12-29T23:00:00.000Z", "n_length": 16}
+		]
+
+		var q = {
+			date2: {$gte: '2009-01-01T00:00:00.000Z', $lt: '2010-01-02T00:00:00.000Z'},
+			n_length: {$gte: 8, $lte: 10}
+		}
+
+		db.collection("GH88", {}, safe.sure(done, function (_coll) {
+			_coll.insert(samples, safe.sure(done, function () {
+
+				_coll.createIndex({"date2": 1}, safe.sure(done, function (indexname) {
+					_coll.find(q).toArray(safe.sure(done, function (res) {
+						assert(res)
+						assert.equal(res.length,1)
+						assert(res[0].date2 === '2009-12-30T23:00:00.000Z')
+						done()
+					}));
+				}));
+			}));
+		}));
+	});
+
 });
