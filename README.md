@@ -12,14 +12,14 @@ Moreover, significant parts of tests contributed from MongoDB nodejs driver proj
 
 For those folks who familiar with the Mongoose.js ODM, we suggest to look at [Tungus](https://github.com/sergeyksv/tungus), an experimental driver that allows using the famous ODM tool with our database.
 
-TingoDB can be dropin replacement for existing apps and frameworks that are based on MongoDB. Please some of [3rd party integrations](#integrations)
+TingoDB can be dropin replacement for existing apps and frameworks that are based on MongoDB. Please see some [3rd party integrations](#integrations)
 
 For more details please visit http://www.tingodb.com
 
-Submiting bugs
+Submitting bugs
 --------------
 
-Goal of our project is to fully mimics MongoDB functionality. Which means that we will consider bug as bug only when you find something that is working with MongoDB but didn't work with TingoDB. It would be very helful to get bugs in that case as pull requests to /test/misc-test.js file (or new file) which will contain code that reproduce issue.
+Goal of our project is to fully mimic MongoDB functionality. Which means that we will consider bug as bug only when you find something that is working with MongoDB but isn't working with TingoDB. It would be very helpful to get bugs in that case as pull requests to /test/misc-test.js file (or new file) which will contain code that reproduce issue.
 
 To run test with MongoDB: ```./test.sh --quick --single=misc-test --db=mongodb```.
 
@@ -50,7 +50,7 @@ collection.insert([{hello:'world_safe1'}
 });
 ```
 
-The same example using TingoDB will be as follows:
+The same example using TingoDB is as follows:
 
 ```javascript
 var Db = require('tingodb')().Db,
@@ -76,7 +76,7 @@ As you can see, the difference is in the `require` call and database object init
 
 #### require('tingodb')(options)
 
-In contrast to MongoDB, the module `require` call will not return a usable module. It will return a function that accepts configuration options. This function will return something similar to the MongoDB module. THe extra step allows for passing some options that will control database behavior.
+In contrast to MongoDB, the module `require` call will not return a usable module. It will return a function that accepts configuration options. This function will return something similar to the MongoDB module. The extra step allows for passing some options that will control database behavior.
 
 ##### memStore: true|false Default is false
 Enable in memory (no file access) mode. Can be useful for unit tests. File path will be used as db identity.
@@ -97,8 +97,8 @@ Maximum size of objects that can be placed in the cache.
 
 ##### searchInArray: true|false Default is false
 
-Globally enables support of search in nested arrays. MongoDB supports this unconditionally. For TingoDB, search in arrays when there are no arrays incurs a performance penalty. That's why this is switched off by default.
-Additionally, and this might be better a approach, nested arrays support can be enabled for individual indexes or search queries.
+Globally enables support of search in nested arrays. MongoDB supports this unconditionally. For TingoDB, searching arrays when there are no arrays incurs a performance penalty. That's why this is switched off by default.
+Additionally, and this might be a better approach, nested array support can be enabled for individual indexes or search queries.
 
 To enable nested arrays in individual indexed, use "_tiarr:true" option.
 
@@ -117,7 +117,7 @@ API extensions
 
 #### Collection.compactCollection, Database.compactDatabase
 
-From the initial release compactionation function was available internally. Thre was several requests to make this avilable through API and we did it. Please keep in mind that compactination best to be called as first operation with database. Use compactionation in the middle of work session is also possible, but all cursors obatined prior to that will be invalidated and will throw errors on data access.
+From the initial release compactionation function was available internally. There were several requests to make this avilable through API and we did it. Please keep in mind that compactination is best called as the first operation with database. Using compactionation in the middle of work session is also possible, but all cursors obtained prior to that will be invalidated and will throw errors on data access.
 
 Dual usage
 =========
