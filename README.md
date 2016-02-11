@@ -12,7 +12,7 @@ Moreover, significant parts of tests contributed from MongoDB nodejs driver proj
 
 For those folks who familiar with the Mongoose.js ODM, we suggest to look at [Tungus](https://github.com/sergeyksv/tungus), an experimental driver that allows using the famous ODM tool with our database.
 
-TingoDB can be dropin replacement for existing apps and frameworks that are based on MongoDB. Please some of [3rd party integrations](#integrations)
+TingoDB can be dropin replacement for existing apps and frameworks that are based on MongoDB. Please see some [3rd party integrations](#integrations)
 
 For more details please visit http://www.tingodb.com
 
