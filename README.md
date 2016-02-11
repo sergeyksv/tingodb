@@ -16,7 +16,7 @@ TingoDB can be dropin replacement for existing apps and frameworks that are base
 
 For more details please visit http://www.tingodb.com
 
-Submiting bugs
+Submitting bugs
 --------------
 
 Goal of our project is to fully mimics MongoDB functionality. Which means that we will consider bug as bug only when you find something that is working with MongoDB but didn't work with TingoDB. It would be very helful to get bugs in that case as pull requests to /test/misc-test.js file (or new file) which will contain code that reproduce issue.
