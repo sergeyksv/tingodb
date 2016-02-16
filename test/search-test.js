@@ -52,7 +52,7 @@ describe('Search', function () {
 					coll.insert(obj, cb);
 					i++;
 				},
-				safe.sure(done, done)
+				done
 			);
 		});
 		it("Has right size", function (done) {
