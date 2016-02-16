@@ -48,7 +48,7 @@ describe('Search Array', function () {
 					coll.insert(obj, cb);
 					i++;
 				},
-				safe.sure(done, done)
+				done
 			);
 		});
 		it("has proper size", function (done) {

@@ -42,7 +42,7 @@ describe('Basic', function () {
 					   gt0sin++;
 					i++;
 				},
-				safe.sure(done, done)
+				done
 			)
 		})
 		it("Has right size", function (done) {
