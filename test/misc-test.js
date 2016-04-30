@@ -28,9 +28,9 @@ describe('Misc', function () {
 		db.collection("GH19", {}, safe.sure(done,function (_coll) {
 			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
 				_coll.findAndModify({},{age:1},{$set: {name: 'Tony'}, $unset: { age: true }},{new:true},safe.sure(done, function (doc) {
-					assert(!_.contains(_.keys(doc),'age'));
+					assert(!_.includes(_.keys(doc),'age'));
 					_coll.findOne({},{age:1},safe.sure(done, function (obj) {
-						assert(!_.contains(_.keys(obj),'age'));
+						assert(!_.includes(_.keys(obj),'age'));
 						done();
 					}))
 				}))
@@ -41,21 +41,21 @@ describe('Misc', function () {
 		db.collection("GH14", {}, safe.sure(done,function (_coll) {
 			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
 				_coll.findOne({},{_id:0,age:1}, safe.sure(done, function (obj) {
-					assert(!_.contains(_.keys(obj),'_id'));
-					assert(_.contains(_.keys(obj),'age'));
-					assert(!_.contains(_.keys(obj),'name'));
+					assert(!_.includes(_.keys(obj),'_id'));
+					assert(_.includes(_.keys(obj),'age'));
+					assert(!_.includes(_.keys(obj),'name'));
 					_coll.findOne({},{age:1}, safe.sure(done, function (obj) {
-						assert(_.contains(_.keys(obj),'_id'));
-						assert(_.contains(_.keys(obj),'age'));
-						assert(!_.contains(_.keys(obj),'name'));
+						assert(_.includes(_.keys(obj),'_id'));
+						assert(_.includes(_.keys(obj),'age'));
+						assert(!_.includes(_.keys(obj),'name'));
 						_coll.findOne({},{age:0}, safe.sure(done, function (obj) {
-							assert(_.contains(_.keys(obj),'_id'));
-							assert(!_.contains(_.keys(obj),'age'));
-							assert(_.contains(_.keys(obj),'name'));
+							assert(_.includes(_.keys(obj),'_id'));
+							assert(!_.includes(_.keys(obj),'age'));
+							assert(_.includes(_.keys(obj),'name'));
 							_coll.findOne({},{_id:0,age:0}, safe.sure(done, function (obj) {
-								assert(!_.contains(_.keys(obj),'_id'));
-								assert(!_.contains(_.keys(obj),'age'));
-								assert(_.contains(_.keys(obj),'name'));
+								assert(!_.includes(_.keys(obj),'_id'));
+								assert(!_.includes(_.keys(obj),'age'));
+								assert(_.includes(_.keys(obj),'name'));
 								_coll.findOne({},{_id:1,age:0}, function (err) {
 									assert(err!=null)
 									done();
