@@ -140,7 +140,7 @@ var sorting = [
 	{
 		name: 'by 2-field index and another field',
 		value: [ [ 'a', 1 ], [ 'b', -1 ], [ 'n', -1 ] ]
-	},
+	}
 ];
 
 function check(query, sort, docs) {
@@ -156,8 +156,8 @@ function check(query, sort, docs) {
 					else if (ok == '$gte') return vv >= ov;
 					else if (ok == '$lt') return vv < ov;
 					else if (ok == '$lte') return vv <= ov;
-					else if (ok == '$in') return _.contains(ov, vv);
-					else if (ok == '$nin') return !_.contains(ov, vv);
+					else if (ok == '$in') return _.includes(ov, vv);
+					else if (ok == '$nin') return !_.includes(ov, vv);
 					else return false;
 				});
 			});

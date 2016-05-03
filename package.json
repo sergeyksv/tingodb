@@ -41,8 +41,8 @@
     "node": ">= v0.8.x"
   },
   "dependencies": {
-    "safe": "~0.3.0",
-    "lodash": "~3.10.x"
+    "safe": "~0.3.9",
+    "lodash": "~4.11.x"
   },
   "scripts": {
       "test": "./test.sh"
