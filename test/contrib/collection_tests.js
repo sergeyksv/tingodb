@@ -1,5 +1,4 @@
-var Step = require('step');
-
+var safe = require('safe');
 /**
  * Example of a simple document save with safe set to false
  *
@@ -701,53 +700,47 @@ exports.shouldCorrectlyPerformUpsert = function(configuration, test) {
   var ObjectID = configuration.getMongoPackage().ObjectID;
   var client = configuration.db();
 
-  client.createCollection('test_should_correctly_do_upsert', function(err, collection) {
+  client.createCollection('test_should_correctly_do_upsert', safe.sure(test.done, function(collection) {
     var id = new ObjectID(null)
     var doc = {_id:id, a:1};
 
-    Step(
-      function test1() {
-        var self = this;
-
-        collection.update({"_id":id}, doc, {upsert:true, w: 1}, function(err, result) {
-          test.equal(null, err);
+    safe.waterfall([
+      function test1(cb) {
+        collection.update({"_id":id}, doc, {upsert:true, w: 1}, safe.sure(cb, function(result) {
           test.equal(1, result);
-
-          collection.findOne({"_id":id}, self);
-        });
+          collection.findOne({"_id":id}, cb);
+        }));
       },
 
-      function test2(err, doc) {
-        var self = this;
+      function test2(doc, cb) {
         test.equal(1, doc.a);
 
         id = new ObjectID(null)
         doc = {_id:id, a:2};
 
-        collection.update({"_id":id}, doc, {w: 1, upsert:true}, function(err, result) {
-          test.equal(null, err);
+        collection.update({"_id":id}, doc, {w: 1, upsert:true}, safe.sure(cb, function(result) {
           test.equal(1, result);
 
-          collection.findOne({"_id":id}, self);
-        });
+          collection.findOne({"_id":id}, cb);
+        }));
       },
 
-      function test3(err, doc2) {
-        var self = this;
+      function test3(doc2, cb) {
         test.equal(2, doc2.a);
 
-        collection.update({"_id":id}, doc2, {w: 1, upsert:true}, function(err, result) {
-          test.equal(null, err);
+        collection.update({"_id":id}, doc2, {w: 1, upsert:true}, safe.sure(cb, function(result) {
           test.equal(1, result);
 
-          collection.findOne({"_id":id}, function(err, doc) {
+          collection.findOne({"_id":id}, safe.sure_result(cb, function(doc) {
             test.equal(2, doc.a);
-            test.done();
-          });
-        });
+          }));
+        }));
       }
-    );
-  });
+    ], function (err) {
+		test.equal(err, null);
+		test.done();
+	});
+  }));
 }
 
 /**
