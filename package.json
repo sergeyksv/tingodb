@@ -1,7 +1,7 @@
 {
   "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
-  "version": "0.4.2",
+  "version": "0.5.0",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -15,6 +15,10 @@
       "name": "Alexander Somov",
       "email": "al-s@yandex.ru"
     },
+    {
+      "name": "Ilya Schatohin",
+      "email": "eXamp1e@mail.ru"
+    },    
     {
       "name": "Maya",
       "email": "code@maya.ink"
