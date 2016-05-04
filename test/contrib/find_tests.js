@@ -1,5 +1,3 @@
-var Step = require('step');
-
 /**
  * Test a simple find
  * @ignore
@@ -10,12 +8,10 @@ exports.shouldCorrectlyPerformSimpleFind = function(configuration, test) {
   client.createCollection('test_find_simple', function(err, r) {
     var collection = client.collection('test_find_simple', function(err, collection) {
       var doc1 = null;
-      var doc2 = null;
 
       // Insert some test documents
       collection.insert([{a:2}, {b:3}], {w:1}, function(err, docs) {
         doc1 = docs[0];
-        doc2 = docs[1]
 
         // Ensure correct insertion testing via the cursor and the count function
         collection.find().toArray(function(err, documents) {
@@ -47,12 +43,10 @@ exports.shouldCorrectlyPeformSimpleChainedFind = function(configuration, test) {
   client.createCollection('test_find_simple_chained', function(err, r) {
     var collection = client.collection('test_find_simple_chained', function(err, collection) {
       var doc1 = null;
-      var doc2 = null;
 
       // Insert some test documents
       collection.insert([{a:2}, {b:3}], {w:1}, function(err, docs) {
         doc1 = docs[0];
-        doc2 = docs[1]
 
         // Ensure correct insertion testing via the cursor and the count function
         collection.find().toArray(function(err, documents) {
@@ -83,11 +77,10 @@ exports.shouldCorrectlyPeformAdvancedFinds = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_find_advanced', function(err, r) {
     var collection = client.collection('test_find_advanced', function(err, collection) {
-      var doc1 = null, doc2 = null, doc3 = null;
 
       // Insert some test documents
       collection.insert([{a:1}, {a:2}, {b:3}], {w:1}, function(err, docs) {
-        var doc1 = docs[0], doc2 = docs[1], doc3 = docs[2];
+        var doc1 = docs[0], doc2 = docs[1];
 
         // Locate by less than
         collection.find({'a':{'$lt':10}}).toArray(function(err, documents) {
@@ -169,18 +162,12 @@ exports.shouldCorrectlyPerformFindWithSort = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_find_sorting', function(err, r) {
     client.collection('test_find_sorting', function(err, collection) {
-      var doc1 = null, doc2 = null, doc3 = null, doc4 = null;
       // Insert some test documents
       collection.insert([{a:1, b:2},
           {a:2, b:1},
           {a:3, b:2},
           {a:4, b:1}
         ], {w:1}, function(err, docs) {
-          doc1 = docs[0];
-          doc2 = docs[1];
-          doc3 = docs[2];
-          doc4 = docs[3]
-
           // Test sorting (ascending)
           collection.find({'a': {'$lt':10}}, {'sort': [['a', 1]]}).toArray(function(err, documents) {
             test.equal(4, documents.length);
@@ -270,7 +257,6 @@ exports.shouldCorrectlyPerformFindWithLimit = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_find_limits', function(err, r) {
     client.collection('test_find_limits', function(err, collection) {
-      var doc1 = null, doc2 = null, doc3 = null, doc4 = null;
 
       // Insert some test documents
       collection.insert([{a:1},
@@ -278,11 +264,6 @@ exports.shouldCorrectlyPerformFindWithLimit = function(configuration, test) {
           {c:3},
           {d:4}
         ], {w:1}, function(err, docs) {
-          doc1 = docs[0];
-          doc2 = docs[1];
-          doc3 = docs[2];
-          doc4 = docs[3]
-
           // Test limits
           collection.find({}, {'limit': 1}).toArray(function(err, documents) {
             test.equal(1, documents.length);
