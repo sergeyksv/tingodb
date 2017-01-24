@@ -72,6 +72,49 @@ collection.insert([{hello:'world_safe1'}
 });
 ```
 
+Events
+```javascript
+var Db = require('tingodb')().Db
+var db = new Db('/some/local/path', {});
+
+var collection = db.collection("batch_document_insert_collection_safe");
+
+// save events
+collection.on('save', function(doc){
+    console.log(`save event -->`, doc)
+    
+}).on('saved', function(doc){
+    console.log(`saved event -->`, doc)
+});
+
+
+collection.insert([{hello:'world_safe1'}, {hello:'world_safe2'}]);
+
+// or
+
+collection.update({_id: 1}, {hello:'world_safe1'});
+
+
+//remove events
+
+collection.on('removed', function (doc) {
+  console.log(`--> removed event`, doc)
+});
+
+collection.remove();
+
+
+// custom events
+var collection = db.collection("pubsub_collection");
+collection.on('custom-event', function (doc) {
+  console.log(doc)
+});
+
+collection.publish(`custom-event`, {custom: 'data object'});
+```
+
+
+
 As you can see, the difference is in the `require` call and database object initialization.
 
 #### require('tingodb')(options)
