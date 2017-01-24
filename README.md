@@ -111,6 +111,10 @@ collection.on('custom-event', function (doc) {
 });
 
 collection.publish(`custom-event`, {custom: 'data object'});
+
+
+// unsubscribe event
+collection.unsubscribe(`custom-event`);
 ```
 
 
