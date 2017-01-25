@@ -1,7 +1,7 @@
 {
   "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
-  "version": "0.5.1",
+  "version": "0.5.3",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -34,6 +34,10 @@
     {
       "name": "Diogo Duailibe",
       "email": "diogo.duailibe.silva@gmail.com"
+    },
+    {
+      "name": "Oleg Bogdanov",
+      "email": "olegbogdanov86@gmail.com"
     }
   ],
   "description": "Embedded Node.js database upward compatible with MongoDB",
@@ -49,23 +53,23 @@
     "node": ">= v0.8.x"
   },
   "dependencies": {
-    "safe": "~0.3.9",
-    "lodash": "~4.11.x"
+    "lodash": "^4.17.4",
+    "safe": "^0.4.2"
   },
   "scripts": {
-      "test": "./test.sh"
+    "test": "./test.sh"
   },
-  "optionalDependencies":{
-    "bson":"0.2.x"
+  "optionalDependencies": {
+    "bson": "0.2.x"
   },
   "devDependencies": {
-	"csv": "0.3.x",
-	"mongodb": "1.4.x",
-	"temp": "0.4.x",
-	"lorem-ipsum":"1.0.x",
-	"optimist":"0.6.x",
-	"step":"0.0.x",
-	"benchmark":"1.0.x",
-	"mocha":"1.21.x"
+    "benchmark": "^2.1.3",
+    "csv": "^1.1.0",
+    "lorem-ipsum": "1.0.x",
+    "mocha": "^3.2.0",
+    "mongodb": "^2.2.21",
+    "optimist": "0.6.x",
+    "step": "^1.0.0",
+    "temp": "^0.8.3"
   }
 }
