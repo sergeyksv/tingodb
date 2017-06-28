@@ -4,7 +4,7 @@ var safe = require('safe');
 var tutils = require("./utils");
 
 describe('Misc', function () {
-	var db,coll;
+	var db;
 	before(function (done) {
 		tutils.getDb('misc', true, safe.sure(done, function (_db) {
 			db = _db;

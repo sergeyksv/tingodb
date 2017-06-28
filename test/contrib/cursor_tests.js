@@ -1,5 +1,4 @@
-var Step = require('step')
-  fs = require('fs');
+var Step = require('step');
 
 /**
  * An example showing the information returned by indexInformation
@@ -102,7 +101,7 @@ exports.shouldCorrectlyFailToArrayDueToFinishedEachOperation = function(configur
               test.done();
               db.close();
             });
-          };
+          }
         });
       });
     });
@@ -908,7 +907,7 @@ exports.shouldCorrectlyFailToArrayDueToFinishedEachOperation = function(configur
               test.done();
               db.close();
             });
-          };
+          }
         });
       });
     });
@@ -1003,7 +1002,7 @@ exports.shouldCorrectlyExecuteEnsureIndexWithNoCallback = function(configuration
 
       // Find with sort
       collection.find().sort(['createdAt', 'asc']).toArray(function(err, items) {
-        if (err) logger.error("error in collection_info.find: " + err);
+        if (err) console.error("error in collection_info.find: " + err);
         test.equal(1, items.length);
         test.done();
       })
@@ -1036,7 +1035,7 @@ exports.shouldCorrectlyInsert5000RecordsWithDateAndSortCorrectlyWithIndex = func
 
         // Find with sort
         collection.find().sort(['createdAt', 'asc']).toArray(function(err, items) {
-          if (err) logger.error("error in collection_info.find: " + err);
+          if (err) console.error("error in collection_info.find: " + err);
           test.equal(5000, items.length);
           test.done();
         })
@@ -2049,13 +2048,9 @@ exports.shouldNotFailDueToStackOverflowEach = function(configuration, test) {
     var total = 0;
     for(var i = 0; i < 30000; i++) docs.push({a:i});
 
-    collection.insert(docs, {w:1}, function(err, ids) {
-      var s = new Date().getTime();
-
+    collection.insert(docs, {w:1}, function(err, ids) {0
       collection.find({}).each(function(err, item) {
         if(item == null) {
-          var e = new Date().getTime();
-
           test.equal(30000, total);
           test.done();
         }
@@ -2074,16 +2069,11 @@ exports.shouldNotFailDueToStackOverflowToArray = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('shouldNotFailDueToStackOverflowToArray', function(err, collection) {
     var docs = [];
-    var total = 0;
-    var s = new Date().getTime();
     for(var i = 0; i < 30000; i++) docs.push({a:i});
 
     collection.insert(docs, {w:1}, function(err, ids) {
-      var s = new Date().getTime();
 
       collection.find({}).toArray(function(err, items) {
-        var e = new Date().getTime();
-        // console.log("================== total time :: " + (e - s));
 
         test.equal(30000, items.length);
         test.done();

@@ -3,10 +3,9 @@ var fs = require('fs');
 var safe = require('safe');
 var tutils = require('./utils');
 var _ = require('lodash');
-var tingodb = require('../lib/main')({});
 
 describe('(FS) Corrupted DB Load', function () {
-	var db, coll, items, length, fsize;
+	var db, coll, items, length;
 	function checkCount(done) {
 		coll.find().count(safe.sure(done, function (count) {
 			assert.equal(count, length);

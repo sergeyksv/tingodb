@@ -1,6 +1,5 @@
 var finder = require('../lib/finder');
 var Benchmark = require('benchmark');
-var _ = require('underscore');
 
 var suite = new Benchmark.Suite();
 suite.on('cycle', function(event) {
@@ -21,6 +20,7 @@ eval(f5);
 var obj1 = {num:1, d1:{d2:{s1:{s2:-0.2}}}, t:15};
 var obj2 = {num:1, d1:{d2:[{s1:{s2:-0.2}}]}, t:15};
 
+/* eslint-disable */
 console.log(sn1(obj1));
 console.log(sn2(obj2));
 console.log(sn3(obj2));

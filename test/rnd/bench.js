@@ -1,9 +1,6 @@
-var vows = require('vows');
-var assert = require('assert');
 var Benchmark = require('benchmark');
 var tutils = require('./utils');
 var safe = require('safe');
-var async = require('async');
 
 var suite = new Benchmark.Suite();
 // add listeners

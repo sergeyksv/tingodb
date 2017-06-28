@@ -38,7 +38,7 @@ var indexes = [
 	{
 		name: '2-field n',
 		value: [ [ 'b', 1 ], [ 'n', 1 ] ]
-	},
+	}
 ];
 
 var queries = [
@@ -109,7 +109,7 @@ var queries = [
 	{
 		name: 'by index 2-field $nin',
 		value: { a: { $nin: [ 2, 3, 2 ] }, b: 2 }
-	},
+	}
 ];
 
 var sorting = [

@@ -17,7 +17,7 @@ module.exports.setConfig = function (cfg_) {
 var dbPort = 37017;
 var dbInstance;
 
-var startDb = module.exports.startDb = function (cb) {
+module.exports.startDb = function (cb) {
 	if (!cfg.mongo) return cb();
 	if (dbInstance) return cb(new Error('Database already started'));
 	var dbpath = temp.mkdirSync('mongodb');
@@ -40,7 +40,7 @@ var startDb = module.exports.startDb = function (cb) {
 	ensureUp(3, cb);
 };
 
-var stopDb = module.exports.stopDb = function (cb) {
+module.exports.stopDb = function (cb) {
 	cb = cb || function () {};
 	if (!cfg.mongo) return cb();
 	if (!dbInstance) return cb(new Error('Database is not started'));

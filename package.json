@@ -56,7 +56,7 @@
     "test": "./test.sh"
   },
   "optionalDependencies": {
-    "bson": "0.2.x"
+    "bson": ""
   },
   "devDependencies": {
     "benchmark": "1.0.x",
@@ -64,9 +64,9 @@
     "eslint": "^4.1.1",
     "lorem-ipsum": "1.0.x",
     "mocha": "1.21.x",
-    "mongodb": "1.4.x",
+    "mongodb": "<=2.0.x",
     "optimist": "0.6.x",
     "step": "0.0.x",
-    "temp": "0.4.x"
+    "temp": "0.8.x"
   }
 }
