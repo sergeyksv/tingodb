@@ -212,7 +212,7 @@ exports.shouldStream10KDocuments = function(configuration, test) {
   var docs = []
 
   for(var i = 0; i < 10000; i++) {
-    docs.push({'a':i, bin: new Binary(new Buffer(256))})
+    docs.push({'a':i, bin: new Binary(Buffer.alloc(256))})
   }
 
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
@@ -254,7 +254,7 @@ exports.shouldTriggerMassiveAmountOfGetMores = function(configuration, test) {
   var counter2 = 0;
 
   for(var i = 0; i < 1000; i++) {
-    docs.push({'a':i, bin: new Binary(new Buffer(256))})
+    docs.push({'a':i, bin: new Binary(Buffer.alloc(256))})
   }
 
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
@@ -266,7 +266,6 @@ exports.shouldTriggerMassiveAmountOfGetMores = function(configuration, test) {
       collection.insert(docs, {w:1}, function(err, ids) {
         // Peform a find to get a cursor
         var stream = collection.find({}).stream();
-        var data = [];
 
         // For each data item
         stream.on("data", function(item) {
@@ -289,13 +288,12 @@ exports.shouldTriggerMassiveAmountOfGetMores = function(configuration, test) {
 }
 
 exports.shouldStreamDocumentsAcrossGetMoreCommandAndCountCorrectly = function(configuration, test) {
-  var ObjectID = configuration.getMongoPackage().ObjectID
-    , Binary = configuration.getMongoPackage().Binary;
+  var Binary = configuration.getMongoPackage().Binary;
   var client = configuration.db();
   var docs = []
 
   for(var i = 0; i < 2000; i++) {
-    docs.push({'a':i, b: new Binary(new Buffer(1024))})
+    docs.push({'a':i, b: new Binary(Buffer.alloc(1024))})
   }
 
   var collection = client.collection('test_streaming_function_with_limit_for_fetching');

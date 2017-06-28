@@ -1,0 +1,30 @@
+{
+    "env": {
+        "node": true,
+        "es6": true,
+        "mocha": true,
+        "amd": true
+    },
+    "rules": {
+        "comma-dangle": [2, "never"],
+        "quotes": [0, "double"],
+        "no-unused-vars": [1, {"vars": "all", "args": "none"}],
+        "no-undef": [2],
+        "no-cond-assign": [2, "always"],
+        "no-constant-condition": 2,
+        "no-dupe-args": 2,
+        "no-dupe-keys": 2,
+        "no-empty": 1,
+        "no-extra-semi": 1,
+        "no-func-assign": 2,
+        "no-inner-declarations": 1,
+        "no-invalid-regexp": 2,
+        "no-obj-calls": 2,
+        "no-regex-spaces": 2,
+        "no-sparse-arrays": 1,
+        "no-unexpected-multiline": 1,
+        "no-unreachable": 1,
+        "use-isnan": 1,
+        "valid-typeof": 1
+    }
+}

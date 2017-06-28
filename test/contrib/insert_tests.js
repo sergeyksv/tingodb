@@ -1,5 +1,5 @@
-var Step = require('step')
-  , Script = require('vm');
+var Step = require('step')/*
+  , Script = require('vm')*/;
 
 /**
  * Module for parsing an ISO 8601 formatted string into a Date object.
@@ -10,7 +10,9 @@ var ISODate = function (string) {
 
   if (typeof string.getTime === "function")
     return string;
+  /* eslint-disable no-cond-assign */
   else if (match = string.match(/^(\d{4})(-(\d{2})(-(\d{2})(T(\d{2}):(\d{2})(:(\d{2})(\.(\d+))?)?(Z|((\+|-)(\d{2}):(\d{2}))))?)?)?$/)) {
+  /* eslint-enable no-cond-assign */
     var date = new Date();
     date.setUTCFullYear(Number(match[1]));
     date.setUTCMonth(Number(match[3]) - 1 || 0);
@@ -31,7 +33,7 @@ var ISODate = function (string) {
       if (match[15] == "+")
         offset = -offset;
 
-      new Date(date.valueOf() + offset);
+      date = new Date(date.valueOf() + offset);
     }
 
     return date;
@@ -913,7 +915,7 @@ exports['Should fail on insert due to key starting with $'] = function(configura
 
   var doc = {
    "_id" : new ObjectID(),
-   "$key" : "foreign",
+   "$key" : "foreign"
   }
 
   var db = configuration.db();
@@ -1096,7 +1098,7 @@ exports.shouldFailDueToInsertBeingBiggerThanMaxDocumentSizeAllowed = function(co
 
   var db = configuration.db();
   var collection = db.collection('shouldFailDueToInsertBeingBiggerThanMaxDocumentSizeAllowed');
-  var binary = new Binary(new Buffer(db.serverConfig.checkoutWriter().maxBsonSize + 100));
+  var binary = new Binary(Buffer.alloc(db.serverConfig.checkoutWriter().maxBsonSize + 100));
 
   collection.insert({doc:binary}, {w:1}, function(err, result) {
     test.ok(err != null);
@@ -1115,7 +1117,7 @@ exports.shouldFailDueToMessageBeingBiggerThanMaxMessageSize = function(configura
 
   var db = configuration.newDbInstance({w:1}, {disableDriverBSONSizeCheck:true})
   db.open(function(err, db) {
-    var binary = new Binary(new Buffer(db.serverConfig.checkoutWriter().maxBsonSize));
+    var binary = new Binary(Buffer.alloc(db.serverConfig.checkoutWriter().maxBsonSize));
     var collection = db.collection('shouldFailDueToInsertBeingBiggerThanMaxDocumentSizeAllowed');
 
     collection.insert([{doc:binary}, {doc:binary}, {doc:binary}, {doc:binary}], {w:1}, function(err, result) {
@@ -1212,11 +1214,11 @@ exports.shouldCorrectlyPerformInsertOfObjectsUsingToBSON = function(configuratio
 //   // Establish connection to db
 //   db.open(function(err, db) {
 //     db.createCollection('shouldAttempToForceBsonSize', function(err, collection) {
-//       // var doc = {a:1, b:new Binary(new Buffer(16777216)/5)}
+//       // var doc = {a:1, b:new Binary(Buffer.alloc(16777216)/5)}
 //       var doc = [
-//         {a:1, b:new Binary(new Buffer(16777216/3))},
-//         {a:1, b:new Binary(new Buffer(16777216/3))},
-//         {a:1, b:new Binary(new Buffer(16777216/3))},
+//         {a:1, b:new Binary(Buffer.alloc(16777216/3))},
+//         {a:1, b:new Binary(Buffer.alloc(16777216/3))},
+//         {a:1, b:new Binary(Buffer.alloc(16777216/3))},
 //       ]
 
 //       collection.insert(doc, {w:1}, function(err, result) {
@@ -1351,7 +1353,7 @@ exports.handleBSONTypeInsertsCorrectly = function(configuration, test) {
       "symbol": new Symbol("abcdefghijkl")
     , "objid": new ObjectID("abcdefghijkl")
     , "double": new Double(1)
-    , "binary": new Binary(new Buffer("hello world"))
+    , "binary": new Binary(Buffer.from("hello world"))
     , "minkey": new MinKey()
     , "maxkey": new MaxKey()
     , "code": new Code("function () {}", {a: 55})
@@ -1372,7 +1374,7 @@ exports.handleBSONTypeInsertsCorrectly = function(configuration, test) {
           test.equal(null, err);
           test.equal(1, doc.double);
 
-          collection.findOne({"binary": new Binary(new Buffer("hello world"))}, function(err, doc) {
+          collection.findOne({"binary": new Binary(Buffer.from("hello world"))}, function(err, doc) {
             test.equal(null, err);
             test.equal("hello world", doc.binary.toString());
 
@@ -1436,7 +1438,6 @@ exports.mixedTimestampAndDateQuery = function(configuration, test) {
 exports.positiveAndNegativeInfinity = function(configuration, test) {
   var db = configuration.db();
   var collection = db.collection('negative_pos');
-  var d = new Date();
 
   var document = {
       pos: Number.POSITIVE_INFINITY
@@ -1484,4 +1485,3 @@ exports.shouldCorrectlyInsertSimpleUTF8Regexp = function(configuration, test) {
     });
   });
 }
-
