@@ -166,7 +166,10 @@ exports.shouldPerformSimpleMapReduceFunctions = function(configuration, test) {
       collection.insert([{'user_id':1}, {'user_id':2}], {w:1}, function(err, r) {
 
         // Map function
+        /* eslint-disable */
         var map = function() { emit(this.user_id, 1); };
+        /* eslint-enable */
+
         // Reduce function
         var reduce = function(k,vals) { return 1; };
 
@@ -211,7 +214,9 @@ exports.shouldPerformMapReduceFunctionInline = function(configuration, test) {
           collection.insert([{'user_id':1}, {'user_id':2}], {w:1}, function(err, r) {
 
             // Map function
+            /* eslint-disable */
             var map = function() { emit(this.user_id, 1); };
+            /* eslint-enable */
             // Reduce function
             var reduce = function(k,vals) { return 1; };
 
@@ -255,18 +260,20 @@ exports.shouldPerformMapReduceInContext = function(configuration, test) {
         , {'user_id':2, 'timestamp':new Date()}], {w:1}, function(err, r) {
 
         // Map function
+        /* eslint-disable */
         var map = function(){
             emit(fn(this.timestamp.getYear()), 1);
         }
 
         // Reduce function
         var reduce = function(k, v){
-            count = 0;
+            var count = 0;
             for(i = 0; i < v.length; i++) {
                 count += v[i];
             }
             return count;
         }
+        /* eslint-enable */
 
         // Javascript function available in the map reduce scope
         var t = function(val){ return val+1; }
@@ -364,7 +371,9 @@ exports.shouldPerformMapReduceWithParametersBeingFunctions = function(configurat
   client.createCollection('test_map_reduce_with_functions_as_arguments', function(err, collection) {
     collection.insert([{'user_id':1}, {'user_id':2}], {w:1}, function(err, r) {
       // String functions
+      /* eslint-disable */
       var map = function() { emit(this.user_id, 1); };
+      /* eslint-enable */
       var reduce = function(k,vals) { return 1; };
 
       collection.mapReduce(map, reduce, {out: {replace : 'tempCollection'}}, function(err, collection) {
@@ -476,7 +485,9 @@ exports.shouldSaveDataToDifferentDbFromMapreduce = function(configuration, test)
       collection.insert([{'user_id':1}, {'user_id':2}], {w:1}, function(err, r) {
 
         // Map function
+        /* eslint-disable */
         var map = function() { emit(this.user_id, 1); };
+        /* eslint-enable */
         // Reduce function
         var reduce = function(k,vals) { return 1; };
 

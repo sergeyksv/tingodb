@@ -15,7 +15,7 @@ function eq(docs1, docs2) {
 
 describe('Sort Test', function () {
 	describe('New store', function () {
-		var db, coll, asc, desc, gt, gtr;
+		var db, coll, asc, desc, gt;
 		before(function (done) {
 			tutils.getDb('test', true, safe.sure(done, function (_db) {
 				db = _db;
@@ -58,7 +58,6 @@ describe('Sort Test', function () {
 			gt = _.filter(asc, function (x) {
 				return x.num > 25;
 			});
-			gtr = gt.slice().reverse();
 			safe.forEachSeries(docs, function (doc, cb) {
 				coll.insert(doc, cb);
 			}, done);

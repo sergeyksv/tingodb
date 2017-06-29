@@ -88,7 +88,7 @@ exports.shouldCorrectlySaveASimpleDocumentModifyItAndResaveIt = function(configu
 exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, test) {
   var client = configuration.db();
 
-  var collection = client.createCollection('test_collection_methods', function(err, collection) {
+  client.createCollection('test_collection_methods', function(err, collection) {
     // Verify that all the result are correct coming back (should contain the value ok)
     test.equal('test_collection_methods', collection.collectionName);
     // Let's check that the collection was created correctly
@@ -1227,7 +1227,7 @@ exports.shouldThrowErrorOnAttemptingSafeRemoveWithNoCallback = function(configur
       try {
         collection.remove({a:1}, {w: 1})
         test.ok(false);
-      } catch(err) {}
+    } catch(err) { /**/ }
 
       test.done();
     });
@@ -1246,7 +1246,7 @@ exports.shouldThrowErrorOnAttemptingSafeInsertWithNoCallback = function(configur
       // insert a doc
       collection.insert({a:1}, {w: 1});
       test.ok(false);
-    } catch(err) {}
+  } catch(err) { /**/ }
 
     test.done();
   });
@@ -1264,7 +1264,7 @@ exports.shouldThrowErrorOnAttemptingSafeUpdateWithNoCallback = function(configur
       // insert a doc
       collection.update({a:1}, {$set:{b:1}}, {w: 1, upsert:true});
       test.ok(false);
-    } catch(err) {}
+  } catch(err)  { /**/ }
 
     test.done();
   });

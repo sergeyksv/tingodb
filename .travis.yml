@@ -1,6 +1,8 @@
 language: node_js
+dist: trusty
+warnings_are_errors: false
 node_js:
-  - "7"
+  - "8"
   - "6"
   - "4"
   - "0.12"

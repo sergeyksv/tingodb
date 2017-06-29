@@ -1,10 +1,9 @@
 var assert = require('assert');
-var _ = require('lodash');
 var safe = require('safe');
 var tutils = require("./utils");
 
 describe('Incremental update', function () {
-	var db,coll;
+	var db;
 	before(function (done) {
 		tutils.getDb('test', true, safe.sure(done, function (_db) {
 			db = _db;

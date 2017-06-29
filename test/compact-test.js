@@ -283,7 +283,6 @@ describe('(FS) Update+Hash', function () {
 });
 
 describe('(FS) Store', function () {
-	var db, coll, fsize;
 	it('Operations must fail if db is linked to not existent path', function (done) {
 		var Db = tingodb.Db;
 		var db = new Db('/tmp/some_unexistant_path_667676qwe', {});

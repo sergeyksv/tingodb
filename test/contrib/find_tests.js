@@ -6,7 +6,7 @@ exports.shouldCorrectlyPerformSimpleFind = function(configuration, test) {
   var client = configuration.db();
 
   client.createCollection('test_find_simple', function(err, r) {
-    var collection = client.collection('test_find_simple', function(err, collection) {
+    client.collection('test_find_simple', function(err, collection) {
       var doc1 = null;
 
       // Insert some test documents
@@ -41,7 +41,7 @@ exports.shouldCorrectlyPerformSimpleFind = function(configuration, test) {
 exports.shouldCorrectlyPeformSimpleChainedFind = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_find_simple_chained', function(err, r) {
-    var collection = client.collection('test_find_simple_chained', function(err, collection) {
+    client.collection('test_find_simple_chained', function(err, collection) {
       var doc1 = null;
 
       // Insert some test documents
@@ -76,7 +76,7 @@ exports.shouldCorrectlyPeformSimpleChainedFind = function(configuration, test) {
 exports.shouldCorrectlyPeformAdvancedFinds = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_find_advanced', function(err, r) {
-    var collection = client.collection('test_find_advanced', function(err, collection) {
+    client.collection('test_find_advanced', function(err, collection) {
 
       // Insert some test documents
       collection.insert([{a:1}, {a:2}, {b:3}], {w:1}, function(err, docs) {
@@ -548,7 +548,7 @@ exports.shouldCorrectlyPerformFindWithOptions = function(configuration, test) {
   var client = configuration.db();
 
   client.createCollection('test_field_select_with_options', function(err, r) {
-    var collection = client.collection('test_field_select_with_options', function(err, collection) {
+    client.collection('test_field_select_with_options', function(err, collection) {
       var docCount = 25, docs = [];
 
       // Insert some test documents
@@ -1792,7 +1792,7 @@ exports.shouldCorrectlyExecuteExhaustQuery = function(configuration, test) {
         docs.push({
           a: 1,
           b: "helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld",
-          c: new Binary(new Buffer(1024))
+          c: new Binary(Buffer.alloc(1024))
         })
       }
 

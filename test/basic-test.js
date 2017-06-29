@@ -3,12 +3,10 @@ var _ = require('lodash');
 var safe = require('safe');
 var loremIpsum = require('lorem-ipsum');
 var tutils = require("./utils");
-var ObjectId = null;
 
 var num = 100;
 var gt0sin = 0;
 var _dt = null;
-var path = "./data";
 var _id = null;
 
 describe('Basic', function () {
