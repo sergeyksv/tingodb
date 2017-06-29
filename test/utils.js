@@ -50,14 +50,13 @@ module.exports.stopDb = function (cb) {
 };
 
 var paths = {};
-
 var getDb = module.exports.getDb = function (tag, drop, cb) {
-	if (cfg.mongo) {
-		var dbs = new Db(tag, new Server('localhost', dbPort),{w:1});
+	if (cfg.mongo && parseInt(process.versions.node.split('.')[0]) <= 6 ) { // TODO change version of mongodb-native-drive to > 2.2 for node > v6
+		var dbs = new Db(tag, new Server('localhost', dbPort),{native_parser: false, safe:true});
 		dbs.open(safe.sure(cb, function (db) {
 			if (drop) {
 				db.dropDatabase(safe.sure(cb, function () {
-					var dbs = new Db(tag, new Server('localhost', dbPort),{w:1});
+					var dbs = new Db(tag, new Server('localhost', dbPort),{native_parser: false, safe:true});
 					dbs.open(cb)
 				}))
 			} else
