@@ -1,6 +1,6 @@
 language: node_js
 node_js:
-  - "7"
+  - "8"
   - "6"
   - "4"
   - "0.12"
@@ -10,5 +10,5 @@ services:
   - mongodb
 script:
   - npm install
-  - ./test.sh --db=mongodb --reporter=spec --quick
+#  - ./test.sh --db=mongodb --reporter=spec --quick
   - ./test.sh --db=tingodb --reporter=spec
