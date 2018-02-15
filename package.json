@@ -2,6 +2,7 @@
   "author": "PushOk Software <support@pushok.com>",
   "name": "tingodb",
   "version": "0.5.1",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/sergeyksv/tingodb.git"
@@ -53,19 +54,19 @@
     "lodash": "~4.11.x"
   },
   "scripts": {
-      "test": "./test.sh"
+    "test": "./test.sh"
   },
   "optionalDependencies":{
-    "bson":"0.2.x"
+    "bson": "0.2.x"
   },
   "devDependencies": {
-	"csv": "0.3.x",
-	"mongodb": "1.4.x",
-	"temp": "0.4.x",
-	"lorem-ipsum":"1.0.x",
-	"optimist":"0.6.x",
-	"step":"0.0.x",
-	"benchmark":"1.0.x",
-	"mocha":"1.21.x"
+    "csv": "0.3.x",
+    "mongodb": "1.4.x",
+    "temp": "0.4.x",
+    "lorem-ipsum": "1.0.x",
+    "optimist": "0.6.x",
+    "step": "0.0.x",
+    "benchmark": "1.0.x",
+    "mocha": "1.21.x"
   }
 }
