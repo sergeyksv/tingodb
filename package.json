@@ -60,7 +60,7 @@
   },
   "devDependencies": {
 	"csv": "0.3.x",
-	"mongodb": "1.4.x",
+	"mongodb": "1.4.39",
 	"temp": "0.4.x",
 	"lorem-ipsum":"1.0.x",
 	"optimist":"0.6.x",
