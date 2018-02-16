@@ -10,11 +10,8 @@ install:
   - wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.6.12.tgz
   - tar xzf mongodb-linux-x86_64-2.6.12.tgz
   - ${PWD}/mongodb-linux-x86_64-2.6.12/bin/mongod --version
+  - PATH=$PATH:${PWD}/mongodb-linux-x86_64-2.6.12/bin/
 
-before_script:
-  - mkdir ${PWD}/mongodb-linux-x86_64-2.6.12/data
-  - ${PWD}/mongodb-linux-x86_64-2.6.12/bin/mongod --dbpath ${PWD}/mongodb-linux-x86_64-2.6.12/data --logpath ${PWD}/mongodb-linux-x86_64-2.6.12/mongodb.log --fork
-  
 script:
   - npm install
   - ./test.sh --db=mongodb --reporter=spec --quick
