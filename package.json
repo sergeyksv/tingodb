@@ -67,6 +67,6 @@
     "optimist": "0.6.x",
     "step": "^1.0.0",
     "benchmark": "^2.1.4",
-    "mocha": "^1.x.x"
+    "mocha": "^1.21.5"
   }
 }
