@@ -1,4 +1,5 @@
 var Step = require('step')
+  , Buffer = require("safe-buffer").Buffer
   , Script = require('vm');
 
 /**

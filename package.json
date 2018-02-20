@@ -49,23 +49,24 @@
     "node": ">= v0.8.x"
   },
   "dependencies": {
-    "safe": "~0.3.9",
-    "lodash": "~4.11.x"
+    "lodash": "^4.17.5",
+    "safe": "^0.4.5",
+    "safe-buffer": "^5.1.1"
   },
   "scripts": {
-      "test": "./test.sh"
+    "test": "./test.sh"
   },
-  "optionalDependencies":{
-    "bson":"0.2.x"
+  "optionalDependencies": {
+    "bson": "^1.0.4"
   },
   "devDependencies": {
-	"csv": "0.3.x",
-	"mongodb": "1.4.x",
-	"temp": "0.4.x",
-	"lorem-ipsum":"1.0.x",
-	"optimist":"0.6.x",
-	"step":"0.0.x",
-	"benchmark":"1.0.x",
-	"mocha":"1.21.x"
+    "csv": "0.3.x",
+    "mongodb": "^1.4.40",
+    "temp": "^0.8.x",
+    "lorem-ipsum": "1.0.x",
+    "optimist": "0.6.x",
+    "step": "^1.0.0",
+    "benchmark": "^2.1.4",
+    "mocha": "^1.x.x"
   }
 }

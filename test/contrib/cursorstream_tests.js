@@ -1,3 +1,4 @@
+var Buffer = require("safe-buffer").Buffer;
 /**
  * A simple example showing the use of the cursorstream pause function.
  *

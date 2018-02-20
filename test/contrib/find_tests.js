@@ -1,3 +1,5 @@
+var Buffer = require("safe-buffer").Buffer;
+
 /**
  * Test a simple find
  * @ignore
