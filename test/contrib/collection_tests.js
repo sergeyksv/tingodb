@@ -32,7 +32,7 @@ exports.shouldCorrectlySaveASimpleDocument = function(configuration, test) {
     }, 1000);
   });
   // DOC_END
-}
+};
 
 /**
  * Example of a simple document save and then resave with safe set to true
@@ -80,7 +80,7 @@ exports.shouldCorrectlySaveASimpleDocumentModifyItAndResaveIt = function(configu
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -88,7 +88,7 @@ exports.shouldCorrectlySaveASimpleDocumentModifyItAndResaveIt = function(configu
 exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, test) {
   var client = configuration.db();
 
-  var collection = client.createCollection('test_collection_methods', function(err, collection) {
+  client.createCollection('test_collection_methods', function(err, collection) {
     // Verify that all the result are correct coming back (should contain the value ok)
     test.equal('test_collection_methods', collection.collectionName);
     // Let's check that the collection was created correctly
@@ -108,7 +108,7 @@ exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, tes
           test.equal(null, err);
           // Drop the collection and check that it's gone
           client.dropCollection("test_collection_methods2", function(err, result) {
-			  test.equal(null,err);
+            test.equal(null,err);
             test.equal(true, result);
           });
         });
@@ -134,8 +134,8 @@ exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, tes
                   test.equal('test_collection_methods5', collection.collectionName);
                   collection.rename('test_collection_methods6', function(err, reply) {
                     test.equal(null, err);
-                  })
-                })
+                  });
+                });
                 test.done();
               });
             });
@@ -144,7 +144,7 @@ exports.shouldCorrectExecuteBasicCollectionMethods = function(configuration, tes
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -183,7 +183,7 @@ exports.shouldAccessToCollections = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -211,7 +211,7 @@ exports.shouldCorrectlyDropCollection = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Example of a simple document save and then resave with safe set to true
@@ -259,7 +259,7 @@ exports.shouldCorrectlyDropCollectionWithDropFunction = function(configuration, 
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -289,11 +289,11 @@ exports.shouldCorrectlyRetriveCollectionNames = function(configuration, test) {
             // Let's close the db
             test.done();
           });
-        })
+        });
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -441,7 +441,7 @@ exports.shouldCorrectlyExecuteIndexExists = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -462,7 +462,7 @@ exports.shouldEnsureStrictAccessCollection = function(configuration, test) {
       test.done();
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -488,7 +488,7 @@ exports.shouldPerformStrictCreateCollection = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -535,13 +535,13 @@ exports.shouldFailToInsertDueToIllegalKeys = function(configuration, test) {
                   });
                 });
               });
-            })
-          })
+            });
+          });
         });
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -573,7 +573,7 @@ exports.shouldFailDueToIllegalCollectionNames = function(configuration, test) {
     test.equal("collection names cannot be empty", err.message);
     test.done();
   });
-}
+};
 
 /**
  * @ignore
@@ -587,7 +587,7 @@ exports.shouldCorrectlyCountOnNonExistingCollection = function(configuration, te
       test.done();
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -639,7 +639,7 @@ exports.shouldCorrectlyExecuteSave = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -691,7 +691,7 @@ exports.shouldSaveObjectThatHasIdButDoesNotExistInCollection = function(configur
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -701,7 +701,7 @@ exports.shouldCorrectlyPerformUpsert = function(configuration, test) {
   var client = configuration.db();
 
   client.createCollection('test_should_correctly_do_upsert', safe.sure(test.done, function(collection) {
-    var id = new ObjectID(null)
+    var id = new ObjectID(null);
     var doc = {_id:id, a:1};
 
     safe.waterfall([
@@ -715,7 +715,7 @@ exports.shouldCorrectlyPerformUpsert = function(configuration, test) {
       function test2(doc, cb) {
         test.equal(1, doc.a);
 
-        id = new ObjectID(null)
+        id = new ObjectID(null);
         doc = {_id:id, a:2};
 
         collection.update({"_id":id}, doc, {w: 1, upsert:true}, safe.sure(cb, function(result) {
@@ -741,7 +741,7 @@ exports.shouldCorrectlyPerformUpsert = function(configuration, test) {
 		test.done();
 	});
   }));
-}
+};
 
 /**
  * @ignore
@@ -751,7 +751,7 @@ exports.shouldCorrectlyUpdateWithNoDocs = function(configuration, test) {
   var client = configuration.db();
 
   client.createCollection('test_should_correctly_do_update_with_no_docs', function(err, collection) {
-    var id = new ObjectID(null)
+    var id = new ObjectID(null);
     var doc = {_id:id, a:1};
     collection.update({"_id":id}, doc, {w: 1}, function(err, numberofupdateddocs) {
       test.equal(null, err);
@@ -760,7 +760,7 @@ exports.shouldCorrectlyUpdateWithNoDocs = function(configuration, test) {
       test.done();
     });
   });
-}
+};
 
 /**
  * Example of a simple document update with safe set to false on an existing document
@@ -797,11 +797,11 @@ exports.shouldCorrectlyUpdateASimpleDocument = function(configuration, test) {
             test.done();
           });
         }, 1000);
-      })
+      });
     });
   });
   // DOC_END
-}
+};
 
 /**
  * Example of a simple document update using upsert (the document will be inserted if it does not exist)
@@ -838,7 +838,7 @@ exports.shouldCorrectlyUpsertASimpleDocument = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * Example of an update across multiple documents using the multi option.
@@ -877,12 +877,12 @@ exports.shouldCorrectlyUpdateMultipleDocuments = function(configuration, test) {
             db.close();
             test.done();
           });
-        })
+        });
       });
     });
   });
   // DOC_END
-}
+};
 
 /**
  * Example of running the distinct command against a collection
@@ -1002,7 +1002,7 @@ exports.shouldCorrectlyDoSimpleCountExamples = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -1031,7 +1031,7 @@ exports.shouldCorrectlyExecuteInsertUpdateDeleteSafeMode = function(configuratio
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1048,23 +1048,23 @@ exports.shouldPerformMultipleSaves = function(configuration, test) {
     //insert new user
     collection.save(doc, {w: 1}, function(err, r) {
       collection.find({}, {name: 1}).limit(1).toArray(function(err, users){
-        var user = users[0]
+        var user = users[0];
 
         if(err) {
-          throw new Error(err)
+          throw new Error(err);
         } else if(user) {
-          user.pants = 'worn'
+          user.pants = 'worn';
 
           collection.save(user, {w: 1}, function(err, result){
             test.equal(null, err);
             test.equal(1, result);
             test.done();
-          })
+          });
         }
       });
-    })
+    });
   });
-}
+};
 
 /**
  * @ignore
@@ -1093,8 +1093,8 @@ exports.shouldCorrectlySaveDocumentWithNestedArray = function(configuration, tes
 
           collection.find({}).limit(1).toArray(function(err, users) {
             test.equal(null, err);
-            var user = users[0]
-            user.friends.splice(1,1)
+            var user = users[0];
+            user.friends.splice(1,1);
 
             collection.save(user, function(err, doc) {
               test.equal(null, err);
@@ -1109,9 +1109,9 @@ exports.shouldCorrectlySaveDocumentWithNestedArray = function(configuration, tes
             });
           });
       });
-    })
+    });
   });
-}
+};
 
 /**
  * @ignore
@@ -1130,7 +1130,7 @@ exports.shouldPeformCollectionRemoveWithNoCallback = function(configuration, tes
                test.equal(2, count);
                test.done();
              });
-           })
+           });
          });
        });
     });
@@ -1170,12 +1170,12 @@ exports.shouldCorrectlyRetriveACollectionsIndexes = function(configuration, test
             db.close();
             test.done();
           });
-        })
-      })
+        });
+      });
     });
   });
   // DOC_END
-}
+};
 
 /**
  * Example of retrieving a collections stats
@@ -1209,7 +1209,7 @@ exports.shouldCorrectlyReturnACollectionsStats = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -1225,14 +1225,14 @@ exports.shouldThrowErrorOnAttemptingSafeRemoveWithNoCallback = function(configur
 
       // attemp a safe remove with no callback (should throw)
       try {
-        collection.remove({a:1}, {w: 1})
+        collection.remove({a:1}, {w: 1});
         test.ok(false);
       } catch(err) {}
 
       test.done();
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1250,7 +1250,7 @@ exports.shouldThrowErrorOnAttemptingSafeInsertWithNoCallback = function(configur
 
     test.done();
   });
-}
+};
 
 /**
  * @ignore
@@ -1268,7 +1268,7 @@ exports.shouldThrowErrorOnAttemptingSafeUpdateWithNoCallback = function(configur
 
     test.done();
   });
-}
+};
 
 /**
  * @ignore
@@ -1373,7 +1373,7 @@ exports.shouldCorrectlyReadBackDocumentWithNull = function(configuration, test) 
         });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1385,15 +1385,15 @@ exports.shouldThrowErrorDueToIllegalUpdate = function(configuration, test) {
     try {
       coll.update({}, null, function (err, res) {});
     } catch (err) {
-      test.equal("document must be a valid JavaScript object", err.message)
+      test.equal("document must be a valid JavaScript object", err.message);
     }
 
     try {
       coll.update(null, null, function (err, res) {});
     } catch (err) {
-      test.equal("selector must be a valid JavaScript object", err.message)
+      test.equal("selector must be a valid JavaScript object", err.message);
     }
 
-    test.done()
+    test.done();
   });
-}
+};

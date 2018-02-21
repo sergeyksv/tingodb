@@ -14,7 +14,7 @@ describe('(FS) Corrupted DB Load', function () {
 		}));
 	}
 	function checkData(done) {
-		safe.forEachSeries(items, function (item, cb) {
+		safe.eachOfSeries(items, function (item, k, cb) {
 			coll.findOne({ k: item.k }, safe.sure(cb, function (doc) {
 				if (item.x) {
 					assert.equal(doc, null);

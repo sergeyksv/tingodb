@@ -1,0 +1,47 @@
+{
+    "env": {
+        "node": true,
+        "mocha": true
+    },
+    "globals": {
+        "Uint8Array": true,
+        "ArrayBuffer": true
+    },
+    "extends": ["eslint:recommended"],
+    "rules": {
+        "no-console": 0,
+        "comma-dangle": [2, "never"],
+        "quotes": 0,
+        "no-unused-vars": [2, { "args": "none" }],
+        "no-mixed-spaces-and-tabs": 2,
+        "no-redeclare": 2,
+        "no-undef": 2,
+        "for-direction": 2,
+        "guard-for-in": 2,
+        "semi": [1, "always"],
+        "no-constant-condition": 2,
+        "no-dupe-args": 2,
+        "no-dupe-keys": 2,
+        "no-empty": 0,
+        "no-extra-boolean-cast": 1,
+        "no-extra-semi": 1,
+        "no-func-assign": 2,
+        "no-inner-declarations": 1,
+        "no-invalid-regexp": 2,
+        "no-obj-calls": 2,
+        "no-prototype-builtins": 2,
+        "no-multi-spaces": 1,
+        "no-new-wrappers": 2,
+        "no-regex-spaces": 2,
+        "no-sparse-arrays": 1,
+        "no-unexpected-multiline": 1,
+        "no-unreachable": 1,
+        "no-else-return": 2,
+        "no-return-await": 2,
+        "no-throw-literal": 1,
+        "no-template-curly-in-string": 2,
+        "use-isnan": 1,
+        "valid-typeof": 1,
+        "no-process-exit": 0
+    }
+}
