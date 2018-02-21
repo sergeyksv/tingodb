@@ -59,7 +59,7 @@ describe('Sort Test', function () {
 				return x.num > 25;
 			});
 			gtr = gt.slice().reverse();
-			safe.forEachSeries(docs, function (doc, cb) {
+			safe.eachOfSeries(docs, function (doc, k, cb) {
 				coll.insert(doc, cb);
 			}, done);
 		});

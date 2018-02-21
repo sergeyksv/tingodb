@@ -38,7 +38,7 @@ var indexes = [
 	{
 		name: '2-field n',
 		value: [ [ 'b', 1 ], [ 'n', 1 ] ]
-	},
+	}
 ];
 
 var queries = [
@@ -109,7 +109,7 @@ var queries = [
 	{
 		name: 'by index 2-field $nin',
 		value: { a: { $nin: [ 2, 3, 2 ] }, b: 2 }
-	},
+	}
 ];
 
 var sorting = [
@@ -169,20 +169,19 @@ function check(query, sort, docs) {
 	for (var i = 0; i < docs.length - 1; i++) {
 		var doc1 = docs[i];
 		var doc2 = docs[i + 1];
-		for (var j in sort) {
-			var o = sort[j];
+		_.forOwn(sort, function (o) {
 			var k = o[0];
 			var d = o[1];
 			var v1 = doc1[k];
 			var v2 = doc2[k];
 			if (v1 < v2) {
 				assert.equal(d, 1);
-				break;
+				return false;
 			} else if (v1 > v2) {
 				assert.equal(d, -1);
-				break;
+				return false;
 			}
-		}
+		});
 	}
 }
 
@@ -202,13 +201,13 @@ describe('Index Test', function () {
 	});
 	_.each(indexes, function (index) {
 		it("Create " + index.name + " index", function (done) {
-			coll.ensureIndex(index.value, safe.sure(done, function (indexName) {
+			coll.ensureIndex(index.value, safe.sure(done, function () {
 				done();
 			}));
 		});
 	});
 	it("Populate with test data", function (done) {
-		safe.forEachSeries(dataset, function (doc, cb) {
+		safe.eachOfSeries(dataset, function (doc, k, cb) {
 			coll.insert(_.clone(doc), cb);
 		}, done);
 	});

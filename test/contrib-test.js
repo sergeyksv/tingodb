@@ -9,12 +9,10 @@ var config = function(options) {
     // Server Manager options
     var server_options = {
       purgedirectories: true
-    }
+    };
 
-    // Merge in any options
-    for(var name in options) {
-      server_options[name] = options[name];
-    }
+		// Merge in any options
+		_.assign(server_options, options);
 
     // Test suite start
     this.start = function(callback) {
@@ -34,23 +32,23 @@ var config = function(options) {
     };
 
     // Pr test functions
-    this.setup = function(callback) { callback(); }
+    this.setup = function(callback) { callback(); };
     this.teardown = function(callback) { callback(); };
 
     // Returns the package for using Mongo driver classes
     this.getMongoPackage = function() {
       return tutils.getDbPackage();
-    }
+    };
 
 
     this.newDbInstance = function(db_options, server_options) {
 		return tutils.getDbSync("test", db_options, server_options, true);
-    }
+    };
 
     // Returns a db
     this.db = function() {
       return db;
-    }
+    };
 
     this.url = function(user, password) {
       if(user) {
@@ -58,12 +56,12 @@ var config = function(options) {
       }
 
       return 'mongodb://localhost:27017/' + self.db_name + '?safe=false';
-    }
+    };
 
     // Used in tests
     this.db_name = "test";
-  }
-}
+  };
+};
 
 
 var assert = require('assert');
@@ -100,7 +98,7 @@ describe('contrib', function () {
 		var tests = require(dir + '/' + file);
 		describe(file, function () {
 			_.each(tests,function (fn, name) {
-				if (typeof fn != 'function') return;
+				if (!_.isFunction(fn)) return;
 				describe(name, function () {
 					var done;
 					if (slow[name]) this.timeout(slow[name]);

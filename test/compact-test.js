@@ -14,7 +14,7 @@ describe('(FS) Compact', function () {
 		}));
 	}
 	function checkData(done) {
-		safe.forEachSeries(items, function (item, cb) {
+		safe.eachOfSeries(items, function (item, k, cb) {
 			coll.findOne({ k: item.k }, safe.sure(cb, function (doc) {
 				if (item.x) {
 					assert.equal(doc, null);
@@ -52,7 +52,7 @@ describe('(FS) Compact', function () {
 			doc.v = _.random(101, 200);
 			return doc;
 		});
-		safe.forEachSeries(docs, function (doc, cb) {
+		safe.eachOfSeries(docs, function (doc, k, cb) {
 			coll.update({ k: doc.k }, doc, { w: 1 }, cb);
 		}, done);
 	});
@@ -82,7 +82,7 @@ describe('(FS) Compact', function () {
 			doc.v = _.random(201, 300);
 			return doc;
 		});
-		safe.forEachSeries(docs, function (doc, cb) {
+		safe.eachOfSeries(docs, function (doc, k, cb) {
 			coll.update({ k: doc.k }, doc, { upsert: true, w: 1 }, cb);
 		}, done);
 	});
@@ -128,7 +128,7 @@ describe('(FS) Hot Compact', function () {
 		}));
 	}
 	function checkData(done) {
-		safe.forEachSeries(items, function (item, cb) {
+		safe.eachOfSeries(items, function (item, k, cb) {
 			coll.findOne({ k: item.k }, safe.sure(cb, function (doc) {
 				if (item.x) {
 					assert.equal(doc, null);
@@ -166,7 +166,7 @@ describe('(FS) Hot Compact', function () {
 			doc.v = _.random(101, 200);
 			return doc;
 		});
-		safe.forEachSeries(docs, function (doc, cb) {
+		safe.eachOfSeries(docs, function (doc, k, cb) {
 			coll.update({ k: doc.k }, doc, { w: 1 }, cb);
 		}, done);
 	});
@@ -196,7 +196,7 @@ describe('(FS) Hot Compact', function () {
 			doc.v = _.random(201, 300);
 			return doc;
 		});
-		safe.forEachSeries(docs, function (doc, cb) {
+		safe.eachOfSeries(docs, function (doc, k, cb) {
 			coll.update({ k: doc.k }, doc, { upsert: true, w: 1 }, cb);
 		}, done);
 	});

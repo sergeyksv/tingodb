@@ -16,7 +16,7 @@
       "email": "al-s@yandex.ru"
     },
     {
-      "name": "Ilya Schatohin",
+      "name": "Ilya Schatokhin",
       "email": "eXamp1e@mail.ru"
     },
     {
@@ -60,7 +60,8 @@
     "bson": "^1.0.4"
   },
   "devDependencies": {
-    "csv": "0.3.x",
+    "csv": "^0.3.x",
+    "eslint": "^4.18.1",
     "mongodb": "^1.4.40",
     "temp": "^0.8.x",
     "lorem-ipsum": "1.0.x",
