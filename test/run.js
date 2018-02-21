@@ -11,8 +11,8 @@ var optimist = require('optimist')
 	.alias('R',"reporter")
 	.default('db', 'tingodb')
 	.describe('db', 'tingodb | mongodb')
-    .describe('h', 'Display the usage')
-    .alias('h', 'help')
+	.describe('h', 'Display the usage')
+	.alias('h', 'help')
 	.boolean('quick')
 	.alias('q', 'quick')
 	.describe('quick', 'Run only quick tests')
@@ -25,8 +25,8 @@ var optimist = require('optimist')
 var argv = optimist.argv;
 
 if (argv.help) {
-    optimist.showHelp();
-    process.exit(0);
+	optimist.showHelp();
+	process.exit(0);
 }
 
 var config = {
@@ -121,4 +121,7 @@ if (!config.mongo && !argv.default) {
 	})
 }
 
-safe.series(sessions, function (err) { if (err) console.log(err); process.exit(0)});
+safe.series(sessions, function (err) {
+	if (err) console.log(err);
+	process.exit(err ? 1 : 0);
+});
