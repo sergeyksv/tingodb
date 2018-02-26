@@ -59,7 +59,7 @@ describe('Import', function () {
 		});
 		it("test find $eq", function (done) {
 			load(sample, function (value, index, callback) {
-				if (Math.random() > 10 / rowcount) return process.nextTick(callback); // ~10 rows
+				if (Math.random() > 10 / rowcount) return safe.back(callback); // ~10 rows
 				coll.find({ id: value.id }, function (err, docs) {
 					if (err) return callback(err);
 					docs.toArray(function (err, rows) {

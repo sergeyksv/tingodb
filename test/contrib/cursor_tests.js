@@ -1,5 +1,4 @@
-var Step = require('step')
-  fs = require('fs');
+var Step = require('step');
 
 /**
  * An example showing the information returned by indexInformation
@@ -33,7 +32,7 @@ exports.shouldCorrectlyExecuteToArray = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -61,7 +60,7 @@ exports.shouldCorrectlyExecuteToArrayAndFailOnFurtherCursorAccess = function(con
       });
     });
   });
-}
+};
 
 /**
  * A simple example iterating over a query using the each function of the cursor.
@@ -102,13 +101,13 @@ exports.shouldCorrectlyFailToArrayDueToFinishedEachOperation = function(configur
               test.done();
               db.close();
             });
-          };
+          }
         });
       });
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -186,10 +185,10 @@ exports.shouldCorrectlyExecuteCursorCount = function(configuration, test) {
             test.equal(0, count);
           });
         }
-      )
+      );
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -255,7 +254,7 @@ exports.shouldCorrectlyExecuteSortOnCursor = function(configuration, test) {
       }
     );
   });
-}
+};
 
 /**
  * @ignore
@@ -281,9 +280,9 @@ exports.shouldCorrectlyThrowErrorOnToArrayWhenMissingCallback = function(configu
           test.done();
         });
       }
-    )
+    );
   });
-}
+};
 
 /**
  * @ignore
@@ -309,9 +308,9 @@ exports.shouldThrowErrorOnEachWhenMissingCallback = function(configuration, test
           test.done();
         });
       }
-    )
+    );
   });
-}
+};
 
 /**
  * @ignore
@@ -342,7 +341,7 @@ exports.shouldCorrectlyHandleLimitOnCursor = function(configuration, test) {
       }
     );
   });
-}
+};
 
 /**
  * @ignore
@@ -369,7 +368,7 @@ exports.shouldCorrectlyHandleNegativeOneLimitOnCursor = function(configuration, 
       }
     );
   });
-}
+};
 
 /**
  * @ignore
@@ -396,7 +395,7 @@ exports.shouldCorrectlyHandleAnyNegativeLimitOnCursor = function(configuration, 
       }
     );
   });
-}
+};
 
 /**
  * @ignore
@@ -450,7 +449,7 @@ exports.shouldCorrectlyReturnErrorsOnIllegalLimitValues = function(configuration
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -497,9 +496,9 @@ exports.shouldCorrectlySkipRecordsOnCursor = function(configuration, test) {
           });
         });
       }
-    )
+    );
   });
-}
+};
 
 /**
  * @ignore
@@ -513,14 +512,14 @@ exports.shouldCorrectlyReturnErrorsOnIllegalSkipValues = function(configuration,
       test.equal("skip requires an integer", err.message);
     });
 
-    var cursor = collection.find()
+    var cursor = collection.find();
     cursor.nextObject(function(err, doc) {
       cursor.skip(1, function(err, cursor) {
         test.equal("Cursor is closed", err.message);
       });
     });
 
-    var cursor = collection.find()
+    cursor = collection.find();
     cursor.close(function(err, cursor) {
       cursor.skip(1, function(err, cursor) {
         test.equal("Cursor is closed", err.message);
@@ -529,7 +528,7 @@ exports.shouldCorrectlyReturnErrorsOnIllegalSkipValues = function(configuration,
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -551,7 +550,7 @@ exports.shouldReturnErrorsOnIllegalBatchSizes = function(configuration, test) {
       test.equal("batchSize requires an integer", err.message);
     }
 
-    var cursor = collection.find();
+    cursor = collection.find();
     cursor.nextObject(function(err, doc) {
       cursor.nextObject(function(err, doc) {
         cursor.batchSize(1, function(err, cursor) {
@@ -567,7 +566,7 @@ exports.shouldReturnErrorsOnIllegalBatchSizes = function(configuration, test) {
       });
     });
 
-    var cursor = collection.find()
+    cursor = collection.find();
     cursor.close(function(err, cursor) {
       cursor.batchSize(1, function(err, cursor) {
         test.equal("Cursor is closed", err.message);
@@ -583,7 +582,7 @@ exports.shouldReturnErrorsOnIllegalBatchSizes = function(configuration, test) {
       }
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -781,9 +780,9 @@ exports.shouldHandleSkipLimitChaining = function(configuration, test) {
           });
         });
       }
-    )
+    );
   });
-}
+};
 
 /**
  * @ignore
@@ -822,9 +821,9 @@ exports.shouldCorrectlyHandleLimitSkipChainingInline = function(configuration, t
           });
         });
       }
-    )
+    );
   });
-}
+};
 
 /**
  * @ignore
@@ -839,7 +838,7 @@ exports.shouldCloseCursorNoQuerySent = function(configuration, test) {
       test.done();
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -867,7 +866,7 @@ exports.shouldCorrectlyExecuteToArrayAndFailOnFurtherCursorAccess = function(con
       });
     });
   });
-}
+};
 
 /**
  * A simple example iterating over a query using the each function of the cursor.
@@ -908,13 +907,13 @@ exports.shouldCorrectlyFailToArrayDueToFinishedEachOperation = function(configur
               test.done();
               db.close();
             });
-          };
+          }
         });
       });
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -960,7 +959,7 @@ exports.shouldCorrectlyExecuteCursorCountWithFields = function(configuration, te
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -978,7 +977,7 @@ exports.shouldCorrectlyCountWithFieldsUsingExclude = function(configuration, tes
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -988,7 +987,7 @@ exports.shouldCorrectlyExecuteEnsureIndexWithNoCallback = function(configuration
   var docs = [];
 
   for(var i = 0; i < 1; i++) {
-    var d = new Date().getTime() + i*1000;
+    var d = Date.now() + i*1000;
     docs[i] = {createdAt:new Date(d)};
   }
 
@@ -996,7 +995,7 @@ exports.shouldCorrectlyExecuteEnsureIndexWithNoCallback = function(configuration
   // Create collection
   client.createCollection('shouldCorrectlyExecuteEnsureIndexWithNoCallback', function(err, collection) {
     // ensure index of createdAt index
-    collection.ensureIndex({createdAt:1})
+    collection.ensureIndex({createdAt:1});
     // insert all docs
     collection.insert(docs, {w:1}, function(err, result) {
       test.equal(null, err);
@@ -1006,10 +1005,10 @@ exports.shouldCorrectlyExecuteEnsureIndexWithNoCallback = function(configuration
         if (err) logger.error("error in collection_info.find: " + err);
         test.equal(1, items.length);
         test.done();
-      })
-    })
+      });
+    });
   });
-}
+};
 
 /**
  * @ignore
@@ -1019,7 +1018,7 @@ exports.shouldCorrectlyInsert5000RecordsWithDateAndSortCorrectlyWithIndex = func
   var docs = [];
 
   for(var i = 0; i < 5000; i++) {
-    var d = new Date().getTime() + i*1000;
+    var d = Date.now() + i*1000;
     docs[i] = {createdAt:new Date(d)};
   }
 
@@ -1039,11 +1038,11 @@ exports.shouldCorrectlyInsert5000RecordsWithDateAndSortCorrectlyWithIndex = func
           if (err) logger.error("error in collection_info.find: " + err);
           test.equal(5000, items.length);
           test.done();
-        })
-      })
+        });
+      });
     });
   });
-}
+};
 
 /**
  * An example showing the information returned by indexInformation
@@ -1063,7 +1062,7 @@ exports['Should correctly rewind and restart cursor'] = function(configuration, 
 
     // Insert 100 documents with some data
     for(var i = 0; i < 100; i++) {
-      var d = new Date().getTime() + i*1000;
+      var d = Date.now() + i*1000;
       docs[i] = {'a':i, createdAt:new Date(d)};
     }
 
@@ -1106,7 +1105,7 @@ exports['Should correctly execute count on cursor'] = function(configuration, te
   var docs = [];
 
   for(var i = 0; i < 1000; i++) {
-    var d = new Date().getTime() + i*1000;
+    var d = Date.now() + i*1000;
     docs[i] = {'a':i, createdAt:new Date(d)};
   }
 
@@ -1131,13 +1130,13 @@ exports['Should correctly execute count on cursor'] = function(configuration, te
               test.equal(1000, c);
               test.equal(1000, total);
               test.done();
-            })
+            });
           }
         });
-      })
-    })
+      });
+    });
   });
-}
+};
 
 
 /**
@@ -1187,7 +1186,7 @@ exports['should be able to stream documents'] = function(configuration, test) {
           setTimeout(function () {
             test.equal(true, stream.paused);
             stream.resume();
-            process.nextTick(function() {
+            safe.back(function() {
               test.equal(false, stream.paused);
               resumed++;
             })
@@ -1448,12 +1447,12 @@ exports.shouldCorrectlyUseCursorCountFunction = function(configuration, test) {
 
           db.close();
           test.done();
-        })
+        });
       });
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of sort on the cursor.
@@ -1496,7 +1495,7 @@ exports.shouldCorrectlyPeformSimpleSorts = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of limit on the cursor
@@ -1533,7 +1532,7 @@ exports.shouldCorrectlyPeformLimitOnCursor = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of skip on the cursor
@@ -1570,7 +1569,7 @@ exports.shouldCorrectlyPeformSkipOnCursor = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of batchSize on the cursor, batchSize only regulates how many
@@ -1608,7 +1607,7 @@ exports.shouldCorrectlyPeformBatchSizeOnCursor = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of nextObject.
@@ -1645,7 +1644,7 @@ exports.shouldCorrectlyPeformNextObjectOnCursor = function(configuration, test) 
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of the cursor explain function.
@@ -1795,9 +1794,9 @@ exports.shouldStreamDocumentsUsingTheCloseFunction = function(configuration, tes
   db.open(function(err, db) {
 
     // Create a lot of documents to insert
-    var docs = []
+    var docs = [];
     for(var i = 0; i < 100; i++) {
-      docs.push({'a':i})
+      docs.push({'a':i});
     }
 
     // Create a collection
@@ -1825,7 +1824,7 @@ exports.shouldStreamDocumentsUsingTheCloseFunction = function(configuration, tes
     });
   });
   // DOC_END
-}
+};
 
 /**
  * @ignore
@@ -2050,21 +2049,17 @@ exports.shouldNotFailDueToStackOverflowEach = function(configuration, test) {
     for(var i = 0; i < 30000; i++) docs.push({a:i});
 
     collection.insert(docs, {w:1}, function(err, ids) {
-      var s = new Date().getTime();
-
       collection.find({}).each(function(err, item) {
         if(item == null) {
-          var e = new Date().getTime();
-
           test.equal(30000, total);
           test.done();
         }
 
         total++;
-      })
+      });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -2074,23 +2069,18 @@ exports.shouldNotFailDueToStackOverflowToArray = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('shouldNotFailDueToStackOverflowToArray', function(err, collection) {
     var docs = [];
-    var total = 0;
-    var s = new Date().getTime();
     for(var i = 0; i < 30000; i++) docs.push({a:i});
 
     collection.insert(docs, {w:1}, function(err, ids) {
-      var s = new Date().getTime();
-
       collection.find({}).toArray(function(err, items) {
-        var e = new Date().getTime();
         // console.log("================== total time :: " + (e - s));
 
         test.equal(30000, items.length);
         test.done();
-      })
+      });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -2098,7 +2088,7 @@ exports.shouldNotFailDueToStackOverflowToArray = function(configuration, test) {
  */
 exports.shouldCorrectlySkipAndLimit = function(configuration, test) {
   var client = configuration.db();
-  var collection = client.collection('shouldCorrectlySkipAndLimit')
+  var collection = client.collection('shouldCorrectlySkipAndLimit');
   var docs = [];
   for(var i = 0; i < 100; i++) docs.push({a:i, OrderNumber:i});
 
@@ -2111,9 +2101,9 @@ exports.shouldCorrectlySkipAndLimit = function(configuration, test) {
         test.equal(10, count);
         test.done();
       });
-    })
+    });
   });
-}
+};
 
 /**
  * @ignore
