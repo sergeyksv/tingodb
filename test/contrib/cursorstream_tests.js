@@ -1,4 +1,5 @@
 var Buffer = require("safe-buffer").Buffer;
+var safe = require("safe");
 /**
  * A simple example showing the use of the cursorstream pause function.
  *
@@ -15,9 +16,9 @@ exports.shouldStreamDocumentsUsingTheCursorStreamPauseFunction = function(config
   db.open(function(err, db) {
 
     // Create a lot of documents to insert
-    var docs = []
+    var docs = [];
     for(var i = 0; i < 1; i++) {
-      docs.push({'a':i})
+      docs.push({'a':i});
     }
 
     // Create a collection
@@ -42,9 +43,9 @@ exports.shouldStreamDocumentsUsingTheCursorStreamPauseFunction = function(config
           setTimeout(function() {
             stream.resume();
             // Check if cursor is paused
-            process.nextTick(function() {
+            safe.back(function() {
               test.equal(false, stream.paused);
-            })
+            });
           }, 1);
         });
 
@@ -57,7 +58,7 @@ exports.shouldStreamDocumentsUsingTheCursorStreamPauseFunction = function(config
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of the cursorstream resume function.
@@ -75,9 +76,9 @@ exports.shouldStreamDocumentsUsingTheCursorStreamResumeFunction = function(confi
   db.open(function(err, db) {
 
     // Create a lot of documents to insert
-    var docs = []
+    var docs = [];
     for(var i = 0; i < 1; i++) {
-      docs.push({'a':i})
+      docs.push({'a':i});
     }
 
     // Create a collection
@@ -105,7 +106,7 @@ exports.shouldStreamDocumentsUsingTheCursorStreamResumeFunction = function(confi
             stream.resume();
 
             // Check if cursor is paused
-            process.nextTick(function() {
+            safe.back(function() {
               test.equal(false, stream.paused);
             });
           }, 1);
@@ -120,7 +121,7 @@ exports.shouldStreamDocumentsUsingTheCursorStreamResumeFunction = function(confi
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple example showing the use of the cursorstream resume function.
@@ -138,9 +139,9 @@ exports.shouldStreamDocumentsUsingTheCursorStreamDestroyFunction = function(conf
   db.open(function(err, db) {
 
     // Create a lot of documents to insert
-    var docs = []
+    var docs = [];
     for(var i = 0; i < 1; i++) {
-      docs.push({'a':i})
+      docs.push({'a':i});
     }
 
     // Create a collection
@@ -167,13 +168,13 @@ exports.shouldStreamDocumentsUsingTheCursorStreamDestroyFunction = function(conf
     });
   });
   // DOC_END
-}
+};
 
 exports.shouldStreamDocumentsWithPauseAndResumeForFetching = function(configuration, test) {
-  var docs = []
+  var docs = [];
 
   for(var i = 0; i < 3000; i++) {
-    docs.push({'a':i})
+    docs.push({'a':i});
   }
 
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
@@ -189,12 +190,12 @@ exports.shouldStreamDocumentsWithPauseAndResumeForFetching = function(configurat
 
         // For each data item
         stream.on("data", function(item) {
-          stream.pause()
+          stream.pause();
 
           collection.findOne({}, function(err, result) {
             data.push(1);
             stream.resume();
-          })
+          });
         });
 
         // When the stream is done
@@ -206,14 +207,14 @@ exports.shouldStreamDocumentsWithPauseAndResumeForFetching = function(configurat
       });
     });
   });
-}
+};
 
 exports.shouldStream10KDocuments = function(configuration, test) {
   var Binary = configuration.getMongoPackage().Binary;
-  var docs = []
+  var docs = [];
 
   for(var i = 0; i < 10000; i++) {
-    docs.push({'a':i, bin: new Binary(new Buffer(256))})
+    docs.push({'a':i, bin: new Binary(new Buffer(256))});
   }
 
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
@@ -229,12 +230,12 @@ exports.shouldStream10KDocuments = function(configuration, test) {
 
         // For each data item
         stream.on("data", function(item) {
-          stream.pause()
+          stream.pause();
 
           collection.findOne({}, function(err, result) {
             data.push(1);
             stream.resume();
-          })
+          });
         });
 
         // When the stream is done
@@ -246,16 +247,16 @@ exports.shouldStream10KDocuments = function(configuration, test) {
       });
     });
   });
-}
+};
 
 exports.shouldTriggerMassiveAmountOfGetMores = function(configuration, test) {
   var Binary = configuration.getMongoPackage().Binary;
-  var docs = []
+  var docs = [];
   var counter = 0;
   var counter2 = 0;
 
   for(var i = 0; i < 1000; i++) {
-    docs.push({'a':i, bin: new Binary(new Buffer(256))})
+    docs.push({'a':i, bin: new Binary(new Buffer(256))});
   }
 
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
@@ -267,12 +268,11 @@ exports.shouldTriggerMassiveAmountOfGetMores = function(configuration, test) {
       collection.insert(docs, {w:1}, function(err, ids) {
         // Peform a find to get a cursor
         var stream = collection.find({}).stream();
-        var data = [];
 
         // For each data item
         stream.on("data", function(item) {
           counter++;
-          stream.pause()
+          stream.pause();
           stream.resume();
           counter2++;
         });
@@ -287,16 +287,15 @@ exports.shouldTriggerMassiveAmountOfGetMores = function(configuration, test) {
       });
     });
   });
-}
+};
 
 exports.shouldStreamDocumentsAcrossGetMoreCommandAndCountCorrectly = function(configuration, test) {
-  var ObjectID = configuration.getMongoPackage().ObjectID
-    , Binary = configuration.getMongoPackage().Binary;
+  var Binary = configuration.getMongoPackage().Binary;
   var client = configuration.db();
-  var docs = []
+  var docs = [];
 
   for(var i = 0; i < 2000; i++) {
-    docs.push({'a':i, b: new Binary(new Buffer(1024))})
+    docs.push({'a':i, b: new Binary(new Buffer(1024))});
   }
 
   var collection = client.collection('test_streaming_function_with_limit_for_fetching');
@@ -314,7 +313,7 @@ exports.shouldStreamDocumentsAcrossGetMoreCommandAndCountCorrectly = function(co
         test.equal(2000, doc.count);
 
         test.done();
-      })
+      });
     });
 
     stream.on('data',function(data){
@@ -325,4 +324,4 @@ exports.shouldStreamDocumentsAcrossGetMoreCommandAndCountCorrectly = function(co
       });
     });
   });
-}
+};

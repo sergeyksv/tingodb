@@ -17,7 +17,7 @@ module.exports.setConfig = function (cfg_) {
 var dbPort = 37017;
 var dbInstance;
 
-var startDb = module.exports.startDb = function (cb) {
+module.exports.startDb = function (cb) {
 	if (!cfg.mongo) return cb();
 	if (dbInstance) return cb(new Error('Database already started'));
 	var dbpath = temp.mkdirSync('mongodb');
@@ -40,7 +40,7 @@ var startDb = module.exports.startDb = function (cb) {
 	ensureUp(3, cb);
 };
 
-var stopDb = module.exports.stopDb = function (cb) {
+module.exports.stopDb = function (cb) {
 	cb = cb || function () {};
 	if (!cfg.mongo) return cb();
 	if (!dbInstance) return cb(new Error('Database is not started'));
@@ -58,11 +58,11 @@ var getDb = module.exports.getDb = function (tag, drop, cb) {
 			if (drop) {
 				db.dropDatabase(safe.sure(cb, function () {
 					var dbs = new Db(tag, new Server('localhost', dbPort),{w:1});
-					dbs.open(cb)
-				}))
+					dbs.open(cb);
+				}));
 			} else
-				cb(null,db)
-		}))
+				cb(null,db);
+		}));
 	}
 	else {
 		if (drop)
@@ -79,15 +79,15 @@ var getDb = module.exports.getDb = function (tag, drop, cb) {
 module.exports.getDbSync = function (tag, db_options, server_options, drop) {
 	if (cfg.mongo) {
 		return new Db(tag, new Server('localhost', dbPort, server_options), db_options);
-	} else {
-		if (drop)
-			delete paths[tag];
-		if (!paths[tag]) {
-			paths[tag] = temp.mkdirSync(tag);
-		}
-		var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
-		return new tingodb.Db(paths[tag], {name:tag});
 	}
+
+	if (drop)
+		delete paths[tag];
+	if (!paths[tag]) {
+		paths[tag] = temp.mkdirSync(tag);
+	}
+	var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
+	return new tingodb.Db(paths[tag], {name:tag});
 };
 
 module.exports.openEmpty = function (db, cb) {
