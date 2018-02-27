@@ -1,4 +1,4 @@
-var Buffer = require("safe-buffer").Buffer;
+var safe = require("safe");
 
 /**
  * Test a simple find
@@ -8,7 +8,7 @@ exports.shouldCorrectlyPerformSimpleFind = function(configuration, test) {
   var client = configuration.db();
 
   client.createCollection('test_find_simple', function(err, r) {
-    var collection = client.collection('test_find_simple', function(err, collection) {
+    client.collection('test_find_simple', function(err, collection) {
       var doc1 = null;
 
       // Insert some test documents
@@ -34,7 +34,7 @@ exports.shouldCorrectlyPerformSimpleFind = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Test a simple find chained
@@ -43,7 +43,7 @@ exports.shouldCorrectlyPerformSimpleFind = function(configuration, test) {
 exports.shouldCorrectlyPeformSimpleChainedFind = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_find_simple_chained', function(err, r) {
-    var collection = client.collection('test_find_simple_chained', function(err, collection) {
+    client.collection('test_find_simple_chained', function(err, collection) {
       var doc1 = null;
 
       // Insert some test documents
@@ -69,7 +69,7 @@ exports.shouldCorrectlyPeformSimpleChainedFind = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Test advanced find
@@ -78,7 +78,7 @@ exports.shouldCorrectlyPeformSimpleChainedFind = function(configuration, test) {
 exports.shouldCorrectlyPeformAdvancedFinds = function(configuration, test) {
   var client = configuration.db();
   client.createCollection('test_find_advanced', function(err, r) {
-    var collection = client.collection('test_find_advanced', function(err, collection) {
+    client.collection('test_find_advanced', function(err, collection) {
 
       // Insert some test documents
       collection.insert([{a:1}, {a:2}, {b:3}], {w:1}, function(err, docs) {
@@ -154,7 +154,7 @@ exports.shouldCorrectlyPeformAdvancedFinds = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Test sorting of results
@@ -249,7 +249,7 @@ exports.shouldCorrectlyPerformFindWithSort = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Test the limit function of the db
@@ -295,7 +295,7 @@ exports.shouldCorrectlyPerformFindWithLimit = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Test find by non-quoted values (issue #128)
@@ -316,7 +316,7 @@ exports.shouldCorrectlyFindWithNonQuotedValues = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Test for querying embedded document using dot-notation (issue #126)
@@ -347,7 +347,7 @@ exports.shouldCorrectlyFindEmbeddedDocument = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Find no records
@@ -364,7 +364,7 @@ exports.shouldCorrectlyFindNoRecords = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -392,7 +392,7 @@ exports.shouldCorrectlyPerformFindByWhere = function(configuration, test) {
       });
     });
   });
-}
+};
 
 
 /**
@@ -471,7 +471,7 @@ exports.shouldCorrectlyPerformFindByObjectID = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -501,7 +501,7 @@ exports.shouldCorrectlyReturnDocumentWithOriginalStructure= function(configurati
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -522,7 +522,7 @@ exports.shouldCorrectlyRetrieveSingleRecord = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -540,7 +540,7 @@ exports.shouldCorrectlyHandleError = function(configuration, test) {
       test.done();
     }
   });
-}
+};
 
 /**
  * Test field select with options
@@ -550,7 +550,7 @@ exports.shouldCorrectlyPerformFindWithOptions = function(configuration, test) {
   var client = configuration.db();
 
   client.createCollection('test_field_select_with_options', function(err, r) {
-    var collection = client.collection('test_field_select_with_options', function(err, collection) {
+    client.collection('test_field_select_with_options', function(err, collection) {
       var docCount = 25, docs = [];
 
       // Insert some test documents
@@ -578,7 +578,7 @@ exports.shouldCorrectlyPerformFindWithOptions = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Test findAndModify a document
@@ -624,14 +624,14 @@ exports.shouldCorrectlyFindAndModifyDocument = function(configuration, test) {
                     });
                   });
                 });
-              })
+              });
             });
-          })
+          });
         });
-      })
+      });
     });
   });
-}
+};
 
 /**
  * Test findAndModify a document with fields
@@ -650,7 +650,7 @@ exports.shouldCorrectlyFindAndModifyDocumentAndReturnSelectedFieldsOnly = functi
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -786,7 +786,7 @@ exports['Should Correctly Handle FindAndModify Duplicate Key Error'] = function(
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -797,11 +797,11 @@ exports['Should correctly return null when attempting to modify a non-existing d
     // Let's modify the document in place
     collection.findAndModify({name: 'test1'}, [], {$set: {name: 'test2'}}, {}, function(err, updated_doc) {
       test.equal(null, updated_doc);
-      test.ok(err == null || err.errmsg.match("No matching object found"))
+      test.ok(err == null || err.errmsg.match("No matching object found"));
       test.done();
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -814,12 +814,12 @@ exports['Should correctly handle chained skip and limit on find with toArray'] =
       collection.find().skip(1).limit(-1).toArray(function(err, items) {
         test.equal(null, err);
         test.equal(1, items.length);
-        test.equal(2, items[0].b)
+        test.equal(2, items[0].b);
         test.done();
-      })
+      });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -832,14 +832,14 @@ exports['Should correctly handle chained skip and negative limit on find with to
       collection.find().skip(1).limit(-3).toArray(function(err, items) {
         test.equal(null, err);
         test.equal(3, items.length);
-        test.equal(2, items[0].b)
-        test.equal(3, items[1].c)
-        test.equal(4, items[2].d)
+        test.equal(2, items[0].b);
+        test.equal(3, items[1].c);
+        test.equal(4, items[2].d);
         test.done();
-      })
+      });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -859,7 +859,7 @@ exports['Should correctly pass timeout options to cursor'] = function(configurat
 
     test.done();
   });
-}
+};
 
 /**
  * Test findAndModify a document with strict mode enabled
@@ -873,15 +873,15 @@ exports.shouldCorrectlyFindAndModifyDocumentWithDBStrict = function(configuratio
       collection.insert({'a':2, 'b':2}, {w:1}, function(err, doc) {
         // Let's modify the document in place
         collection.findAndModify({'a':2}, [['a', 1]], {'$set':{'b':3}}, {new:true}, function(err, result) {
-          test.equal(2, result.a)
-          test.equal(3, result.b)
+          test.equal(2, result.a);
+          test.equal(3, result.b);
           p_client.close();
           test.done();
-        })
+        });
       });
     });
   });
-}
+};
 
 /**
  * Test findAndModify a document that fails in first step before safe
@@ -900,11 +900,11 @@ exports.shouldCorrectlyFindAndModifyDocumentThatFailsInFirstStep = function(conf
           test.equal(null, result);
           test.ok(err.errmsg.match("duplicate key error index"));
           test.done();
-        })
+        });
       });
     });
   });
-}
+};
 
 /**
  * Test findAndModify a document that fails in first step before safe
@@ -954,10 +954,10 @@ exports['Should correctly return new modified document'] = function(configuratio
         test.equal(doc.c.b, item.c.b);
         test.equal(100, item.c.c);
         test.done();
-      })
+      });
     });
   });
-}
+};
 
 /**
  * Should correctly execute findAndModify that is breaking in prod
@@ -1024,7 +1024,7 @@ exports['Should Correctly find a Document using findOne excluding _id field'] = 
   var p_client = configuration.newDbInstance({w:1}, {poolSize:1, auto_reconnect:false});
   p_client.open(function(err, p_client) {
     p_client.createCollection('Should_Correctly_find_a_Document_using_findOne_excluding__id_field', function(err, collection) {
-      var doc = {_id : new ObjectID(), a:1, c:2}
+      var doc = {_id : new ObjectID(), a:1, c:2};
       // insert doc
       collection.insert(doc, {w:1}, function(err, result) {
         // Get one document, excluding the _id field
@@ -1034,18 +1034,18 @@ exports['Should Correctly find a Document using findOne excluding _id field'] = 
           test.equal(2, item.c);
 
           collection.find({a:1}, {fields:{'_id':0}}).toArray(function(err, items) {
-            var item = items[0]
+            var item = items[0];
             test.equal(null, item._id);
             test.equal(1, item.a);
             test.equal(2, item.c);
             p_client.close();
             test.done();
-          })
-        })
+          });
+        });
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1110,7 +1110,7 @@ exports.shouldCorrectlyHandlerErrorForFindAndModifyWhenNoRecordExists = function
       test.done();
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1123,7 +1123,7 @@ exports.shouldCorrectlyExecuteFindAndModifyShouldGenerateCorrectBSON = function(
   transaction.document.type = "documentType";
   transaction.document.id = new ObjectID();
   transaction.transactionId = new ObjectID();
-  transaction.amount = 12.3333
+  transaction.amount = 12.3333;
 
   var transactions = [];
   transactions.push(transaction);
@@ -1134,22 +1134,22 @@ exports.shouldCorrectlyExecuteFindAndModifyShouldGenerateCorrectBSON = function(
     },
 
     transactions:transactions
-  }
+  };
 
   client.createCollection('shouldCorrectlyExecuteFindAndModify', function(err, collection) {
     collection.insert(wrapingObject, {w:1}, function(err, doc) {
       test.equal(null, err);
 
       collection.findOne({_id:doc[0]._id, 'funds.remaining': {$gte: 3.0}, 'transactions.id': {$ne: transaction.transactionId}}, function(err, item) {
-        test.ok(item != null)
+        test.ok(item != null);
 
         collection.findAndModify({_id:doc[0]._id, 'funds.remaining': {$gte: 3.0}, 'transactions.id': {$ne: transaction.transactionId}}, [], {$push: {transactions: transaction}}, {new: true, safe: true}, function(err, result) {
           test.done();
         });
-      })
+      });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1169,7 +1169,7 @@ exports.shouldCorrectlyExecuteMultipleFindsInParallel = function(configuration, 
             test.done();
             p_client.close();
           }
-        })
+        });
 
         collection.find({"user_id":"4e9fc8d55883d90100000003","lc_status":{"$ne":"deleted"},"owner_rating":{"$exists":false}},
           {"skip":0,"limit":10,"sort":{"updated":-1}}).count(function(err, count) {
@@ -1178,11 +1178,11 @@ exports.shouldCorrectlyExecuteMultipleFindsInParallel = function(configuration, 
             test.done();
             p_client.close();
           }
-        })
+        });
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1239,14 +1239,14 @@ exports.shouldCorrectlyExecuteFindAndModifyUnderConcurrentLoad = function(config
     p_client.collection("collection2", function(err, collection) {
       // Keep hammering in inserts
       var insert = function() {
-        process.nextTick(function() {
+        safe.back(function() {
           collection.insert({a:1});
-          if(running) process.nextTick(insert);
+          if (running) safe.back(insert);
         });
-      }
+      };
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1277,7 +1277,7 @@ exports.shouldCorrectlyIterateOverCollection = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * @ignore
@@ -1288,7 +1288,6 @@ exports.shouldCorrectlyErrorOutFindAndModifyOnDuplicateRecord = function(configu
     p_client.createCollection('shouldCorrectlyErrorOutFindAndModifyOnDuplicateRecord', function(err, collection) {
       // Test return old document on change
       collection.insert([{'login':'user1'}, {'login':'user2'}], {w:1}, function(err, docs) {
-		 console
         var id = docs[1]._id;
         // Set an index
         collection.ensureIndex('login', {unique:true, w:1}, function(err, result) {
@@ -1302,7 +1301,7 @@ exports.shouldCorrectlyErrorOutFindAndModifyOnDuplicateRecord = function(configu
       });
     });
   });
-}
+};
 
 /**
  * An example of using find with a very large in parameter
@@ -1395,7 +1394,7 @@ exports.shouldPerformSimpleFindAndModifyOperations = function(configuration, tes
 
                   db.close();
                   test.done();
-              })
+              });
             });
           });
         });
@@ -1403,7 +1402,7 @@ exports.shouldPerformSimpleFindAndModifyOperations = function(configuration, tes
     });
   });
   // DOC_END
-}
+};
 
 /**
  * An example of using findAndRemove
@@ -1446,7 +1445,7 @@ exports.shouldPerformSimpleFindAndModifyOperations = function(configuration, tes
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple query using the find method on the collection.
@@ -1482,7 +1481,7 @@ exports.shouldPeformASimpleQuery = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple query showing the explain for a query
@@ -1558,7 +1557,7 @@ exports.shouldPeformASimpleLimitSkipQuery = function(configuration, test) {
     });
   });
   // DOC_END
-}
+};
 
 exports.shouldReturnInstanceofErrorWithBadFieldSelection = function(configuration, test) {
   var db = configuration.newDbInstance({w:0}, {poolSize:1, auto_reconnect:false});
@@ -1577,7 +1576,7 @@ exports.shouldReturnInstanceofErrorWithBadFieldSelection = function(configuratio
       });
     });
   });
-}
+};
 
 /**
  * A simple query using findOne
@@ -1614,7 +1613,7 @@ exports.shouldPeformASimpleLimitSkipFindOneQuery = function(configuration, test)
     });
   });
   // DOC_END
-}
+};
 
 /**
  * A simple query using find and fields
@@ -1654,7 +1653,7 @@ exports.shouldPeformASimpleLimitSkipFindWithFields = function(configuration, tes
       });
     });
   });
-}
+};
 
 /**
  * A simple query using find and fields
@@ -1686,7 +1685,7 @@ exports.shouldPeformASimpleLimitSkipFindWithFields2 = function(configuration, te
       });
     });
   });
-}
+};
 
 /**
  * A simple query with a different batchSize
@@ -1721,7 +1720,7 @@ exports.shouldPerformQueryWithBatchSizeDifferentToStandard = function(configurat
       });
     });
   });
-}
+};
 
 /**
  * A simple query with a different batchSize
@@ -1758,7 +1757,7 @@ exports.shouldCorrectlyPerformNegativeLimit = function(configuration, test) {
     db.collection('shouldCorrectlyPerformNegativeLimit', function(err, collection) {
       var docs = [];
       for(var i = 0; i < 1000; i++) {
-        docs.push({a:1, b:"helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"})
+        docs.push({a:1, b:"helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld"});
       }
 
       // Insert a bunch of documents
@@ -1774,7 +1773,7 @@ exports.shouldCorrectlyPerformNegativeLimit = function(configuration, test) {
       });
     });
   });
-}
+};
 
 /**
  * Should perform an exhaust find query
@@ -1864,7 +1863,7 @@ exports['Each should not hang on iterating over no results'] = function(configur
       });
     });
   });
-}
+};
 
 exports.shouldCorrectlyFindDocumentsByRegExp = function(configuration, test) {
   var client = configuration.db();
@@ -1879,7 +1878,7 @@ exports.shouldCorrectlyFindDocumentsByRegExp = function(configuration, test) {
             collection.findOne({keywords: {$all: [/ser/, /test/, /seg/, /fault/, /nat/]}}, function(err, item) {
               test.equal(6, item.keywords.length);
               if (i === 0) {
-               test.done()
+               test.done();
              }
             });
           };
@@ -1889,7 +1888,7 @@ exports.shouldCorrectlyFindDocumentsByRegExp = function(configuration, test) {
       }
     });
   });
-}
+};
 
 exports.shouldCorrectlyDoFindMinMax = function(configuration, test) {
   var client = configuration.db();
@@ -1901,15 +1900,15 @@ exports.shouldCorrectlyDoFindMinMax = function(configuration, test) {
 
       collection.find({"_id": {$in:['some', 'value', 123]}}, {"_id":1, "max":1}, {}).toArray(function(err, docs) {
         test.equal(null, err);
-        test.equal(10, docs[0].max)
+        test.equal(10, docs[0].max);
 
         collection.find({"_id": {$in:['some', 'value', 123]}}, {fields: {"_id":1, "max":1}}).toArray(function(err, docs) {
           test.equal(null, err);
-          test.equal(10, docs[0].max)
+          test.equal(10, docs[0].max);
 
           test.done();
         });
       });
     });
   });
-}
+};

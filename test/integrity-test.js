@@ -50,7 +50,8 @@ describe('(FS) Corrupted DB Load', function () {
 				fs.open(coll._filename, 'r+', safe.sure(done, function (fd) {
 					items = items.slice(0,99);
 					length--;
-					fs.truncate(fd, stats.size-100, done);
+					// [DEP0081] DeprecationWarning: Using fs.truncate with a file descriptor is deprecated.
+					(fs.ftruncate || fs.truncate)(fd, stats.size-100, done);
 				}));
 			}));
 		}));

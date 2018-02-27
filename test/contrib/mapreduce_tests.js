@@ -505,8 +505,8 @@ exports.shouldSaveDataToDifferentDbFromMapreduce = function(configuration, test)
 */
 /*exports.shouldCorrectlyReturnNestedKeys = function(configuration, test) {
   var client = configuration.db();
-  var start = new Date().setTime(new Date().getTime() - 10000);
-  var end = new Date().setTime(new Date().getTime() + 10000);
+  var start = new Date().setTime(Date.now() - 10000);
+  var end = new Date().setTime(Date.now() + 10000);
 
   var keys =  {
      "data.lastname": true
