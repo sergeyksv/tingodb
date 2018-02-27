@@ -3,7 +3,7 @@ TingoDB
 
 [![Build Status](https://travis-ci.org/sergeyksv/tingodb.png?branch=master)](https://travis-ci.org/sergeyksv/tingodb)
 
-**TingoDB** is an embedded JavaScript in-process filesystem or in-memory database upwards compatible with MongoDB at the API level.
+**TingoDB** is an embedded JavaScript in-process filesystem or in-memory database upwards compatible with MongoDB at the [v1.4 API level](http://mongodb.github.io/node-mongodb-native/1.4/).
 
 Upwards compatible means that if you build an app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to a mature solution at any moment.
 
@@ -30,7 +30,7 @@ Usage
 
 	npm install tingodb
 
-As stated, the API is fully compatible with MongoDB. The only differences are the initialization and getting the Db object. Consider this MongoDB code:
+As stated, the API is fully compatible with the MongoDB [v1.4 API](http://mongodb.github.io/node-mongodb-native/1.4/). The only differences are the initialization and getting the Db object. Consider this MongoDB code:
 
 ```javascript
 var Db = require('mongodb').Db,
@@ -272,7 +272,7 @@ db.open(function(err,db) {
 
 Compatibility
 =========
-We maintain full API and functionality compatibility with MongoDB **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same way, but some features are not yet supported or support is limited.
+We maintain full API and functionality compatibility with MongoDB [v1.4](http://mongodb.github.io/node-mongodb-native/1.4/) **BUT** only for what we implemented support. I.e. if we support something it will work exactly the same way, but some features are not yet supported or support is limited.
 
 - Search, almost all clauses. Indexes are used to increase search speed and sorting.
 - Map reduce, almost all
