@@ -50,7 +50,8 @@ var files = [
 ];
 var tingo = [
 	'compact-test.js',
-	'integrity-test.js'
+	'integrity-test.js',
+	'apicompat-test.js'
 ];
 
 var slow = [
