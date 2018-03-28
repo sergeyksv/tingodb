@@ -5,6 +5,8 @@ TingoDB
 
 **TingoDB** is an embedded JavaScript in-process filesystem or in-memory database upwards compatible with MongoDB at the [v1.4 API level](http://mongodb.github.io/node-mongodb-native/1.4/).
 
+**Note** starting from version 0.6.x there is new configuration paramater `apiLevel`. Default value is 140 (1.4) but we started some adoptions for 2.x specific behaviour. For instance findAndModify will behave difeently if to use `apiLevel:200` (2.x). Any contributions with making adoptions for API > 2.x are welcome.
+
 Upwards compatible means that if you build an app that uses functionality implemented by TingoDB you can switch to MongoDB almost without code changes. This greatly reduces implementation risks and give you freedom to switch to a mature solution at any moment.
 
 As a proof for upward compatibility, all tests designed to run against both MongoDB and TingoDB.
@@ -77,6 +79,9 @@ As you can see, the difference is in the `require` call and database object init
 #### require('tingodb')(options)
 
 In contrast to MongoDB, the module `require` call will not return a usable module. It will return a function that accepts configuration options. This function will return something similar to the MongoDB module. The extra step allows for passing some options that will control database behavior.
+
+##### apiLevel: integer Default is 140 (API 1.4.x). 
+By specifiyng apiLevel you can expect that some functions will behave accordingly. For instance specifiing apiLevel 200 function findAndModify will return object `{value:result,ok:1}` as opposed to 1.4 which return just `result`.
 
 ##### memStore: true|false Default is false
 Enable in memory (no file access) mode. Can be useful for unit tests. File path will be used as db identity.
