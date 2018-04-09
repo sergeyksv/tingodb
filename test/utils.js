@@ -51,7 +51,11 @@ module.exports.stopDb = function (cb) {
 
 var paths = {};
 
-var getDb = module.exports.getDb = function (tag, drop, cb) {
+var getDb = module.exports.getDb = function (tag, drop, tingo, cb) {
+	if (_.isFunction(tingo)) {
+		cb = tingo;
+		tingo = undefined;
+	}
 	if (cfg.mongo) {
 		var dbs = new Db(tag, new Server('localhost', dbPort),{w:1});
 		dbs.open(safe.sure(cb, function (db) {
@@ -70,7 +74,7 @@ var getDb = module.exports.getDb = function (tag, drop, cb) {
 		if (!paths[tag]) {
 			paths[tag] = temp.mkdirSync(tag);
 		}
-		var tingodb = cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main);
+		var tingodb = tingo?tingo:(cfg.nativeObjectID ? main_native : (cfg.searchInArray?main_array:main));
 		var db = new tingodb.Db(paths[tag], {});
 		db.open(cb);
 	}
