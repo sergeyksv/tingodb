@@ -325,6 +325,19 @@ describe('Incremental update', function () {
 				}))
 			}))
 		})
+		it("#4 $pull should match objects",function (done) {
+			db.collection("pull", {}, safe.sure(done,function (_coll) {
+				_coll.insert({_id:4,users:[{name:"Bob",age:20},{name:"Bob",age:20},{name:"Alice",age:22}]}, safe.sure(done, function () {
+					_coll.update({_id:4},{$pull:{users: {name: "Bob"}}}, safe.sure(done, function () {
+						_coll.findOne({_id:4},safe.sure(done, function (obj) {
+							assert.deepEqual(obj.users,[{name:"Alice",age:22}]);
+							assert.equal(obj.users.length, 1);
+							done();
+						}))
+					}))
+				}))
+			}))
+		})
 	})
 	describe("$pullAll", function () {
 		it("#1 $pullAll basics",function (done) {

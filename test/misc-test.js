@@ -228,4 +228,14 @@ describe('Misc', function () {
 		}));
 	});
 
+	it("$find should not crash on base field being undefined",function (done) {
+		db.collection("findcrash1", {}, safe.sure(done,function (_coll) {
+			_coll.insert({_id:1}, safe.sure(done, function () {
+				_coll.find({_id:1}, {"obj1.obj2":1}).toArray(function (err, result) {
+					assert.equal(err, null);
+					done();
+				})
+			}))
+		}))
+	})
 });
