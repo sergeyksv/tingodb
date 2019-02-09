@@ -146,19 +146,21 @@ var cfg = JSON.parse(fs.readFileSync("./config.json"));
 
 // load requestd engine and define engine-agnostic getDB function
 if (cfg.app.engine=="mongodb") {
-	engine = require("mongodb");
-	module.exports.getDB = function () {
-		if (!db) db = new engine.Db(cfg.mongo.db,
-			new engine.Server(cfg.mongo.host, cfg.mongo.port, cfg.mongo.opts),
-				{native_parser: false, safe:true});
-		return db;
-	}
+    engine = require("mongodb");
+    module.exports.getDB = function (opts) {
+        if(!opts) opts = {};
+        if (!db) db = new engine.Db(opts.db || cfg.mongo.db,
+            new engine.Server(opts.host || cfg.mongo.host, opts.port || cfg.mongo.port, otps.opts || cfg.mongo.opts || {}),
+                {native_parser: false, safe:true});
+        return db;
+    }
 } else {
-	engine = require("tingodb")({});
-	module.exports.getDB = function () {
-		if (!db) db = new engine.Db(cfg.tingo.path, {});
-		return db;
-	}
+    engine = require("tingodb")({});
+    module.exports.getDB = function (opts) {
+        if(!opts) opts = {};
+        if (!db) db = new engine.Db(opts || cfg.tingo.path || './data', {});
+        return db;
+    }
 }
 // Depending on engine, this can be a different class
 module.exports.ObjectID = engine.ObjectID;
