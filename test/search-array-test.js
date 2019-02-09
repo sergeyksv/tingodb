@@ -44,7 +44,15 @@ describe('Search Array', function () {
 					for (j=0; j<10; j++) {
 						arr[j].sub.arr = arr2;
 					}
-					obj = {num:i, pum:i, arr:arr, nags:["tag"+i,"tag"+(i+1)], tags:["tag"+i,"tag"+(i+1)], nested:{tags:["tag"+i,"tag"+(i+1)]}};
+					obj = {
+						num:i,
+						pum:i,
+						arr:arr,
+						nags:["tag"+i,"tag"+(i+1)],
+						tags:["tag"+i,"tag"+(i+1)],
+						nested:{tags:["tag"+i,"tag"+(i+1)]},
+						objectArray:[{tag:"tag"+i}]
+					};
 					coll.insert(obj, cb);
 					i++;
 				},
@@ -297,5 +305,11 @@ describe('Search Array', function () {
 				done();
 			}));
 		});
+    it("find object array {'objectArray.0.tag':'tag1'} (no index)", function (done) {
+      coll.find({'objectArray.0.tag':'tag1'}).toArray(safe.sure(done, function (docs) {
+        assert.equal(docs.length, 1);
+        done();
+      }));
+    });
 	});
 });
