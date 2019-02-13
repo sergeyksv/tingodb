@@ -27,8 +27,8 @@ describe('Misc', function () {
 	it('GH-19 Unset must clean key from object', function (done) {
 		db.collection("GH19", {}, safe.sure(done,function (_coll) {
 			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
-				_coll.findAndModify({},{age:1},{$set: {name: 'Tony'}, $unset: { age: true }},{new:true},safe.sure(done, function (doc) {
-					assert(!_.includes(_.keys(doc),'age'));
+				_coll.findAndModify({},{age:1},{$set: {name: 'Tony'}, $unset: { age: true }},{new:true},safe.sure(done, function (result) {
+					assert(!_.includes(_.keys(result.value),'age'));
 					_coll.findOne({},{age:1},safe.sure(done, function (obj) {
 						assert(!_.includes(_.keys(obj),'age'));
 						done();
@@ -91,8 +91,8 @@ describe('Misc', function () {
 	it('GH-26-2 sort order can also be optional and undefined for findAndRemove', function (done) {
 		db.collection("GH26-2", {}, safe.sure(done,function (_coll) {
 			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
-				_coll.findAndModify({},{age:1},{$set: {name: 'Tony'}, $unset: { age: true }},undefined,safe.sure(done, function (doc) {
-					assert(doc.age);
+				_coll.findAndModify({},{age:1},{$set: {name: 'Tony'}, $unset: { age: true }},undefined,safe.sure(done, function (result) {
+					assert(result.value.age);
 					done();
 				}))
 			}))
@@ -102,8 +102,8 @@ describe('Misc', function () {
 	it('GH-26-3 doc can be undefined if remote is true for findAndModify', function (done) {
 		db.collection("GH26-3", {}, safe.sure(done,function (_coll) {
 			_coll.insert({name:'Tony',age:'37'}, safe.sure(done, function () {
-				_coll.findAndModify({},{age:1},undefined,{remove:true},safe.sure(done, function (doc) {
-					assert(doc.age);
+				_coll.findAndModify({},{age:1},undefined,{remove:true},safe.sure(done, function (result) {
+					assert(result.value.age);
 					done();
 				}))
 			}))

@@ -100,8 +100,8 @@ describe('Incremental update', function () {
 		})
 		it("#1 $setOnInsert on findAndUpdate",function (done) {
 			db.collection("setOnInsert", {}, safe.sure(done,function (_coll) {
-				_coll.findAndModify({_id:2},{},{$setOnInsert:{name:"John",sub:{gender:"male"}}},{upsert:true,new:true}, safe.sure(done, function (obj) {
-					assert.deepEqual(obj,{"_id":2,"name":"John","sub":{"gender":"male"}});
+				_coll.findAndModify({_id:2},{},{$setOnInsert:{name:"John",sub:{gender:"male"}}},{upsert:true,new:true}, safe.sure(done, function (result) {
+					assert.deepEqual(result.value,{"_id":2,"name":"John","sub":{"gender":"male"}});
 					done();
 				}))
 			}))

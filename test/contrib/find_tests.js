@@ -590,36 +590,36 @@ exports.shouldCorrectlyFindAndModifyDocument = function(configuration, test) {
     // Test return new document on change
     collection.insert({'a':1, 'b':2}, {w:1}, function(err, doc) {
       // Let's modify the document in place
-      collection.findAndModify({'a':1}, [['a', 1]], {'$set':{'b':3}}, {'new':true}, function(err, updated_doc) {
-        test.equal(1, updated_doc.a);
-        test.equal(3, updated_doc.b);
+      collection.findAndModify({'a':1}, [['a', 1]], {'$set':{'b':3}}, {'new':true}, function(err, update_res) {
+        test.equal(1, update_res.value.a);
+        test.equal(3, update_res.value.b);
 
         // Test return old document on change
         collection.insert({'a':2, 'b':2}, {w:1}, function(err, doc) {
           // Let's modify the document in place
-          collection.findAndModify({'a':2}, [['a', 1]], {'$set':{'b':3}}, {w:1}, function(err, result, object) {
-            test.equal(2, result.a);
-            test.equal(2, result.b);
+          collection.findAndModify({'a':2}, [['a', 1]], {'$set':{'b':3}}, {w:1}, function(err, update_res, object) {
+            test.equal(2, update_res.value.a);
+            test.equal(2, update_res.value.b);
 
             // Test remove object on change
             collection.insert({'a':3, 'b':2}, {w:1}, function(err, doc) {
               // Let's modify the document in place
-              collection.findAndModify({'a':3}, [], {'$set':{'b':3}}, {'new': true, remove: true}, function(err, updated_doc) {
-                test.equal(3, updated_doc.a);
-                test.equal(2, updated_doc.b);
+              collection.findAndModify({'a':3}, [], {'$set':{'b':3}}, {'new': true, remove: true}, function(err, update_res) {
+                test.equal(3, update_res.value.a);
+                test.equal(2, update_res.value.b);
 
                 // Let's upsert!
-                collection.findAndModify({'a':4}, [], {'$set':{'b':3}}, {'new': true, upsert: true}, function(err, updated_doc) {
-                  test.equal(4, updated_doc.a);
-                  test.equal(3, updated_doc.b);
+                collection.findAndModify({'a':4}, [], {'$set':{'b':3}}, {'new': true, upsert: true}, function(err, update_res) {
+                  test.equal(4, update_res.value.a);
+                  test.equal(3, update_res.value.b);
 
                   // Test selecting a subset of fields
                   collection.insert({a: 100, b: 101}, {w:1}, function (err, ids) {
-                    collection.findAndModify({'a': 100}, [], {'$set': {'b': 5}}, {'new': true, fields: {b: 1}}, function (err, updated_doc) {
-                      test.equal(2, Object.keys(updated_doc).length);
-                      test.equal(ids[0]['_id'].toHexString(), updated_doc._id.toHexString());
-                      test.equal(5, updated_doc.b);
-                      test.equal("undefined", typeof updated_doc.a);
+                    collection.findAndModify({'a': 100}, [], {'$set': {'b': 5}}, {'new': true, fields: {b: 1}}, function (err, update_res) {
+                      test.equal(2, Object.keys(update_res.value).length);
+                      test.equal(ids[0]['_id'].toHexString(), update_res.value._id.toHexString());
+                      test.equal(5, update_res.value.b);
+                      test.equal("undefined", typeof update_res.value.a);
                       test.done();
                     });
                   });
