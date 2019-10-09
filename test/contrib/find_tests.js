@@ -1793,7 +1793,7 @@ exports.shouldCorrectlyExecuteExhaustQuery = function(configuration, test) {
         docs.push({
           a: 1,
           b: "helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld helloworld",
-          c: new Binary(new Buffer(1024))
+          c: new Binary(Buffer.alloc(1024))
         })
       }
 

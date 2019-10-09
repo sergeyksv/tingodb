@@ -214,7 +214,7 @@ exports.shouldStream10KDocuments = function(configuration, test) {
   var docs = [];
 
   for(var i = 0; i < 10000; i++) {
-    docs.push({'a':i, bin: new Binary(new Buffer(256))});
+    docs.push({'a':i, bin: new Binary(Buffer.alloc(256))});
   }
 
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
@@ -256,7 +256,7 @@ exports.shouldTriggerMassiveAmountOfGetMores = function(configuration, test) {
   var counter2 = 0;
 
   for(var i = 0; i < 1000; i++) {
-    docs.push({'a':i, bin: new Binary(new Buffer(256))});
+    docs.push({'a':i, bin: new Binary(Buffer.alloc(256))});
   }
 
   var db = configuration.newDbInstance({w:0}, {poolSize:1});
@@ -295,7 +295,7 @@ exports.shouldStreamDocumentsAcrossGetMoreCommandAndCountCorrectly = function(co
   var docs = [];
 
   for(var i = 0; i < 2000; i++) {
-    docs.push({'a':i, b: new Binary(new Buffer(1024))});
+    docs.push({'a':i, b: new Binary(Buffer.alloc(1024))});
   }
 
   var collection = client.collection('test_streaming_function_with_limit_for_fetching');

@@ -30,7 +30,7 @@ To run test with TingoDB: ```./test.sh --quick --single=misc-test --db=tingodb``
 Usage
 ======
 
-	npm install tingodb
+	npm i --save https://github.com/lcnvdl/tingodb.git
 
 As stated, the API is fully compatible with the MongoDB [v1.4 API](http://mongodb.github.io/node-mongodb-native/1.4/). The only differences are the initialization and getting the Db object. Consider this MongoDB code:
 

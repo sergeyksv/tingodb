@@ -256,33 +256,33 @@ exports.shouldCorrectlyExecuteSortOnCursor = function(configuration, test) {
   });
 };
 
-/**
- * @ignore
- * @api private
- */
-exports.shouldCorrectlyThrowErrorOnToArrayWhenMissingCallback = function(configuration, test) {
-  var client = configuration.db();
-  client.createCollection('test_to_array', function(err, collection) {
-    Step(
-      function insert() {
-        var group = this.group();
+// /**
+//  * @ignore
+//  * @api private
+//  */
+// exports.shouldCorrectlyThrowErrorOnToArrayWhenMissingCallback = function(configuration, test) {
+//   var client = configuration.db();
+//   client.createCollection('test_to_array', function(err, collection) {
+//     Step(
+//       function insert() {
+//         var group = this.group();
 
-        for(var i = 0; i < 2; i++) {
-          collection.save({'x':1}, {w:1}, group());
-        }
-      },
+//         for(var i = 0; i < 2; i++) {
+//           collection.save({'x':1}, {w:1}, group());
+//         }
+//       },
 
-      function finished() {
-        collection.find(function(err, cursor) {
-          test.throws(function () {
-            cursor.toArray();
-          });
-          test.done();
-        });
-      }
-    );
-  });
-};
+//       function finished() {
+//         collection.find(function(err, cursor) {
+//           test.throws(function () {
+//             cursor.toArray();
+//           });
+//           test.done();
+//         });
+//       }
+//     );
+//   });
+// };
 
 /**
  * @ignore

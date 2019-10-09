@@ -1097,7 +1097,7 @@ exports.shouldFailDueToInsertBeingBiggerThanMaxDocumentSizeAllowed = function(co
 
   var db = configuration.db();
   var collection = db.collection('shouldFailDueToInsertBeingBiggerThanMaxDocumentSizeAllowed');
-  var binary = new Binary(new Buffer(db.serverConfig.checkoutWriter().maxBsonSize + 100));
+  var binary = new Binary(Buffer.alloc(db.serverConfig.checkoutWriter().maxBsonSize + 100));
 
   collection.insert({doc:binary}, {w:1}, function(err, result) {
     test.ok(err != null);
@@ -1116,7 +1116,7 @@ exports.shouldFailDueToMessageBeingBiggerThanMaxMessageSize = function(configura
 
   var db = configuration.newDbInstance({w:1}, {disableDriverBSONSizeCheck:true})
   db.open(function(err, db) {
-    var binary = new Binary(new Buffer(db.serverConfig.checkoutWriter().maxBsonSize));
+    var binary = new Binary(Buffer.alloc(db.serverConfig.checkoutWriter().maxBsonSize));
     var collection = db.collection('shouldFailDueToInsertBeingBiggerThanMaxDocumentSizeAllowed');
 
     collection.insert([{doc:binary}, {doc:binary}, {doc:binary}, {doc:binary}], {w:1}, function(err, result) {
@@ -1213,11 +1213,11 @@ exports.shouldCorrectlyPerformInsertOfObjectsUsingToBSON = function(configuratio
 //   // Establish connection to db
 //   db.open(function(err, db) {
 //     db.createCollection('shouldAttempToForceBsonSize', function(err, collection) {
-//       // var doc = {a:1, b:new Binary(new Buffer(16777216)/5)}
+//       // var doc = {a:1, b:new Binary(Buffer.alloc(16777216)/5)}
 //       var doc = [
-//         {a:1, b:new Binary(new Buffer(16777216/3))},
-//         {a:1, b:new Binary(new Buffer(16777216/3))},
-//         {a:1, b:new Binary(new Buffer(16777216/3))},
+//         {a:1, b:new Binary(Buffer.alloc(16777216/3))},
+//         {a:1, b:new Binary(Buffer.alloc(16777216/3))},
+//         {a:1, b:new Binary(Buffer.alloc(16777216/3))},
 //       ]
 
 //       collection.insert(doc, {w:1}, function(err, result) {
@@ -1352,7 +1352,7 @@ exports.handleBSONTypeInsertsCorrectly = function(configuration, test) {
       "symbol": new Symbol("abcdefghijkl")
     , "objid": new ObjectID("abcdefghijkl")
     , "double": new Double(1)
-    , "binary": new Binary(new Buffer("hello world"))
+    , "binary": new Binary(Buffer.from("hello world"))
     , "minkey": new MinKey()
     , "maxkey": new MaxKey()
     , "code": new Code("function () {}", {a: 55})
@@ -1373,7 +1373,7 @@ exports.handleBSONTypeInsertsCorrectly = function(configuration, test) {
           test.equal(null, err);
           test.equal(1, doc.double);
 
-          collection.findOne({"binary": new Binary(new Buffer("hello world"))}, function(err, doc) {
+          collection.findOne({"binary": new Binary(Buffer.from("hello world"))}, function(err, doc) {
             test.equal(null, err);
             test.equal("hello world", doc.binary.toString());
 
